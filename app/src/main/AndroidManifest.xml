@@ -2,19 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ubung.tc.ubungmobile" >
 
-
+    <uses-permission android:name="com.ubung.tc.ubungmobile.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!--
          The following two permissions are not required to use
-         Google Maps Android API v2, but are recommended.
+         Google Maps Android API v2, but are recommended. properties con la clave de google maps
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-sdk android:minSdkVersion="16"
-        android:targetSdkVersion="16"
-        android:maxSdkVersion="16" />
+
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -39,18 +38,15 @@
             android:name=".LocationActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_location"
-            android:parentActivityName=".MainUbung"
             android:theme="@style/FullscreenTheme" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ubung.tc.ubungmobile.MainUbung" />
+
         </activity>
 
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyApz6iRQQMiElQn-gWS-L3hY8Gnh6GqAhY"/>
+            android:value="AIzaSyBEpQBZ7SA01SdJyJVxgpdw10mJS_VOyYg"/>
     </application>
 
 </manifest>
