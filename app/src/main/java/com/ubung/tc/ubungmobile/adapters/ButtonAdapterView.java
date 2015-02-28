@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.ubung.tc.core.UbungService;
 import com.ubung.tc.ubungmobile.R;
 
 public class ButtonAdapterView extends BaseAdapter {
@@ -20,7 +21,7 @@ public class ButtonAdapterView extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mThumbIds.length;
+        return getDeportes().length;
     }
 
     @Override
@@ -45,14 +46,14 @@ public class ButtonAdapterView extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(mThumbIds[position]);
+        imageView.setImageResource(getDeportes()[position]);
         return imageView;
     }
 
-// obtener las imagenes de los deportes
-    private Integer[] mThumbIds = {
-            R.drawable.ic_launcher, R.drawable.ic_launcher,
-            R.drawable.ic_launcher, R.drawable.ic_launcher,
-            R.drawable.ic_launcher, R.drawable.ic_launcher
-    };
+    // obtener las imagenes de los deportes
+    private Integer[] getDeportes(){
+        return UbungService.getInstance().getDeportes();
+    }
+
+
 }

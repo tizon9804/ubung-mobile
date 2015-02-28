@@ -1,8 +1,8 @@
 package com.ubung.tc.core;
 
-/**
- * Created by Stevenson on 28/02/2015.
- */
+
+import com.ubung.tc.ubungmobile.R;
+
 public class UbungService {
 
 
@@ -14,5 +14,15 @@ public class UbungService {
     }
 
 
+    public Integer[] getDeportes() {
+        //ToDo: crear y retornar las imagenes de deportes;
 
+  Integer[] mThumbIds = {
+                R.drawable.ic_launcher, R.drawable.ic_launcher,
+                R.drawable.ic_launcher, R.drawable.ic_launcher,
+                R.drawable.ic_launcher, R.drawable.ic_launcher
+        };
+
+        return mThumbIds;
+    }
 }
