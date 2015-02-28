@@ -2,26 +2,18 @@ package com.ubung.tc.ubungmobile;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.ubung.tc.ubungmobile.util.SystemUiHider;
 
 
-import android.app.Activity;
+
+
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- *
- * @see SystemUiHider
- */
 public class LocationActivity extends FragmentActivity{
 
 

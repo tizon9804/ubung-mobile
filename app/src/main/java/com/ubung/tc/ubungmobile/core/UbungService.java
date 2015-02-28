@@ -1,5 +1,7 @@
-package com.ubung.tc.core;
+package com.ubung.tc.ubungmobile.core;
 
+
+//import com.ubung.tc.ubungmobile.R;
 
 import com.ubung.tc.ubungmobile.R;
 
@@ -18,11 +20,12 @@ public class UbungService {
         //ToDo: crear y retornar las imagenes de deportes;
 
   Integer[] mThumbIds = {
-                R.drawable.ic_launcher, R.drawable.ic_launcher,
-                R.drawable.ic_launcher, R.drawable.ic_launcher,
-                R.drawable.ic_launcher, R.drawable.ic_launcher
-        };
+              R.drawable.ic_launcher, R.drawable.ic_launcher,
+               R.drawable.ic_launcher, R.drawable.ic_launcher,
+               R.drawable.ic_launcher, R.drawable.ic_launcher
+       };
 
-        return mThumbIds;
+       return mThumbIds;
+
     }
 }
