@@ -1,13 +1,11 @@
-package com.ubung.tc.ubungmobile;
+package com.ubung.tc.ubungmobile.controlador;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-
-
+import com.ubung.tc.ubungmobile.R;
 
 
 import android.os.Bundle;
@@ -31,7 +29,7 @@ public class LocationActivity extends FragmentActivity{
            //properties con las coordenadas
             map.addMarker(new MarkerOptions().position(new LatLng(4.660708, -74.132137)).title("Casa Tizon"));
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(4.660708, -74.132137),1));
-            map.animateCamera(CameraUpdateFactory.zoomTo(17), 10000, null);
+            map.animateCamera(CameraUpdateFactory.zoomTo(17), 500, null);
             map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
             map.getUiSettings().setZoomControlsEnabled(true);
         }

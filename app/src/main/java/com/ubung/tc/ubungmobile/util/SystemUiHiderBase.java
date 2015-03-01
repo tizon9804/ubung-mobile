@@ -1,4 +1,4 @@
-package com.ubung.tc.ubungmobile.controlador;
+package com.ubung.tc.ubungmobile.util;
 
 import android.app.Activity;
 import android.view.View;

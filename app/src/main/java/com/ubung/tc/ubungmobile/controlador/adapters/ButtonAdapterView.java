@@ -1,4 +1,4 @@
-package com.ubung.tc.ubungmobile.adapters;
+package com.ubung.tc.ubungmobile.controlador.adapters;
 
 import android.content.Context;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.ubung.tc.ubungmobile.modelo.UbungService;
+import com.ubung.tc.ubungmobile.modelo.Ubung;
 
 public class ButtonAdapterView extends BaseAdapter {
 
@@ -51,7 +51,7 @@ public class ButtonAdapterView extends BaseAdapter {
 
     // obtener las imagenes de los deportes
     private Integer[] getDeportes(){
-        return UbungService.getInstance().getDeportes();
+        return Ubung.getInstance().getDeportes();
     }
 
 

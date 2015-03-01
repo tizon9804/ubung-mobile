@@ -5,13 +5,13 @@ package com.ubung.tc.ubungmobile.modelo;
 
 import com.ubung.tc.ubungmobile.R;
 
-public class UbungService {
+public class Ubung {
 
 
-    private static UbungService ubungservice;
+    private static Ubung ubungservice;
 
-    public static UbungService getInstance(){
-        ubungservice= ubungservice!=null?ubungservice:new UbungService();
+    public static Ubung getInstance(){
+        ubungservice= ubungservice!=null?ubungservice:new Ubung();
         return ubungservice;
     }
 

@@ -1,12 +1,14 @@
-package com.ubung.tc.ubungmobile;
+package com.ubung.tc.ubungmobile.controlador;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ubung.tc.ubungmobile.R;
 
-public class DescriptionSport extends ActionBarActivity {
+
+public class DescriptionSportActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

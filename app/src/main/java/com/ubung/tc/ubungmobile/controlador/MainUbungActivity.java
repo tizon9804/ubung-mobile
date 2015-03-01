@@ -1,16 +1,16 @@
-package com.ubung.tc.ubungmobile;
+package com.ubung.tc.ubungmobile.controlador;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import com.ubung.tc.ubungmobile.R;
 
-public class MainUbung extends ActionBarActivity {
+
+public class MainUbungActivity extends ActionBarActivity {
 
    // final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
 
