@@ -7,8 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.ubung.tc.ubungmobile.core.UbungService;
-import com.ubung.tc.ubungmobile.R;
+import com.ubung.tc.ubungmobile.modelo.UbungService;
 
 public class ButtonAdapterView extends BaseAdapter {
 
@@ -39,7 +38,7 @@ public class ButtonAdapterView extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) {  // if it's not recycled, initialize some attributes
             imageView = new ImageView(cnt);
-            imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
+            imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(1, 1,1, 1);
         } else {

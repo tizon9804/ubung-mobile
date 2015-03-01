@@ -3,41 +3,54 @@ package com.ubung.tc.ubungmobile;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-
-
-import android.widget.AdapterView;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.GridView;
-import android.widget.Toast;
-
-import com.ubung.tc.ubungmobile.adapters.ButtonAdapterView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 
 
 public class MainUbung extends ActionBarActivity {
+
+   // final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_ubung);
-        initGridView();
+        initButtons();
     }
 
-    private void initGridView() {
-        GridView g = (GridView) findViewById(R.id.grid_button_view);
-        g.setAdapter(new ButtonAdapterView(this));
-        g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    private void initButtons() {
+      final Button start=(Button) findViewById(R.id.btn_start);
+
+       start.setOnClickListener(new View.OnClickListener() {
+           @Override
+            public void onClick(View v) {
+             //   v.startAnimation(animAlpha);
+                nextActivity();
+            }
+       });
+       start.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainUbung.this,""+position+"-"+id,Toast.LENGTH_LONG).show();
-             mapIntent(view);
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                   start.setTextColor(getResources().getColor(R.color.holo_green_light));
+                }
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    start.setTextColor(getResources().getColor(R.color.white));
+                }
+                return false;
             }
         });
+
     }
 
-    public void mapIntent(View v){
-        Intent t= new Intent(this,LocationActivity.class);
-        startActivity(t);
+    private void nextActivity() {
+        Intent i= new Intent(this,ChooseSportActivity.class);
+        startActivity(i);
     }
+
 
 }

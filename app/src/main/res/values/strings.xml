@@ -8,4 +8,10 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="choose_sport">Escoge Tu Deporte</string>
+    <string name="title_activity_choose_sport">ChooseSportActivity</string>
+    <string name="titleUbungMobile">Übung Mobile</string>
+    <string name="btnstart">Empezar</string>
+    <string name="title_activity_description_sport">DescriptionSport</string>
+
+
 </resources>

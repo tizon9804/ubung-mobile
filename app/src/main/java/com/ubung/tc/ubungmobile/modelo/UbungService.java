@@ -1,4 +1,4 @@
-package com.ubung.tc.ubungmobile.core;
+package com.ubung.tc.ubungmobile.modelo;
 
 
 //import com.ubung.tc.ubungmobile.R;
