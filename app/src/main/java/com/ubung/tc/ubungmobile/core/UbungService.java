@@ -20,9 +20,9 @@ public class UbungService {
         //ToDo: crear y retornar las imagenes de deportes;
 
   Integer[] mThumbIds = {
-              R.drawable.ic_launcher, R.drawable.ic_launcher,
+              R.drawable.ic_launcher, R.drawable.btntest,
                R.drawable.ic_launcher, R.drawable.ic_launcher,
-               R.drawable.ic_launcher, R.drawable.ic_launcher
+               R.drawable.btntest, R.drawable.btntest
        };
 
        return mThumbIds;
