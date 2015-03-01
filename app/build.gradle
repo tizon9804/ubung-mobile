@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'UbungMobile'
             keyPassword '201115247'
-            storeFile file('E:/AndroidStudioProjects/certificates/UbungCertificate.jks')
+            storeFile file('./certificates/UbungCertificate.jks')
             storePassword '201115247'
         }
     }
