@@ -24,9 +24,9 @@ public class Singleton implements InterfazUbung {
         //ToDo: crear y retornar las imagenes de deportes;
 
         Integer[] mThumbIds = {
-                R.drawable.btntest, R.drawable.btntest,
-                R.drawable.btntest, R.drawable.btntest,
-                R.drawable.btntest, R.drawable.btntest
+                R.drawable.basket,  R.drawable.futbol,
+                R.drawable.basket,  R.drawable.futbol,
+                R.drawable.voleibol,  R.drawable.voleibol
         };
 
         return mThumbIds;

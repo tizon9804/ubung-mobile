@@ -33,6 +33,7 @@ public class ChooseSportActivity extends FragmentActivity {
                intent(view, position,id);
             }
         });
+
     }
 
     public void intent(View v, int position, long id){

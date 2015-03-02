@@ -54,6 +54,10 @@
             android:name=".controlador.DescriptionSportActivity"
             android:label="@string/title_activity_description_sport" >
         </activity>
+        <activity
+            android:name=".controlador.ProgramacionActivity"
+            android:label="@string/title_activity_programacion" >
+        </activity>
     </application>
 
 </manifest>
