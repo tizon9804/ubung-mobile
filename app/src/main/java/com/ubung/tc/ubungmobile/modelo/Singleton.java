@@ -1,7 +1,9 @@
 package com.ubung.tc.ubungmobile.modelo;
 
 
-//import com.ubung.tc.ubungmobile.R;
+/*
+Implementacion de los metodos de Ubung
+ */
 
 import com.ubung.tc.ubungmobile.R;
 
