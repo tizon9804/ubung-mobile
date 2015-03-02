@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.ubung.tc.ubungmobile.modelo.Ubung;
+import com.ubung.tc.ubungmobile.modelo.Singleton;
 
 public class ButtonAdapterView extends BaseAdapter {
 
@@ -51,7 +51,7 @@ public class ButtonAdapterView extends BaseAdapter {
 
     // obtener las imagenes de los deportes
     private Integer[] getDeportes(){
-        return Ubung.getInstance().getDeportes();
+        return Singleton.getInstance().getDeportes();
     }
 
 

@@ -1,7 +1,7 @@
 package com.ubung.tc.ubungmobile.controlador;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,7 +10,7 @@ import android.widget.Button;
 import com.ubung.tc.ubungmobile.R;
 
 
-public class MainUbungActivity extends ActionBarActivity {
+public class MainUbungActivity extends Activity {
 
    // final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
 
