@@ -6,20 +6,17 @@ Implementacion de los metodos de Ubung
  */
 
 import com.ubung.tc.ubungmobile.R;
+import com.ubung.tc.ubungmobile.modelo.persistencia.Deporte;
 
-public class Singleton implements InterfazUbung{
+public class Singleton implements InterfazUbung {
 
 
     private static Singleton ubungservice;
 
-    public static Singleton getInstance(){
-        ubungservice= ubungservice!=null?ubungservice:new Singleton();
+    public static Singleton getInstance() {
+        ubungservice = ubungservice != null ? ubungservice : new Singleton();
         return ubungservice;
     }
-
-
-
-
 
 
     @Override
@@ -27,11 +24,16 @@ public class Singleton implements InterfazUbung{
         //ToDo: crear y retornar las imagenes de deportes;
 
         Integer[] mThumbIds = {
-                R.drawable.ic_launcher, R.drawable.btntest,
-                R.drawable.ic_launcher, R.drawable.ic_launcher,
+                R.drawable.btntest, R.drawable.btntest,
+                R.drawable.btntest, R.drawable.btntest,
                 R.drawable.btntest, R.drawable.btntest
         };
 
         return mThumbIds;
+    }
+
+    @Override
+    public Deporte getDeporte(int pos) {
+        return null;
     }
 }

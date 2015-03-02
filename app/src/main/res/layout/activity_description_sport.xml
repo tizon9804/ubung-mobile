@@ -7,4 +7,45 @@
     tools:context="com.ubung.tc.ubungmobile.controlador.DescriptionSportActivity"
     android:background="@android:color/holo_orange_dark">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_description_sport"
+        android:text="Basket"
+        android:textSize="40dp"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        />
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/imageView2"
+        android:layout_below="@+id/title_description_sport"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:src="@android:color/holo_green_light" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/description_sport"
+        android:text="descripcion:"
+        android:layout_above="@+id/btn_continue"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="27dp" />
+    <Button
+        android:id="@+id/btn_continue"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_continue"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="65dp"
+        android:background="@android:color/holo_green_dark"
+        android:textColor="#ffffffff"
+        android:textSize="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>

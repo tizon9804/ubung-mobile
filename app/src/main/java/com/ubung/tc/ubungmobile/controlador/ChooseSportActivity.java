@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
+
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ButtonAdapterView;
@@ -29,15 +29,17 @@ public class ChooseSportActivity extends FragmentActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ChooseSportActivity.this, "" + position + "-" + id, Toast.LENGTH_LONG).show();
-                mapIntent(view);
+              //  Toast.makeText(ChooseSportActivity.this, "" + position + "-" + id, Toast.LENGTH_LONG).show();
+               intent(view, position,id);
             }
         });
     }
 
-    public void mapIntent(View v){
-        Intent t= new Intent(this,LocationActivity.class);
-        startActivity(t);
+    public void intent(View v, int position, long id){
+        Intent t= new Intent(this,DescriptionSportActivity.class);
+        t.putExtra("position",position);
+        t.putExtra("id",id);
+                startActivity(t);
     }
 
 }
