@@ -10,6 +10,7 @@ import com.ubung.tc.ubungmobile.R;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 
 
 public class LocationActivity extends FragmentActivity{
@@ -22,6 +23,13 @@ public class LocationActivity extends FragmentActivity{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_location);
+        // carga la capa de botones
+        PanelMapFragment panel= new PanelMapFragment();
+        FragmentTransaction t= getSupportFragmentManager().beginTransaction();
+        t.replace(R.id.activity_location,panel);
+        t.addToBackStack(null);
+        t.commit();
+
         if(map==null){
             map=((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
         }
@@ -32,6 +40,7 @@ public class LocationActivity extends FragmentActivity{
             map.animateCamera(CameraUpdateFactory.zoomTo(17), 500, null);
             map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
             map.getUiSettings().setZoomControlsEnabled(true);
+
         }
 
     }
