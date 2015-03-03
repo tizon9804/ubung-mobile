@@ -1,4 +1,4 @@
-package com.ubung.tc.ubungmobile.modelo.persistencia;
+package com.ubung.tc.ubungmobile.modelo.persistencia.entidades;
 
 /**
  * Created by cvargasc on 1/03/15.

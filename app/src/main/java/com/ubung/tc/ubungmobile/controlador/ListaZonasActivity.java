@@ -1,8 +1,8 @@
 package com.ubung.tc.ubungmobile.controlador;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -42,7 +42,7 @@ public class ListaZonasActivity extends ActionBarActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Intent t = new Intent(this,LocationActivity.class);
+        Intent t = new Intent(this, LocationActivity.class);
         startActivity(t);
     }
 }

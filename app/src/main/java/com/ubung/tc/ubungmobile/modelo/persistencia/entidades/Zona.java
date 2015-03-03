@@ -1,4 +1,4 @@
-package com.ubung.tc.ubungmobile.modelo.persistencia;
+package com.ubung.tc.ubungmobile.modelo.persistencia.entidades;
 
 import java.util.ArrayList;
 

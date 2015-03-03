@@ -8,15 +8,24 @@ import android.view.View;
 import android.widget.Button;
 
 import com.ubung.tc.ubungmobile.R;
+import com.ubung.tc.ubungmobile.modelo.InterfazUbung;
+import com.ubung.tc.ubungmobile.modelo.Singleton;
 
 
 public class MainUbungActivity extends Activity {
+
+    private InterfazUbung singleton;
 
     // final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Singleton singleton = Singleton.getInstance();
+        //singleton.inicializar(this);
+        this.singleton = singleton;
+
         setContentView(R.layout.activity_main_ubung);
         initButtons();
     }

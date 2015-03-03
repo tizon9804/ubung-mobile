@@ -1,6 +1,6 @@
 package com.ubung.tc.ubungmobile.modelo;
 
-import com.ubung.tc.ubungmobile.modelo.persistencia.Deporte;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 
 /*
 Metodos que consumira la interfaz
