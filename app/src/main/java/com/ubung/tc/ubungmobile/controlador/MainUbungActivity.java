@@ -23,7 +23,7 @@ public class MainUbungActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Singleton singleton = Singleton.getInstance();
-        //singleton.inicializar(this);
+        singleton.inicializar(this.getApplicationContext());
         this.singleton = singleton;
 
         setContentView(R.layout.activity_main_ubung);
