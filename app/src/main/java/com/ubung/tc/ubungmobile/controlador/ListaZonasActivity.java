@@ -1,26 +1,26 @@
 package com.ubung.tc.ubungmobile.controlador;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ubung.tc.ubungmobile.R;
 
-
-public class ProgramacionActivity extends ActionBarActivity {
+public class ListaZonasActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_programacion);
+        setContentView(R.layout.activity_lista_zonas);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_programacion, menu);
+        getMenuInflater().inflate(R.menu.menu_lista_zonas, menu);
         return true;
     }
 
@@ -37,5 +37,12 @@ public class ProgramacionActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Intent t = new Intent(this,LocationActivity.class);
+        startActivity(t);
     }
 }

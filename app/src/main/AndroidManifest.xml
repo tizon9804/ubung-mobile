@@ -35,9 +35,7 @@
         <activity
             android:name=".controlador.LocationActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_location"
-            android:theme="@style/FullscreenTheme" >
-        </activity>
+            android:label="@string/title_activity_location" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -48,16 +46,17 @@
 
         <activity
             android:name=".controlador.ChooseSportActivity"
-            android:label="@string/title_activity_choose_sport" >
-        </activity>
+            android:label="@string/title_activity_choose_sport" />
         <activity
             android:name=".controlador.DescriptionSportActivity"
-            android:label="@string/title_activity_description_sport" >
-        </activity>
+            android:label="@string/title_activity_description_sport" />
         <activity
             android:name=".controlador.ProgramacionActivity"
-            android:label="@string/title_activity_programacion" >
-        </activity>
+            android:label="@string/title_activity_programacion" />
+        <activity
+            android:name=".controlador.ListaZonasActivity"
+            android:label="@string/title_activity_lista_zonas" />
+
     </application>
 
 </manifest>

@@ -12,7 +12,7 @@ import com.ubung.tc.ubungmobile.R;
 
 public class MainUbungActivity extends Activity {
 
-   // final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
+    // final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,23 +22,23 @@ public class MainUbungActivity extends Activity {
     }
 
     private void initButtons() {
-      final Button start=(Button) findViewById(R.id.btn_start);
+        final Button start = (Button) findViewById(R.id.btn_start);
 
-       start.setOnClickListener(new View.OnClickListener() {
-           @Override
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-             //   v.startAnimation(animAlpha);
+                //   v.startAnimation(animAlpha);
                 nextActivity();
             }
-       });
-       start.setOnTouchListener(new View.OnTouchListener() {
+        });
+        start.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                   start.setTextColor(getResources().getColor(R.color.holo_green_light));
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    start.setTextColor(getResources().getColor(R.color.holo_green_light));
                 }
-                if(event.getAction() == MotionEvent.ACTION_UP){
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     start.setTextColor(getResources().getColor(R.color.white));
                 }
                 return false;
@@ -48,7 +48,7 @@ public class MainUbungActivity extends Activity {
     }
 
     private void nextActivity() {
-        Intent i= new Intent(this,ChooseSportActivity.class);
+        Intent i = new Intent(this, ChooseSportActivity.class);
         startActivity(i);
     }
 
