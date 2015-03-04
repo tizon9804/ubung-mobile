@@ -2,7 +2,6 @@ package com.ubung.tc.ubungmobile.controlador.adapters;
 
 import android.content.Context;
 import android.os.Parcelable;
-
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -15,8 +14,9 @@ import com.ubung.tc.ubungmobile.controlador.MainUbungActivity;
 public class GettingStartAdapter extends PagerAdapter {
 
     private MainUbungActivity main;
+
     public GettingStartAdapter(MainUbungActivity mainUbungActivity) {
-        main=mainUbungActivity;
+        main = mainUbungActivity;
     }
 
     public int getCount() {
@@ -52,8 +52,8 @@ public class GettingStartAdapter extends PagerAdapter {
 
         ((ViewPager) collection).addView(view, 0);
 
-        if(position==4){
-        main.initGridView();
+        if (position == 4) {
+            main.initGridView();
         }
 
         return view;

@@ -33,6 +33,7 @@ public class ChooseSportActivity extends FragmentActivity {
         setContentView(R.layout.activity_choose_sport);
         initGridView();
     }
+
     // -----------------------------------------------------
 // carga informacion
 // -----------------------------------------------------
@@ -40,7 +41,7 @@ public class ChooseSportActivity extends FragmentActivity {
         //String mDrawableName = "myimg";
         // int resID = getResources().getIdentifier(mDrawableName , "drawable", getPackageName());
         GridView g = (GridView) findViewById(R.id.grid_button_view);
-        final String usuario=((EditText)findViewById(R.id.user_name)).getText().toString().trim();
+        final String usuario = ((EditText) findViewById(R.id.user_name)).getText().toString().trim();
         g.setAdapter(new ButtonAdapterView(this));
         g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

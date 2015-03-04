@@ -1,10 +1,14 @@
 package com.ubung.tc.ubungmobile.controlador;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,21 +34,21 @@ public class DescriptionSportActivity extends ActionBarActivity {
 
     private void InitLabels() {
 
-        Intent t=getIntent();
+        Intent t = getIntent();
 
-        String id=t.getStringExtra(MainUbungActivity.ID);
-        String position=t.getStringExtra(MainUbungActivity.POSITION);
-        String user=t.getStringExtra(MainUbungActivity.USER);
-        String deporte="Basketball";
-        String descripcion="hola";
+        String id = t.getStringExtra(MainUbungActivity.ID);
+        String position = t.getStringExtra(MainUbungActivity.POSITION);
+        String user = t.getStringExtra(MainUbungActivity.USER);
+        String deporte = "Basketball";
+        String descripcion = "hola";
         //Todo obtener el deporte escogido dado el id o posicion
-        TextView txtv=(TextView)findViewById(R.id.title_description_sport);
-        txtv.setText("!Enhorabuena "+ user + "Tu deporte es "+ deporte + "!");
-        ImageView image= (ImageView)findViewById(R.id.image_sport_description);
-        Integer imagePath= getResources().getIdentifier("basket" , "drawable", getPackageName());
-        image.setImageResource(imagePath );
-        TextView txtdesc=(TextView)findViewById(R.id.description_sport);
-        txtdesc.setText("Descripción:\n"+descripcion);
+        TextView txtv = (TextView) findViewById(R.id.title_description_sport);
+        txtv.setText("Enhorabuena! " + user + " has escogido " + deporte + ".");
+        ImageView image = (ImageView) findViewById(R.id.image_sport_description);
+        Integer imagePath = getResources().getIdentifier("basket", "drawable", getPackageName());
+        image.setImageResource(imagePath);
+        TextView txtdesc = (TextView) findViewById(R.id.description_sport);
+        txtdesc.setText("Descripción:\n" + descripcion);
 
 
     }
@@ -81,6 +85,14 @@ public class DescriptionSportActivity extends ActionBarActivity {
     private void nextActivity() {
         Intent i = new Intent(this, LocationActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent t = new Intent(this, MainUbungActivity.class);
+        t.putExtra("last", true);
+
     }
 
 

@@ -22,11 +22,11 @@ public class PanelMapFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_panel_map, container, false);
-       initButton(view);
+        initButton(view);
         return view;
     }
 
-    private void initButton(View view){
+    private void initButton(View view) {
 
         //boton agregar
         Button button = (Button) view.findViewById(R.id.imageButton_add);
@@ -57,7 +57,7 @@ public class PanelMapFragment extends Fragment {
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            nextActivity(ListaZonasActivity.class);
+                nextActivity(ListaZonasActivity.class);
             }
         });
 
@@ -71,8 +71,8 @@ public class PanelMapFragment extends Fragment {
     }
 
 
-    public void nextActivity(Class clase){
-        Intent t= new Intent(getActivity(),clase);
+    public void nextActivity(Class clase) {
+        Intent t = new Intent(getActivity(), clase);
         startActivity(t);
     }
 

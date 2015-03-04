@@ -3,12 +3,9 @@ package com.ubung.tc.ubungmobile.controlador;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.view.ViewPager;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 
@@ -41,7 +38,12 @@ public class MainUbungActivity extends Activity {
         GettingStartAdapter adapter = new GettingStartAdapter(this);
         ViewPager myPager = (ViewPager) findViewById(R.id.gettingstartpager);
         myPager.setAdapter(adapter);
-        myPager.setCurrentItem(0);
+        Boolean devuelta = getIntent().getBooleanExtra("last", false);
+        if (devuelta)
+            myPager.setCurrentItem(4);
+        else
+            myPager.setCurrentItem(0);
+
 
     }
 
@@ -49,13 +51,15 @@ public class MainUbungActivity extends Activity {
         //String mDrawableName = "myimg";
         // int resID = getResources().getIdentifier(mDrawableName , "drawable", getPackageName());
         GridView g = (GridView) findViewById(R.id.grid_button_view);
-        final String usuario=((EditText)findViewById(R.id.user_name)).getText().toString().trim();
+
+        //  Toast.makeText(this, usuario, Toast.LENGTH_LONG).show();
         g.setAdapter(new ButtonAdapterView(this));
         g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                intentDescription(position, id,usuario);
+                String usuario = ((EditText) findViewById(R.id.user_name)).getText().toString().trim();
+                intentDescription(position, id, usuario);
             }
         });
 
@@ -63,18 +67,11 @@ public class MainUbungActivity extends Activity {
 
     public void intentDescription(int position, long id, String usuario) {
         Intent t = new Intent(this, DescriptionSportActivity.class);
-        t.putExtra(POSITION, position);
-        t.putExtra(ID, id);
-        t.putExtra(USER, id);
+        t.putExtra(POSITION, position+"");
+        t.putExtra(ID, id+"");
+        t.putExtra(USER, usuario);
         startActivity(t);
     }
-
-    @Override
-    public void onBackPressed() {
-        finish();
-        System.exit(0);
-    }
-
 
 
 }

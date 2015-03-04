@@ -17,12 +17,12 @@
         android:layout_alignParentTop="true"
         android:gravity="center"
         android:text="Basket"
-        android:textSize="40dp" />
+        android:textSize="30dp" />
 
     <ImageView
         android:id="@+id/image_sport_description"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_below="@+id/title_description_sport"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="38dp"
@@ -31,13 +31,12 @@
     <TextView
         android:id="@+id/description_sport"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_above="@+id/btn_continue"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="27dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:text="descripcion:" />
+        android:text="descripcion:"
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/image_sport_description" />
 
     <Button
         android:id="@+id/btn_continue"
