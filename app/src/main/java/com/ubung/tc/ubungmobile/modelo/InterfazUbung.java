@@ -1,17 +1,12 @@
 package com.ubung.tc.ubungmobile.modelo;
 
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
-
-import java.util.ArrayList;
+import com.ubung.tc.ubungmobile.modelo.persistencia.InterfazPersistencia;
 
 /*
 Metodos que consumira la interfaz
  */
-public interface InterfazUbung {
+public interface InterfazUbung extends InterfazPersistencia {
 
-    /* Devuelve todos los deportes */
-    public ArrayList<Deporte> darDeportes();
 
-    /* Devuelve el deporte dado su id */
-    public Deporte darDeporte(int id);
+
 }

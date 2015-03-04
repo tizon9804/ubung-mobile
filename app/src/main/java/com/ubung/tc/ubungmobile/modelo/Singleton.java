@@ -9,8 +9,11 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 
-import com.ubung.tc.ubungmobile.modelo.persistencia.ManejadorPersistencia;
+import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
+import com.ubung.tc.ubungmobile.modelo.persistencia.InterfazPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.ManejadorPersistencia;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +34,7 @@ public class Singleton implements InterfazUbung {
     private Context context;
     private Properties configuracion;
 
-    private ManejadorPersistencia manejadorPersistencia;
+    private InterfazPersistencia manejadorPersistencia;
 
     // -----------------------------------------------------
 // CONSTRUCTOR (patrón singleton)
@@ -88,5 +91,30 @@ public class Singleton implements InterfazUbung {
     @Override
     public Deporte darDeporte(int id) {
         return manejadorPersistencia.darDeporte(id);
+    }
+
+    @Override
+    public int crearUsuario(Usuario usuario) throws ExcepcionPersistencia {
+        return manejadorPersistencia.crearUsuario(usuario);
+    }
+
+    @Override
+    public void actualizarUsuario(Usuario usuario) throws ExcepcionPersistencia {
+        manejadorPersistencia.actualizarUsuario(usuario);
+    }
+
+    @Override
+    public ArrayList<Usuario> darUsuarios() {
+        return manejadorPersistencia.darUsuarios();
+    }
+
+    @Override
+    public Usuario darUsuario(int id) {
+        return manejadorPersistencia.darUsuario(id);
+    }
+
+    @Override
+    public Usuario darUsuario(String nombreUsuario) {
+        return null;
     }
 }
