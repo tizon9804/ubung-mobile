@@ -12,4 +12,14 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="108dp"
         android:layout_marginTop="207dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/flip"
+        android:id="@+id/textView7"
+        android:layout_marginBottom="63dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

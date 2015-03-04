@@ -20,7 +20,7 @@
         android:layout_marginTop="42dp"
         android:text="@string/titleUbungMobile"
         android:textColor="#ffffffff"
-        android:textSize="50dp" />
+        android:textSize="45dp" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -28,6 +28,16 @@
         android:layout_height="wrap_content"
         android:src="@drawable/mainubung2"
         android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/flip"
+        android:id="@+id/textView5"
+        android:layout_marginBottom="67dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

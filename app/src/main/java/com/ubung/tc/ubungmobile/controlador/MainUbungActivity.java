@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 
 import com.ubung.tc.ubungmobile.R;
@@ -19,6 +20,10 @@ import com.ubung.tc.ubungmobile.modelo.Singleton;
 
 
 public class MainUbungActivity extends Activity {
+
+    public static final String POSITION = "position";
+    public static final String ID = "id";
+    public static final String USER = "usuario";
 
     private InterfazUbung singleton;
 
@@ -41,23 +46,26 @@ public class MainUbungActivity extends Activity {
     }
 
     public void initGridView() {
+        //String mDrawableName = "myimg";
+        // int resID = getResources().getIdentifier(mDrawableName , "drawable", getPackageName());
         GridView g = (GridView) findViewById(R.id.grid_button_view);
+        final String usuario=((EditText)findViewById(R.id.user_name)).getText().toString().trim();
         g.setAdapter(new ButtonAdapterView(this));
         g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //  Toast.makeText(ChooseSportActivity.this, "" + position + "-" + id, Toast.LENGTH_LONG).show();
-                intent(position, id);
+                intentDescription(position, id,usuario);
             }
         });
 
     }
 
-    public void intent(int position, long id) {
+    public void intentDescription(int position, long id, String usuario) {
         Intent t = new Intent(this, DescriptionSportActivity.class);
-        t.putExtra("position", position);
-        t.putExtra("id", id);
+        t.putExtra(POSITION, position);
+        t.putExtra(ID, id);
+        t.putExtra(USER, id);
         startActivity(t);
     }
 
