@@ -7,7 +7,29 @@ public class Deporte {
 
     private int id;
     private String nombre;
-    private Integer imagen;
+    private String nombreArchivoImagen;
     private String descripcion;
 
+    public Deporte(int id, String nombre, String nombreArchivoImagen, String descripcion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.nombreArchivoImagen = nombreArchivoImagen;
+        this.descripcion = descripcion;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getNombreArchivoImagen() {
+        return nombreArchivoImagen;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
 }

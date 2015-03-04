@@ -42,7 +42,7 @@ public class ManejadorBD extends SQLiteOpenHelper {
 // -----------------------------------------------------
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.e("InitBD INFO", "Creando base de datos local por primera vez");
+        Log.i("manejadorBD.onCreate()", "Creando base de datos local por primera vez...");
 
         String scriptSQL = singleton.darConfiguracion().getProperty(SCRIPT_INICIAL);
         AssetManager assetManager = singleton.darContexto().getAssets();
@@ -55,7 +55,7 @@ public class ManejadorBD extends SQLiteOpenHelper {
                 db.execSQL(consulta);
             }
         } catch (IOException e) {
-            Log.e("InitBD ERR" + SCRIPT_INICIAL, e.toString());
+            Log.e("manejadorBD.onCreate()", "Error al cargar " + SCRIPT_INICIAL + ": " + e.toString());
         }
 
     }

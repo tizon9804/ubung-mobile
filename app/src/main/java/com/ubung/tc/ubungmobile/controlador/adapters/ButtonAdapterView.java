@@ -8,6 +8,9 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.ubung.tc.ubungmobile.modelo.Singleton;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
+
+import java.util.ArrayList;
 
 public class ButtonAdapterView extends BaseAdapter {
 
@@ -51,7 +54,14 @@ public class ButtonAdapterView extends BaseAdapter {
 
     // obtener las imagenes de los deportes
     private Integer[] getDeportes() {
-        return Singleton.getInstance().getDeportes();
+        ArrayList<Deporte> deportes = Singleton.getInstance().darDeportes();
+
+        Integer[] identificadores = new Integer[deportes.size()];
+        for (int i = 0; i < deportes.size(); i++) {
+            identificadores[i] = cnt.getResources().getIdentifier(deportes.get(i).getNombreArchivoImagen(), "drawable", cnt.getPackageName());
+        }
+
+        return identificadores;
     }
 
 

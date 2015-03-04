@@ -9,11 +9,12 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 
-import com.ubung.tc.ubungmobile.R;
+import com.ubung.tc.ubungmobile.modelo.persistencia.ManejadorPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class Singleton implements InterfazUbung {
@@ -30,6 +31,8 @@ public class Singleton implements InterfazUbung {
     private Context context;
     private Properties configuracion;
 
+    private ManejadorPersistencia manejadorPersistencia;
+
     // -----------------------------------------------------
 // CONSTRUCTOR (patrón singleton)
 // -----------------------------------------------------
@@ -42,11 +45,11 @@ public class Singleton implements InterfazUbung {
 // -----------------------------------------------------
     public void inicializar(Context context) {
         if (this.context == null) {
-            Log.e("Singleton INFO", "Inicializando Singleton...");
-            Log.e("Singleton INFO", "Definiendo contexto...");
+            Log.i("Singleton.inicializar()", "Inicializando Singleton...");
+            Log.i("Singleton.inicializar()", "Definiendo contexto...");
             this.context = context;
 
-            Log.e("Singleton INFO", "Cargando archivo de configuración...");
+            Log.i("Singleton.inicializar()", "Cargando archivo de configuración...");
             this.configuracion = new Properties();
             AssetManager assetManager = context.getAssets();
 
@@ -54,10 +57,14 @@ public class Singleton implements InterfazUbung {
                 InputStream inputStream = assetManager.open(Singleton.NOMBRE_ARCHIVO_CONF);
                 configuracion.load(inputStream);
             } catch (IOException e) {
-                Log.e("Singleton ERR", "Error al cargar el archivo '" + NOMBRE_ARCHIVO_CONF + "' con la configuración del programa: " + e.toString());
+                Log.e("Singleton.inicializar()", "Error al cargar el archivo '" + NOMBRE_ARCHIVO_CONF + "' con la configuración del programa: " + e.toString());
             }
+
+            Log.i("Singleton.inicializar()", "Instanciando manejadorPersistencia...");
+            this.manejadorPersistencia = new ManejadorPersistencia(this);
+
         } else
-            Log.e("Singleton WAR", "Está tratanto de volver a inicializar un Singleton ya inicializado!");
+            Log.w("Singleton.inicializar()", "Está tratanto de volver a inicializar un Singleton ya inicializado!");
 
     }
 
@@ -69,22 +76,17 @@ public class Singleton implements InterfazUbung {
         return this.configuracion;
     }
 
-    // -----------------------------------------------------
+// -----------------------------------------------------
 // MÉTODOS INTERFAZ
 // -----------------------------------------------------
-    @Override
-    public Integer[] getDeportes() {
-        //ToDo: crear y retornar las imagenes de deportes;
 
-        return new Integer[]{
-                R.drawable.basket, R.drawable.futbol,
-                R.drawable.basket, R.drawable.futbol,
-                R.drawable.voleibol, R.drawable.voleibol
-        };
+    @Override
+    public ArrayList<Deporte> darDeportes() {
+        return manejadorPersistencia.darDeportes();
     }
 
     @Override
-    public Deporte getDeporte(int pos) {
-        return null;
+    public Deporte darDeporte(int id) {
+        return manejadorPersistencia.darDeporte(id);
     }
 }
