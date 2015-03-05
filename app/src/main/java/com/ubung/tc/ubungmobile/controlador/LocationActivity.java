@@ -69,7 +69,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                   .position(latlng)
                   .title(z.getNombre())
                   .snippet(z.getNombre())
-                  .icon(BitmapDescriptorFactory.fromResource(R.drawable.futbol_normal)));
+                  .icon(BitmapDescriptorFactory.fromResource(R.drawable.zona_imagen)));
 
           markers.add(m);
         }
@@ -97,6 +97,8 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        return false;
+        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.zona_imagen_focused));
+        marker.showInfoWindow();
+        return true;
     }
 }
