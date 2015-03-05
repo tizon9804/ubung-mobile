@@ -1,13 +1,19 @@
 package com.ubung.tc.ubungmobile.controlador;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+
+
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ButtonAdapterView;
@@ -29,11 +35,9 @@ public class MainUbungActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Singleton singleton = Singleton.getInstance();
         singleton.inicializar(this.getApplicationContext());
         this.singleton = singleton;
-
         setContentView(R.layout.activity_main_ubung);
         GettingStartAdapter adapter = new GettingStartAdapter(this);
         ViewPager myPager = (ViewPager) findViewById(R.id.gettingstartpager);
@@ -48,20 +52,23 @@ public class MainUbungActivity extends Activity {
     }
 
     public void initGridView() {
-        //String mDrawableName = "myimg";
-        // int resID = getResources().getIdentifier(mDrawableName , "drawable", getPackageName());
-        GridView g = (GridView) findViewById(R.id.grid_button_view);
 
-        //  Toast.makeText(this, usuario, Toast.LENGTH_LONG).show();
-        g.setAdapter(new ButtonAdapterView(this));
-        g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String usuario = ((EditText) findViewById(R.id.user_name)).getText().toString().trim();
-                intentDescription(position, id, usuario);
-            }
-        });
+            //String mDrawableName = "myimg";
+            // int resID = getResources().getIdentifier(mDrawableName , "drawable", getPackageName());
+            GridView g = (GridView) findViewById(R.id.grid_button_view);
+
+            //  Toast.makeText(this, usuario, Toast.LENGTH_LONG).show();
+            g.setAdapter(new ButtonAdapterView(this));
+            g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String usuario = ((EditText) findViewById(R.id.user_name)).getText().toString().trim();
+                    intentDescription(position, id, usuario);
+                }
+            });
+
 
     }
 
@@ -74,4 +81,18 @@ public class MainUbungActivity extends Activity {
     }
 
 
+    public void initUser_registation() {
+        EditText user= (EditText)findViewById(R.id.user_name);
+        user.requestFocus();
+        user.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imgr=(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                return true;
+            }
+        });
+
+//Todo implementar que el usuario no se repita con los del exterior
+    }
 }

@@ -49,15 +49,17 @@
             android:label="@string/title_activity_choose_sport" />
         <activity
             android:name=".controlador.DescriptionSportActivity"
-            android:label="@string/title_activity_description_sport"
-          />
+            android:label="@string/title_activity_description_sport" />
         <activity
             android:name=".controlador.ProgramacionActivity"
             android:label="@string/title_activity_programacion" />
         <activity
             android:name=".controlador.ListaZonasActivity"
             android:label="@string/title_activity_lista_zonas" />
-
+        <activity
+            android:name=".controlador.User_registation"
+            android:label="@string/title_activity_user_registation" >
+        </activity>
     </application>
 
 </manifest>

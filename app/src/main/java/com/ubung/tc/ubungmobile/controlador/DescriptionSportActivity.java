@@ -12,11 +12,30 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
+import com.ubung.tc.ubungmobile.modelo.Singleton;
+import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
+
+import java.util.ArrayList;
 
 
 public class DescriptionSportActivity extends ActionBarActivity {
+
+    // -----------------------------------------------------
+// Constantes
+// -----------------------------------------------------
+
+public final static String LAST="last";
+    // -----------------------------------------------------
+// Atributos
+// -----------------------------------------------------
+
+    private String usuario;
+    private Deporte deporteCrear;
 
     // -----------------------------------------------------
 // CONSTRUCTOR
@@ -37,20 +56,37 @@ public class DescriptionSportActivity extends ActionBarActivity {
         Intent t = getIntent();
 
         String id = t.getStringExtra(MainUbungActivity.ID);
-        String position = t.getStringExtra(MainUbungActivity.POSITION);
+        int position = Integer.parseInt(t.getStringExtra(MainUbungActivity.POSITION));
         String user = t.getStringExtra(MainUbungActivity.USER);
         String deporte = "Basketball";
         String descripcion = "hola";
-        //Todo obtener el deporte escogido dado el id o posicion
-        TextView txtv = (TextView) findViewById(R.id.title_description_sport);
-        txtv.setText("Enhorabuena! " + user + " has escogido " + deporte + ".");
-        ImageView image = (ImageView) findViewById(R.id.image_sport_description);
-        Integer imagePath = getResources().getIdentifier("basket", "drawable", getPackageName());
-        image.setImageResource(imagePath);
-        TextView txtdesc = (TextView) findViewById(R.id.description_sport);
-        txtdesc.setText("Descripción:\n" + descripcion);
 
 
+        ArrayList<Deporte> deportes = Singleton.getInstance().darDeportes();
+        Deporte deporteU=null;
+        if(deportes.size() > position){
+            deporteU=deportes.get(position);
+        }
+
+        if(deporteU!=null){
+            //Todo obtener el deporte escogido dado el id o posicion
+            deporte=deporteU.getNombre();
+            descripcion=deporteU.getDescripcion();
+            TextView txtv = (TextView) findViewById(R.id.title_description_sport);
+            txtv.setText("Enhorabuena! " + user + " has escogido " + deporte + ".");
+            ImageView image = (ImageView) findViewById(R.id.image_sport_description);
+            Integer imagePath = getResources().getIdentifier(deporteU.getNombreArchivoImagen(), "drawable", getPackageName());
+            image.setImageResource(imagePath);
+            TextView txtdesc = (TextView) findViewById(R.id.description_sport);
+            txtdesc.setText("Descripción:\n" + descripcion);
+        }
+        else{
+            Toast.makeText(this,"Hubo un problema al cargar el deporte.", Toast.LENGTH_LONG).show();
+        }
+
+
+        usuario=user;
+        deporteCrear=deporteU;
     }
 
     private void initButtons() {
@@ -68,6 +104,13 @@ public class DescriptionSportActivity extends ActionBarActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     start.setTextColor(getResources().getColor(R.color.holo_green_light));
+
+                    try {
+                        int id=Singleton.getInstance().crearUsuario(usuario,deporteCrear);
+                        Toast.makeText(getBaseContext(),"su id es "+ id, Toast.LENGTH_LONG).show();
+                    } catch (ExcepcionPersistencia excepcionPersistencia) {
+                        Toast.makeText(getBaseContext(),"Hubo un problema al Crear el usuario "+ usuario, Toast.LENGTH_LONG).show();
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     start.setTextColor(getResources().getColor(R.color.white));

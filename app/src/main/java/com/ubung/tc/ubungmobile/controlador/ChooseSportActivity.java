@@ -38,16 +38,14 @@ public class ChooseSportActivity extends FragmentActivity {
 // carga informacion
 // -----------------------------------------------------
     public void initGridView() {
-        //String mDrawableName = "myimg";
-        // int resID = getResources().getIdentifier(mDrawableName , "drawable", getPackageName());
         GridView g = (GridView) findViewById(R.id.grid_button_view);
-        final String usuario = ((EditText) findViewById(R.id.user_name)).getText().toString().trim();
+       // final String usuario = Sin
         g.setAdapter(new ButtonAdapterView(this));
         g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                intentDescription(position, id, usuario);
+       //         intentDescription(position, id, usuario);
             }
         });
 
