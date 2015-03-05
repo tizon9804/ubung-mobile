@@ -6,6 +6,8 @@ Implementacion de los metodos de Ubung
  */
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.AssetManager;
 import android.util.Log;
 
@@ -30,14 +32,17 @@ public class Singleton implements InterfazUbung {
 // -----------------------------------------------------
     public static final String LOG_NAME = "Singleton";
 
-    public static final String NOMBRE_ARCHIVO_CONF = "config.properties";
+    public static final String ARCHIVO_CONF_GLB = "config.properties";
+    public static final String ARCHIVO_CONF_LOC = "config";
+
     public static final String CONF_ID_PROPIETARIO = "idPropietario";
 // -----------------------------------------------------
 // ATRIBUTOS
 // -----------------------------------------------------
     private static Singleton singleton = new Singleton();
     private Context context;
-    private Properties configuracion;
+    private Properties configuracionGlobal;
+    private SharedPreferences configuracionLocal;
 
     private Usuario propietario;
 
@@ -59,28 +64,32 @@ public class Singleton implements InterfazUbung {
             Log.i(LOG_NAME+".inicializar()", "Definiendo contexto...");
             this.context = context;
 
-            Log.i(LOG_NAME+".inicializar()", "Cargando archivo de configuración...");
-            this.configuracion = new Properties();
+            Log.i(LOG_NAME+".inicializar()", "Cargando configuración global...");
+            configuracionGlobal = new Properties();
             AssetManager assetManager = context.getAssets();
 
             try {
-                InputStream inputStream = assetManager.open(Singleton.NOMBRE_ARCHIVO_CONF);
-                configuracion.load(inputStream);
+                InputStream inputStream = assetManager.open(Singleton.ARCHIVO_CONF_GLB);
+                configuracionGlobal.load(inputStream);
+                inputStream.close();
             } catch (IOException e) {
-                Log.e(LOG_NAME+".inicializar()", "Error al cargar el archivo '" + NOMBRE_ARCHIVO_CONF + "' con la configuración del programa: " + e.toString());
+                Log.e(LOG_NAME+".inicializar()", "Error al cargar el archivo '" + ARCHIVO_CONF_GLB + "' con la configuración del programa: " + e.toString());
             }
 
             Log.i(LOG_NAME+".inicializar()", "Instanciando manejadorPersistencia...");
-            this.manejadorPersistencia = new ManejadorPersistencia(this);
+            manejadorPersistencia = new ManejadorPersistencia(this);
 
-            Log.i(LOG_NAME+".inicializar()", "Recuperando la infomación del usuario...");
-            this.propietario = this.manejadorPersistencia.darUsuario(configuracion.getProperty(CONF_ID_PROPIETARIO));
-            if (this.propietario == null) Log.w(LOG_NAME+".inicializar()", "Usuario no encontrado...");
-            else Log.i(LOG_NAME+".inicializar()", "Restableciendo la información de "+this.propietario.getNombreUsuario());
+            Log.i(LOG_NAME+".inicializar()", "Cargando configuración local...");
+            configuracionLocal = context.getSharedPreferences(ARCHIVO_CONF_LOC,Context.MODE_PRIVATE);
 
-        } else
-            Log.w(LOG_NAME+".inicializar()", "Está tratanto de volver a inicializar un Singleton ya inicializado!");
+            Log.i(LOG_NAME+".inicializar()", "Recuperando la información del usuario "+ configuracionLocal.getInt(CONF_ID_PROPIETARIO, -1)+"...");
+            propietario = manejadorPersistencia.darUsuario(configuracionLocal.getInt(CONF_ID_PROPIETARIO,-1));
+            if (propietario == null) Log.w(LOG_NAME+".inicializar()", "Usuario no encontrado...");
+            else Log.i(LOG_NAME+".inicializar()", "Usuario encontrado, restableciendo la información de "+propietario.getNombreUsuario()+"...");
 
+        } else {
+            Log.w(LOG_NAME + ".inicializar()", "Está tratanto de volver a inicializar un Singleton ya inicializado!");
+        }
     }
 
     public Context darContexto() {
@@ -88,7 +97,7 @@ public class Singleton implements InterfazUbung {
     }
 
     public Properties darConfiguracion() {
-        return this.configuracion;
+        return this.configuracionGlobal;
     }
 
 // -----------------------------------------------------
@@ -103,26 +112,30 @@ public class Singleton implements InterfazUbung {
     public void modificarPropietario(String nombreUsuario, Deporte deporte) throws ExcepcionPersistencia {
         if (propietario != null) {
             if (nombreUsuario != null) {
-                Log.i(LOG_NAME+".modifProp","Actualizando nombre del propietario desde "+this.propietario.getNombreUsuario()
+                Log.i(LOG_NAME+".modifProp","Actualizando nombre del propietario desde "+propietario.getNombreUsuario()
                         +" a "+nombreUsuario);
-                this.propietario.setNombreUsuario(nombreUsuario);
+                propietario.setNombreUsuario(nombreUsuario);
             }
             if (deporte != null) {
-                Log.i(LOG_NAME+".modifProp","Actualizando deporte del propietario desde "+this.propietario.getDeporte().getNombre()
+                Log.i(LOG_NAME+".modifProp","Actualizando deporte del propietario desde "+propietario.getDeporte().getNombre()
                         +" a "+deporte.getNombre());
                 this.propietario.setDeporte(deporte);
             }
             manejadorPersistencia.actualizarUsuario(propietario);
         } else {
             Log.i(LOG_NAME+".modifProp","Definiendo propietario...");
-            this.propietario = this.manejadorPersistencia.darUsuario(nombreUsuario);
-            if(this.propietario == null) {
+            if(nombreUsuario.length()<1) throw new ExcepcionPersistencia("El nombre de usuario tiene "+nombreUsuario.length()+" caracteres");
+            propietario = manejadorPersistencia.darUsuario(nombreUsuario);
+            if(propietario == null) {
                 Log.w(LOG_NAME+".modifProp","Propietario no encontrado como usuario! Creando nuevo usuario...");
-                this.propietario = this.manejadorPersistencia.darUsuario(this.manejadorPersistencia.crearUsuario(nombreUsuario, deporte));
-            } else Log.i(LOG_NAME+".modifProp","Propietario ya existe como usuario! Definiendo...");
-            this.configuracion.setProperty(CONF_ID_PROPIETARIO,""+this.propietario.getId());
-        }
+                propietario = manejadorPersistencia.darUsuario(manejadorPersistencia.crearUsuario(nombreUsuario, deporte));
+            } else Log.i(LOG_NAME+".modifProp","Propietario ya existe como usuario! Solo fue necesario definirlo...");
 
+            Editor editor = configuracionLocal.edit();
+            editor.putInt(CONF_ID_PROPIETARIO, propietario.getId());
+            editor.commit();
+            Log.i(LOG_NAME+".modifProp","Almacenando propietario en configuracion local...");
+        }
     }
 
 // -----------------------------------------------------
