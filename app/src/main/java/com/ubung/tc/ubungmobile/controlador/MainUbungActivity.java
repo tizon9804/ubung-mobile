@@ -3,6 +3,7 @@ package com.ubung.tc.ubungmobile.controlador;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
@@ -13,7 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ButtonAdapterView;
@@ -29,26 +30,62 @@ public class MainUbungActivity extends Activity {
     public static final String USER = "usuario";
 
     private InterfazUbung singleton;
+    protected boolean active = true;
+    protected int ubungTime = 1000;
+    private Thread ubungThread;
 
-    // final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Singleton singleton = Singleton.getInstance();
         singleton.inicializar(this.getApplicationContext());
         this.singleton = singleton;
-        setContentView(R.layout.activity_main_ubung);
-        GettingStartAdapter adapter = new GettingStartAdapter(this);
-        ViewPager myPager = (ViewPager) findViewById(R.id.gettingstartpager);
-        myPager.setAdapter(adapter);
-        Boolean devuelta = getIntent().getBooleanExtra("last", false);
-        if (devuelta)
-            myPager.setCurrentItem(4);
-        else
-            myPager.setCurrentItem(0);
 
+        if(singleton.darPropietario()!=null){
+            animationUbung();
+        }
+        else {
+            setContentView(R.layout.activity_main_ubung);
+            GettingStartAdapter adapter = new GettingStartAdapter(this);
+            ViewPager myPager = (ViewPager) findViewById(R.id.gettingstartpager);
+            myPager.setAdapter(adapter);
+            Boolean devuelta = getIntent().getBooleanExtra("last", false);
+            if (devuelta)
+                myPager.setCurrentItem(4);
+            else
+                myPager.setCurrentItem(0);
 
+        }
+    }
+
+    private void animationUbung() {
+
+        setContentView(R.layout.inicio_ubung);
+        TextView deslice= (TextView)findViewById(R.id.deslice_inicio);
+        deslice.setText("");
+        ubungThread = new Thread(){
+            @Override
+            public void run(){
+                try{
+                    int waited = 0;
+                    while(active && (waited < ubungTime)){
+                        sleep(100);
+                        if(active){
+                            waited += 100;
+                        }
+
+                    }
+                } catch(InterruptedException e){
+
+                } finally{
+                    openMap();
+                }
+
+            }
+        };
+        ubungThread.start();
     }
 
     public void initGridView() {
@@ -92,7 +129,12 @@ public class MainUbungActivity extends Activity {
                 return true;
             }
         });
-
 //Todo implementar que el usuario no se repita con los del exterior
+    }
+
+
+    private void openMap(){
+        finish();
+        startActivity(new Intent(this,LocationActivity.class));
     }
 }

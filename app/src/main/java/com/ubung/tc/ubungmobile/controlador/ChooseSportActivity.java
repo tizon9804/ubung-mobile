@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ButtonAdapterView;
+import com.ubung.tc.ubungmobile.modelo.Singleton;
 
 
 public class ChooseSportActivity extends FragmentActivity {
@@ -39,23 +41,25 @@ public class ChooseSportActivity extends FragmentActivity {
 // -----------------------------------------------------
     public void initGridView() {
         GridView g = (GridView) findViewById(R.id.grid_button_view);
-       // final String usuario = Sin
+        final String usuario = Singleton.getInstance().darPropietario().getNombreUsuario();
         g.setAdapter(new ButtonAdapterView(this));
         g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-       //         intentDescription(position, id, usuario);
+                Toast.makeText(getBaseContext(), "Hubo un problema al cargar el deporte.", Toast.LENGTH_LONG).show();
+           intentDescription(position, id, usuario);
             }
         });
 
     }
 
     public void intentDescription(int position, long id, String usuario) {
+        finish();
         Intent t = new Intent(this, DescriptionSportActivity.class);
-        t.putExtra(POSITION, position);
-        t.putExtra(ID, id);
-        t.putExtra(USER, id);
+        t.putExtra(POSITION, position+"");
+        t.putExtra(ID, id+"");
+        t.putExtra(USER, usuario);
         startActivity(t);
     }
 

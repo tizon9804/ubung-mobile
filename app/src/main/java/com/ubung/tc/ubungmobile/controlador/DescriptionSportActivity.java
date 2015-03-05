@@ -54,8 +54,6 @@ public final static String LAST="last";
     private void InitLabels() {
 
         Intent t = getIntent();
-
-        String id = t.getStringExtra(MainUbungActivity.ID);
         int position = Integer.parseInt(t.getStringExtra(MainUbungActivity.POSITION));
         String user = t.getStringExtra(MainUbungActivity.USER);
         String deporte = "Basketball";
@@ -69,7 +67,6 @@ public final static String LAST="last";
         }
 
         if(deporteU!=null){
-            //Todo obtener el deporte escogido dado el id o posicion
             deporte=deporteU.getNombre();
             descripcion=deporteU.getDescripcion();
             TextView txtv = (TextView) findViewById(R.id.title_description_sport);
@@ -106,8 +103,7 @@ public final static String LAST="last";
                     start.setTextColor(getResources().getColor(R.color.holo_green_light));
 
                     try {
-                        int id=Singleton.getInstance().crearUsuario(usuario,deporteCrear);
-                        Toast.makeText(getBaseContext(),"su id es "+ id, Toast.LENGTH_LONG).show();
+                      Singleton.getInstance().modificarPropietario(usuario,deporteCrear);
                     } catch (ExcepcionPersistencia excepcionPersistencia) {
                         Toast.makeText(getBaseContext(),"Hubo un problema al Crear el usuario "+ usuario, Toast.LENGTH_LONG).show();
                     }
@@ -126,6 +122,7 @@ public final static String LAST="last";
 // -----------------------------------------------------
 
     private void nextActivity() {
+        finish();
         Intent i = new Intent(this, LocationActivity.class);
         startActivity(i);
     }
@@ -133,6 +130,7 @@ public final static String LAST="last";
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
         Intent t = new Intent(this, MainUbungActivity.class);
         t.putExtra("last", true);
 

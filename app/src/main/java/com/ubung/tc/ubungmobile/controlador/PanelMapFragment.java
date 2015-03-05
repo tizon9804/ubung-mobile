@@ -24,6 +24,10 @@ import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
  */
 public class PanelMapFragment extends Fragment {
 
+    public final static String NORMAL="_normal";
+    public final static String FOCUSED="_normal";
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,21 +50,24 @@ public class PanelMapFragment extends Fragment {
         });
 //boton deporte
         final Button button2 = (Button) view.findViewById(R.id.imageButton_sport);
-        final Usuario u=Singleton.getInstance().darUsuario("tizon");
-        button2.setBackgroundResource(getResources().getIdentifier(u.getDeporte().getNombreArchivoImagen() + "_normal", "drawable", getActivity().getPackageName()));
-        button2.setOnTouchListener(new View.OnTouchListener() {
+        final Usuario u=Singleton.getInstance().darPropietario();
+        if(u!=null) {
+            button2.setBackgroundResource(getResources().getIdentifier(u.getDeporte().getNombreArchivoImagen() + NORMAL, "drawable", getActivity().getPackageName()));
+            button2.setOnTouchListener(new View.OnTouchListener() {
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    button2.setBackgroundResource(getResources().getIdentifier(u.getDeporte().getNombreArchivoImagen()+"_focused", "drawable", getActivity().getPackageName()));
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        button2.setBackgroundResource(getResources().getIdentifier(u.getDeporte().getNombreArchivoImagen() + FOCUSED, "drawable", getActivity().getPackageName()));
+                        nextActivity(ChooseSportActivity.class);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        button2.setBackgroundResource(getResources().getIdentifier(u.getDeporte().getNombreArchivoImagen() + NORMAL, "drawable", getActivity().getPackageName()));
+                    }
+                    return false;
                 }
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    button2.setBackgroundResource(getResources().getIdentifier(u.getDeporte().getNombreArchivoImagen()+"_normal", "drawable", getActivity().getPackageName()));
-                }
-                return false;
-            }
-        });
+            });
+        }
 //deporte opciones
         Button button3 = (Button) view.findViewById(R.id.imageButton_options);
         button3.setOnClickListener(new View.OnClickListener() {
