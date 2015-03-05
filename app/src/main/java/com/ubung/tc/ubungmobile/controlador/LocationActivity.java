@@ -4,22 +4,31 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.ubung.tc.ubungmobile.R;
+import com.ubung.tc.ubungmobile.modelo.Singleton;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
+
+import java.util.ArrayList;
 
 
-public class LocationActivity extends FragmentActivity {
+public class LocationActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener{
 
 
     private GoogleMap map;
+    private ArrayList<Marker> markers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,26 +60,26 @@ public class LocationActivity extends FragmentActivity {
     }
 
     private void crearZonas() {
-        // Instantiates a new CircleOptions object and defines the center and radius
-        CircleOptions circleOptions = new CircleOptions()
-                .center(new LatLng(4.660594, -74.133360))
-                .radius(30)
-                .fillColor(Color.argb(200, 0, 50, 240))
-                .strokeColor(Color.argb(220, 0, 50, 240));// In meters
+        map.setOnMarkerClickListener(this);
+       ArrayList<Zona> zonas= Singleton.getInstance().darZonas();
+        markers=new ArrayList<Marker>();
+        for(Zona z:zonas){
+        LatLng latlng= new LatLng(z.getLatLongZoom()[0],z.getLatLongZoom()[1]);
+          Marker m=map.addMarker(new MarkerOptions()
+                  .position(latlng)
+                  .title(z.getNombre())
+                  .snippet(z.getNombre())
+                  .icon(BitmapDescriptorFactory.fromResource(R.drawable.futbol_normal)));
 
-// Get back the mutable Circle
-        Circle circle = map.addCircle(circleOptions);
+          markers.add(m);
+        }
 
-        circleOptions = new CircleOptions()
-                .center(new LatLng(4.660186, -74.130386))
-                .radius(30)
-                .fillColor(Color.argb(200, 0, 50, 240))
-                .strokeColor(Color.argb(220, 0, 50, 240)); // In meters
 
-// Get back the mutable Circle
-        circle = map.addCircle(circleOptions);
 
     }
+
+
+
 
     public void darUbicacion(View v) {
 
@@ -86,4 +95,8 @@ public class LocationActivity extends FragmentActivity {
     }
 
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        return false;
+    }
 }

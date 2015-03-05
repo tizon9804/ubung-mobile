@@ -137,6 +137,6 @@ public class MainUbungActivity extends Activity {
 
     @Override
     public void onResume(){
-
+    super.onResume();
     }
 }
