@@ -25,7 +25,7 @@ public class Usuario {
 
     /**
      * Permite a la clase instanciarse con una referencia directa al ManejadorPersistencia para
-     * implementar LazyLoad de demás objetos asociados a la clase
+     * implementar LazyLoad de los demás objetos asociados a la clase
      * @param manejadorPersistencia Referencia al ManejadorPersistencia que instació la clase
      */
     protected Usuario(int id, String nombreUsuario, int idDeporte, ManejadorPersistencia manejadorPersistencia) {

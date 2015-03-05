@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by cvargasc on 1/03/15.
@@ -32,12 +33,17 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
     private static final String SCRIPT_INICIAL = "inicializarBD";
 
     private static final String ID = "id";
-
+// DEPORTES --------------------------------------------
     private static final String TABLA_DEPORTES = "Deportes";
-
+// USUARIOS --------------------------------------------
     private static final String TABLA_USUARIOS = "Usuarios";
     private static final String CAMPO_USUARIOS_NOMBRE = "nombreUsuario";
     private static final String CAMPO_USUARIOS_DEPORTE = "idDeporte";
+// ZONAS -----------------------------------------------
+    private static final String TABLA_ZONAS = "Zonas";
+// EVENTOS ---------------------------------------------
+    private static final String TABLA_EVENTOS = "Eventos";
+
 
 // -----------------------------------------------------
 // ATRIBUTOS
@@ -125,18 +131,18 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
     }
 
     @Override
-    public int crearUsuario(Usuario usuario) throws ExcepcionPersistencia {
-        if (this.darUsuario(usuario.getNombreUsuario()) != null)
-            throw new ExcepcionPersistencia("Ya existe un usuario con nombre "+usuario.getNombreUsuario());
+    public int crearUsuario(String nombreUsuario, Deporte deporte) throws ExcepcionPersistencia {
+        if (this.darUsuario(nombreUsuario) != null)
+            throw new ExcepcionPersistencia("Ya existe un usuario con nombre "+nombreUsuario);
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(CAMPO_USUARIOS_NOMBRE, usuario.getNombreUsuario());
-        contentValues.put(CAMPO_USUARIOS_DEPORTE, usuario.getDeporte().getId());
+        contentValues.put(CAMPO_USUARIOS_NOMBRE, nombreUsuario);
+        contentValues.put(CAMPO_USUARIOS_DEPORTE, deporte.getId());
 
         long resultado = this.getWritableDatabase().insertOrThrow(TABLA_USUARIOS,null,contentValues);
         if (resultado == -1) throw new ExcepcionPersistencia("Se presentó un error no especificado al " +
-                "insertar el usuario "+usuario.getNombreUsuario()+" en la base de datos");
-        Log.i(LOG_NAME+"crearUsuari","Se ha creado el usuario "+usuario.getNombreUsuario()+" con id "+resultado);
+                "insertar el usuario "+nombreUsuario+" en la base de datos");
+        Log.i(LOG_NAME+"crearUsuari","Se ha creado el usuario "+nombreUsuario+" con id "+resultado);
         return (int) resultado;
     }
 
@@ -179,5 +185,57 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         if(cursor.getCount() != 1) Log.e(LOG_NAME+"darUsuario", "Se ha recuperado más de un usuario " +
                 "con nombre "+nombreUsuario);
         return new Usuario(cursor.getInt(0), cursor.getString(1), this.darDeporte(cursor.getInt(2)));
+    }
+
+    @Override
+    public ArrayList<Zona> darZonas() {
+        Cursor cursor = consulta(TABLA_ZONAS);
+        ArrayList<Zona> resultado = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                String[] latLongZoomBD = cursor.getString(2).split(":");
+                double[] latLongZoom = {Double.parseDouble(latLongZoomBD[0]),Double.parseDouble(latLongZoomBD[1]),Double.parseDouble(latLongZoomBD[2])};
+                resultado.add(new Zona(cursor.getInt(0), cursor.getString(1), latLongZoom, cursor.getInt(3)));
+            } while (cursor.moveToNext());
+        }
+        Log.i(LOG_NAME+"darZonas","Se recuperaron "+cursor.getCount()+" zonas de la base de datos");
+        return resultado; // Si la consulta no retorna registros devolverá el ArrayList vacío.
+    }
+
+    @Override
+    public Zona darZona(int id) {
+        Cursor cursor = consulta(TABLA_ZONAS,id);
+        if (!cursor.moveToFirst()) return null;
+        String[] latLongZoomBD = cursor.getString(2).split(":");
+        double[] latLongZoom = {Double.parseDouble(latLongZoomBD[0]),Double.parseDouble(latLongZoomBD[1]),Double.parseDouble(latLongZoomBD[2])};
+        return new Zona(cursor.getInt(0), cursor.getString(1), latLongZoom, cursor.getInt(3));
+    }
+
+    @Override
+    public int crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador) {
+        ContentValues contentValues = new ContentValues();
+        return 0;
+
+
+    }
+
+    @Override
+    public void actualizarEvento(Evento evento) throws ExcepcionPersistencia {
+
+    }
+
+    @Override
+    public ArrayList<Evento> darEventos() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Evento> darEventos(int idZona) {
+        return null;
+    }
+
+    @Override
+    public Evento darEvento(int id) {
+        return null;
     }
 }

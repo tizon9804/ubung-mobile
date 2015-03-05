@@ -1,5 +1,11 @@
-CREATE TABLE Deportes (id INTEGER PRIMARY KEY, nombre TEXT, nombreArchivoImagen TEXT, descripcion TEXT);
-INSERT INTO Deportes(nombre, nombreArchivoImagen, descripcion) VALUES('Basket', 'basket', 'descripción para BASKET guardada en la BD');
-INSERT INTO Deportes(nombre, nombreArchivoImagen, descripcion) VALUES('Futbol', 'futbol', 'descripción para FUTBOL guardada en la BD');
-INSERT INTO Deportes(nombre, nombreArchivoImagen, descripcion) VALUES('Voleibol', 'voleibol', 'descripción para VOLEIBOL guardada en la BD');
 CREATE TABLE Usuarios (id INTEGER PRIMARY KEY, nombreUsuario TEXT, idDeporte INTEGER);
+CREATE TABLE Eventos (id INTEGER PRIMARY KEY, fechaHora DATETIME, idZona INTEGER, idDeporte INTEGER, idOrganizador INTEGER, fechaCreacion DATETIME DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE InscritosEvento (idEvento INTEGER, idInscrito INTEGER, fechaInscripcion DATETIME DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE Deportes (id INTEGER PRIMARY KEY, nombre TEXT, nombreArchivoImagen TEXT, descripcion TEXT);
+INSERT INTO Deportes (nombre, nombreArchivoImagen, descripcion) VALUES('Basket', 'basket', 'descripción para BASKET guardada en la BD');
+INSERT INTO Deportes (nombre, nombreArchivoImagen, descripcion) VALUES('Futbol', 'futbol', 'descripción para FUTBOL guardada en la BD');
+INSERT INTO Deportes (nombre, nombreArchivoImagen, descripcion) VALUES('Voleibol', 'voleibol', 'descripción para VOLEIBOL guardada en la BD');
+CREATE TABLE Zonas (id INTEGER PRIMARY KEY, nombre TEXT, latlongzoom TEXT, radio INT);
+INSERT INTO Zonas (nombre, latlongzoom, radio) VALUES('Hayuelos Lantana', '4.660594:-74.133360:17', 30);
+INSERT INTO Zonas (nombre, latlongzoom, radio) VALUES('Uniandes La Caneca', '4.6003125:-74.0635405:19', 30);
+INSERT INTO Zonas (nombre, latlongzoom, radio) VALUES('Uniandes Cancha CEDE', '4.600913:-74.0645779:17', 30);
