@@ -41,13 +41,13 @@ public class ChooseSportActivity extends FragmentActivity {
 // -----------------------------------------------------
     public void initGridView() {
         GridView g = (GridView) findViewById(R.id.grid_button_view);
-        final String usuario = Singleton.getInstance().darPropietario().getNombreUsuario();
+
         g.setAdapter(new ButtonAdapterView(this));
         g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), "Hubo un problema al cargar el deporte.", Toast.LENGTH_LONG).show();
+           String usuario = Singleton.getInstance().darPropietario().getNombreUsuario();
            intentDescription(position, id, usuario);
             }
         });
