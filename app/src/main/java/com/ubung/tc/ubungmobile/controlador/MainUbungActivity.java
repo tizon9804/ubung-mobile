@@ -51,11 +51,7 @@ public class MainUbungActivity extends Activity {
             GettingStartAdapter adapter = new GettingStartAdapter(this);
             ViewPager myPager = (ViewPager) findViewById(R.id.gettingstartpager);
             myPager.setAdapter(adapter);
-            Boolean devuelta = getIntent().getBooleanExtra("last", false);
-            if (devuelta)
-                myPager.setCurrentItem(4);
-            else
-                myPager.setCurrentItem(0);
+            myPager.setCurrentItem(0);
 
         }
     }
@@ -136,5 +132,11 @@ public class MainUbungActivity extends Activity {
     private void openMap(){
         finish();
         startActivity(new Intent(this,LocationActivity.class));
+    }
+
+
+    @Override
+    public void onResume(){
+
     }
 }

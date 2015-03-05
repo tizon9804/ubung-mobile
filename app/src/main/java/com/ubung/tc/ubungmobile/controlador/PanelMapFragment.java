@@ -25,7 +25,7 @@ import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
 public class PanelMapFragment extends Fragment {
 
     public final static String NORMAL="_normal";
-    public final static String FOCUSED="_normal";
+    public final static String FOCUSED="_focused";
 
 
     @Override
@@ -59,10 +59,11 @@ public class PanelMapFragment extends Fragment {
                 public boolean onTouch(View v, MotionEvent event) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         button2.setBackgroundResource(getResources().getIdentifier(u.getDeporte().getNombreArchivoImagen() + FOCUSED, "drawable", getActivity().getPackageName()));
-                        nextActivity(ChooseSportActivity.class);
+
                     }
                     if (event.getAction() == MotionEvent.ACTION_UP) {
                         button2.setBackgroundResource(getResources().getIdentifier(u.getDeporte().getNombreArchivoImagen() + NORMAL, "drawable", getActivity().getPackageName()));
+                        nextActivity(ChooseSportActivity.class);
                     }
                     return false;
                 }
@@ -90,11 +91,19 @@ public class PanelMapFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Intent t = new Intent(getActivity(), MainUbungActivity.class);
-        startActivity(t);
-    }
+        try {
+            finalize();
+            getActivity().finish();
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            }
+        catch(Throwable throwable){
+                throwable.printStackTrace();
+            }
 
-
+        }
     public void nextActivity(Class clase) {
         Intent t = new Intent(getActivity(), clase);
         startActivity(t);
