@@ -92,9 +92,11 @@ public interface InterfazPersistencia {
      * @param zona La zona en la cual se desarrollará el evento
      * @param deporte El deporte que se practicará
      * @param organizador El usuario organizador del evento
+     * @throws ExcepcionPersistencia en caso que se presente algún error al guardar el evento.
      * @return El id del evento recién creado
      */
-    public int crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador);
+    public int crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador)
+            throws  ExcepcionPersistencia;
 
     /**
      * Actualiza un evento existente en la aplicación. El objeto evento debe tener su identificador

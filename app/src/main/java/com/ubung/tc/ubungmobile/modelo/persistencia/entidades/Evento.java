@@ -1,5 +1,9 @@
 package com.ubung.tc.ubungmobile.modelo.persistencia.entidades;
 
+import android.util.Log;
+
+import com.ubung.tc.ubungmobile.modelo.persistencia.Tupla;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -8,12 +12,14 @@ import java.util.Date;
  */
 public class Evento {
 
+    protected static final String LOG_NAME = "Evento";
+
     private int id;
     private Date fechaHora;
     private Zona zona;
     private Deporte deporte;
     private Usuario organizador;
-    private ArrayList<Usuario> inscritos;
+    protected InscritosEvento inscritosEvento;
 
     private Date fechaCreacion;
 
@@ -23,6 +29,12 @@ public class Evento {
         this.zona = zona;
         this.deporte = deporte;
         this.organizador = organizador;
+    }
+
+    protected Evento(int id, Date fechaHora, Date fechaCreacion) {
+        this.id = id;
+        this.fechaHora = fechaHora;
+        this.fechaCreacion = fechaCreacion;
     }
 
     public int getId() {
@@ -61,8 +73,18 @@ public class Evento {
         this.organizador = organizador;
     }
 
-    public ArrayList<Usuario> getInscritos() {
-        return inscritos;
+    /**
+     * Recupera los usuarios inscritos a este evento
+     * @return un ArrayList vacío en caso que no se hayan inscritos usuarios, null en caso que este
+     * evento no haya sido instanciado desde el modelo.
+     */
+    public ArrayList<Tupla<Usuario, Date>> getInscritos() {
+        if (inscritosEvento == null) {
+            Log.e(LOG_NAME+"getInsc", "No debería estar llamando este método desde aquí... el " +
+                    "arreglo de inscritos no está inicializado, lo cual implica que este objeto " +
+                    "no fue instanciado desde el modelo");
+        }
+        return inscritosEvento.getInscritosEvento();
     }
 
     public Date getFechaCreacion() {

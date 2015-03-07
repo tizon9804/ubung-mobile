@@ -188,7 +188,8 @@ public class Singleton implements InterfazUbung {
     }
 
     @Override
-    public int crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador) {
+    public int crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador)
+            throws  ExcepcionPersistencia {
         return manejadorPersistencia.crearEvento(fechaHora, zona, deporte, organizador );
     }
 
