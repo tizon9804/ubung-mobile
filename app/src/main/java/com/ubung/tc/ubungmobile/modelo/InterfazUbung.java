@@ -23,4 +23,10 @@ public interface InterfazUbung extends InterfazPersistencia {
      */
     public void modificarPropietario(String nombreUsuario, Deporte deporte) throws ExcepcionPersistencia;
 
+    /**
+     * Permite inscribir al propietario en un evento
+     * @param idEvento el id del evento al cual se inscribirá el propietario
+     */
+    public int inscribirseEvento(int idEvento, int idUsuario);
+
 }

@@ -138,7 +138,12 @@ public class Singleton implements InterfazUbung {
         }
     }
 
-// -----------------------------------------------------
+    @Override
+    public int inscribirseEvento(int idEvento, int idUsuario) {
+        return 0;
+    }
+
+    // -----------------------------------------------------
 // MÉTODOS INTERFAZ PERSISTENCIA
 // -----------------------------------------------------
 
