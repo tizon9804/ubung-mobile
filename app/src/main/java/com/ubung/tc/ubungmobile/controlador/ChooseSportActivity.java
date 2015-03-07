@@ -6,12 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
-import com.ubung.tc.ubungmobile.controlador.adapters.ButtonAdapterView;
+import com.ubung.tc.ubungmobile.controlador.adapters.ButtonViewAdapter;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 
 
@@ -42,7 +40,7 @@ public class ChooseSportActivity extends FragmentActivity {
     public void initGridView() {
         GridView g = (GridView) findViewById(R.id.grid_button_view);
 
-        g.setAdapter(new ButtonAdapterView(this));
+        g.setAdapter(new ButtonViewAdapter(this));
         g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
