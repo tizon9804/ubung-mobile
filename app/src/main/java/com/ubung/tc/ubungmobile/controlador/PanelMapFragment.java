@@ -105,8 +105,15 @@ public class PanelMapFragment extends Fragment {
 
         }
     public void nextActivity(Class clase) {
-        Intent t = new Intent(getActivity(), clase);
-        startActivity(t);
+        try {
+            finalize();
+            getActivity().finish();
+            Intent t = new Intent(getActivity(), clase);
+            startActivity(t);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+
     }
 
 }

@@ -17,7 +17,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.ubung.tc.ubungmobile.R;
-import com.ubung.tc.ubungmobile.controlador.adapters.ButtonAdapterView;
+import com.ubung.tc.ubungmobile.controlador.adapters.ButtonViewAdapter;
 import com.ubung.tc.ubungmobile.controlador.adapters.GettingStartAdapter;
 import com.ubung.tc.ubungmobile.modelo.InterfazUbung;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
@@ -92,7 +92,7 @@ public class MainUbungActivity extends Activity {
             GridView g = (GridView) findViewById(R.id.grid_button_view);
 
             //  Toast.makeText(this, usuario, Toast.LENGTH_LONG).show();
-            g.setAdapter(new ButtonAdapterView(this));
+            g.setAdapter(new ButtonViewAdapter(this));
             g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
@@ -135,8 +135,4 @@ public class MainUbungActivity extends Activity {
     }
 
 
-    @Override
-    public void onResume(){
-    super.onResume();
-    }
 }

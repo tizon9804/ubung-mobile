@@ -19,11 +19,12 @@
     <string name="nombre_usuario">Nombre de Usuario</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_lista_zonas">ListaZonasActivity</string>
+    <string name="title_activity_lista_zonas">Zonas de Deporte</string>
     <string name="info1"> Una Aplicación hecha para deportistas la cual te informa en que zonas estan practicando tu deporte.</string>
     <string name="info2">Übung Mobile te ayuda a practicar tu deporte en grupo con nuevos deportistas. \n Übung Mobile te hace la vida más Fácil.</string>
     <string name="bienvenida">Bienvenido a Übung Mobile</string>
     <string name="bienvenida2">Funciones de Übung</string>
     <string name="title_activity_user_registation">user_registation</string>
+    <string name="description_titlle">descripcion:</string>
 
 </resources>
