@@ -103,7 +103,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
      * @param id del registro que se desea recuperar
      * @return cursor con el registro solicitado
      */
-    protected Cursor consulta(String tabla, int id) {
+    protected Cursor consulta(String tabla, long id) {
         String consulta = "SELECT * FROM " + tabla + " WHERE "+ID+"="+ id;
         SQLiteDatabase bdLectura = this.getReadableDatabase();
         return bdLectura.rawQuery(consulta, null);
@@ -152,7 +152,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         return (int) resultado;
     }
 
-    public void agregarInscritoEvento(int idEvento, int idInscrito) throws ExcepcionPersistencia {
+    public void agregarInscritoEvento(long idEvento, long idInscrito) throws ExcepcionPersistencia {
         ContentValues contentValues = new ContentValues();
         contentValues.put(CAMPO_INSCRITOSEVENTO_IDEVENTO, idEvento);
         contentValues.put(CAMPO_INSCRITOSEVENTO_IDINSCRITO, idInscrito);
@@ -213,10 +213,10 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
 
     // READ   ------------------------------------------
     @Override
-    public Deporte darDeporte(int id) {
+    public Deporte darDeporte(long id) {
         Cursor cursor = consulta(TABLA_DEPORTES, id);
         if (!cursor.moveToFirst()) return null;
-        return new Deporte(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+        return new Deporte(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
     }
 
     @Override
@@ -225,7 +225,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         ArrayList<Deporte> resultado = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                resultado.add(new Deporte(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3)));
+                resultado.add(new Deporte(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3)));
             } while (cursor.moveToNext());
         }
         Log.i(LOG_NAME+"darDeportes","Se recuperaron "+cursor.getCount()+" deportes de la base de datos");
@@ -238,7 +238,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         ArrayList<Usuario> resultado = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                resultado.add(new UsuarioLazyLoad(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), this));
+                resultado.add(new UsuarioLazyLoad(cursor.getLong(0), cursor.getString(1), cursor.getLong(2), this));
             } while (cursor.moveToNext());
         }
         Log.i(LOG_NAME+"darUsuarios","Se recuperaron "+cursor.getCount()+" usuarios de la base de datos");
@@ -246,10 +246,10 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
     }
 
     @Override
-    public Usuario darUsuario(int id) {
+    public Usuario darUsuario(long id) {
         Cursor cursor = consulta(TABLA_USUARIOS, id);
         if (!cursor.moveToFirst()) return null;
-        return new UsuarioLazyLoad(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), this);
+        return new UsuarioLazyLoad(cursor.getLong(0), cursor.getString(1), cursor.getLong(2), this);
     }
 
     @Override
@@ -258,7 +258,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         if(!cursor.moveToFirst()) return null;
         if(cursor.getCount() != 1) Log.e(LOG_NAME+"darUsuario", "Se ha recuperado más de un usuario " +
                 "con nombre "+nombreUsuario);
-        return new UsuarioLazyLoad(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), this);
+        return new UsuarioLazyLoad(cursor.getLong(0), cursor.getString(1), cursor.getLong(2), this);
     }
 
     @Override
@@ -269,7 +269,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
             do {
                 String[] latLongZoomBD = cursor.getString(2).split(":");
                 double[] latLongZoom = {Double.parseDouble(latLongZoomBD[0]),Double.parseDouble(latLongZoomBD[1]),Double.parseDouble(latLongZoomBD[2])};
-                resultado.add(new Zona(cursor.getInt(0), cursor.getString(1), latLongZoom, cursor.getInt(3)));
+                resultado.add(new Zona(cursor.getLong(0), cursor.getString(1), latLongZoom, cursor.getInt(3)));
             } while (cursor.moveToNext());
         }
         Log.i(LOG_NAME+"darZonas","Se recuperaron "+cursor.getCount()+" zonas de la base de datos");
@@ -277,12 +277,12 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
     }
 
     @Override
-    public Zona darZona(int id) {
+    public Zona darZona(long id) {
         Cursor cursor = consulta(TABLA_ZONAS,id);
         if (!cursor.moveToFirst()) return null;
         String[] latLongZoomBD = cursor.getString(2).split(":");
         double[] latLongZoom = {Double.parseDouble(latLongZoomBD[0]),Double.parseDouble(latLongZoomBD[1]),Double.parseDouble(latLongZoomBD[2])};
-        return new Zona(cursor.getInt(0), cursor.getString(1), latLongZoom, cursor.getInt(3));
+        return new Zona(cursor.getLong(0), cursor.getString(1), latLongZoom, cursor.getInt(3));
     }
 
     @Override
@@ -300,8 +300,8 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
                 } catch (ParseException e) {
                     Log.e(LOG_NAME+"darEven(id)","No fue posible convertir string to date para el campo fechaHora");
                 }
-                resultado.add(new EventoLazyLoad(cursor.getInt(0), fechaHora, cursor.getInt(2),
-                        cursor.getInt(3), cursor.getInt(4), fechaCreacion, this));
+                resultado.add(new EventoLazyLoad(cursor.getLong(0), fechaHora, cursor.getLong(2),
+                        cursor.getLong(3), cursor.getLong(4), fechaCreacion, this));
             } while (cursor.moveToNext());
         }
         Log.i(LOG_NAME+"darEventos","Se recuperaron "+cursor.getCount()+" eventos de la base de datos");
@@ -309,7 +309,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
     }
 
     @Override
-    public ArrayList<Evento> darEventos(int idZona) {
+    public ArrayList<Evento> darEventos(long idZona) {
         Cursor cursor = consulta(TABLA_EVENTOS,CAMPO_EVENTOS_IDZONA, ""+idZona);
         ArrayList<Evento> resultado = new ArrayList<>();
         if (cursor.moveToFirst()) {
@@ -323,8 +323,8 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
                 } catch (ParseException e) {
                     Log.e(LOG_NAME+"darEven(id)","No fue posible convertir string to date para el campo fechaHora");
                 }
-                resultado.add(new EventoLazyLoad(cursor.getInt(0), fechaHora, cursor.getInt(2),
-                        cursor.getInt(3), cursor.getInt(4), fechaCreacion, this));
+                resultado.add(new EventoLazyLoad(cursor.getLong(0), fechaHora, cursor.getLong(2),
+                        cursor.getLong(3), cursor.getLong(4), fechaCreacion, this));
             } while (cursor.moveToNext());
         }
         Log.i(LOG_NAME+"darEventZon","Se recuperaron "+cursor.getCount()+" eventos para la zona "+idZona);
@@ -332,7 +332,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
     }
 
     @Override
-    public Evento darEvento(int id) {
+    public Evento darEvento(long id) {
         Cursor cursor = consulta(TABLA_EVENTOS,id);
         if (!cursor.moveToFirst()) return null;
 
@@ -346,8 +346,8 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
             Log.e(LOG_NAME+"darEven(id)","No fue posible convertir string to date para el campo fechaHora");
         }
 
-        return new EventoLazyLoad(cursor.getInt(0), fechaHora, cursor.getInt(2),
-                cursor.getInt(3), cursor.getInt(4), fechaCreacion, this);
+        return new EventoLazyLoad(cursor.getLong(0), fechaHora, cursor.getLong(2),
+                cursor.getLong(3), cursor.getLong(4), fechaCreacion, this);
     }
 
     // UPDATE ------------------------------------------

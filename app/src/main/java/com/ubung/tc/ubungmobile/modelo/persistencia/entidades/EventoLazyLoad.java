@@ -10,16 +10,16 @@ import java.util.Date;
 public class EventoLazyLoad extends Evento {
     private ManejadorPersistencia manejadorPersistencia;
 
-    private int idZona;
-    private int idDeporte;
-    private int idOrganizador;
+    private long idZona;
+    private long idDeporte;
+    private long idOrganizador;
 
     /**
      * Permite a la clase instanciarse con una referencia directa al ManejadorPersistencia para
      * implementar LazyLoad de los demás objetos asociados a la clase
      * @param manejadorPersistencia Referencia al ManejadorPersistencia que instació la clase
      */
-    protected EventoLazyLoad(int id, Date fechaHora, int idZona, int idDeporte, int idOrganizador,
+    protected EventoLazyLoad(long id, Date fechaHora, long idZona, long idDeporte, long idOrganizador,
                      Date fechaCreacion, ManejadorPersistencia manejadorPersistencia) {
         super(id, fechaHora, fechaCreacion);
 

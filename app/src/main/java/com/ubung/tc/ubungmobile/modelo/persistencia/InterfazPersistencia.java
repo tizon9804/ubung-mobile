@@ -27,7 +27,7 @@ public interface InterfazPersistencia {
      * @return El objeto deporte del id  especificado, null si no se encuentra dicho id en la base
      * de datos.
      */
-    public Deporte darDeporte(int id);
+    public Deporte darDeporte(long id);
 
     /**
      * Devuelve todos los usuarios
@@ -42,7 +42,7 @@ public interface InterfazPersistencia {
      * @return El usuario asociado con el id especificado. Null si no existe ningún usuario
      * con ese id.
      */
-    public Usuario darUsuario(int id);
+    public Usuario darUsuario(long id);
 
     /**
      * Devuelve un usuario dado su nombre de usuario
@@ -64,7 +64,7 @@ public interface InterfazPersistencia {
      * @param id El identificado de la zona en la base de datos.
      * @return La zona con el id especificado. Null si no existe ninguna zona con ese id
      */
-    public Zona darZona(int id);
+    public Zona darZona(long id);
 
     /**
      * Crea un nuevo evento en la aplicación
@@ -100,12 +100,12 @@ public interface InterfazPersistencia {
      * @return Arreglo con todos los eventos registrados para la zona especificada, el arreglo
      * estará vacío si no hay ningún evento registrado para esa zona en la base de datos.
      */
-    public ArrayList<Evento> darEventos(int idZona);
+    public ArrayList<Evento> darEventos(long idZona);
 
     /**
      * Devuelve el evento dado su id
      * @param id El identificador del evento en la base de datos.
      * @return El evento con el id especificado. Null si no existe ningún evento con ese id.
      */
-    public Evento darEvento(int id);
+    public Evento darEvento(long id);
 }

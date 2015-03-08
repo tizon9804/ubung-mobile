@@ -50,7 +50,7 @@ public class DescriptionSportActivity extends ActionBarActivity {
     private void InitLabels() {
 
         Intent t = getIntent();
-        int position = Integer.parseInt(t.getStringExtra(MainUbungActivity.POSITION));
+        long position = Long.parseLong(t.getStringExtra(MainUbungActivity.POSITION));
         String user = t.getStringExtra(MainUbungActivity.USER);
         String deporte = "Basketball";
         String descripcion = "hola";

@@ -20,7 +20,7 @@ public class InscritosEvento {
     private ManejadorPersistencia manejadorPersistencia;
     private Boolean contengoUsuarios;
 
-    private ArrayList<Tupla<Integer, Date>> inscritosEvento;
+    private ArrayList<Tupla<Long, Date>> inscritosEvento;
 
     /**
      * Devuelve todos los usuarios inscritos al evento pasado como parámetro
@@ -64,7 +64,7 @@ public class InscritosEvento {
                 } catch (ParseException e) {
                     Log.e(LOG_NAME + "procesarCons", "No fue posible convertir string to date para el campo fechaInscripcion");
                 }
-                inscritosEvento.add(new Tupla<>(cursor.getInt(0), fechaInscripcion));
+                inscritosEvento.add(new Tupla<>(cursor.getLong(0), fechaInscripcion));
             } while (cursor.moveToNext());
         }
     }
@@ -77,7 +77,7 @@ public class InscritosEvento {
 
         ArrayList<Tupla<Usuario, Date>> respuesta = new ArrayList<>();
         for(Tupla t : inscritosEvento) {
-            Usuario usuario = manejadorPersistencia.darUsuario((int) t.getIzq());
+            Usuario usuario = manejadorPersistencia.darUsuario((long) t.getIzq());
             respuesta.add(new Tupla<>(usuario, (Date) t.getDer()));
         }
 
@@ -92,7 +92,7 @@ public class InscritosEvento {
 
         ArrayList<Tupla<Evento, Date>> respuesta = new ArrayList<>();
         for(Tupla t : inscritosEvento) {
-            Evento evento = manejadorPersistencia.darEvento((int) t.getIzq());
+            Evento evento = manejadorPersistencia.darEvento((long) t.getIzq());
             respuesta.add(new Tupla<>(evento, (Date) t.getDer()));
         }
 

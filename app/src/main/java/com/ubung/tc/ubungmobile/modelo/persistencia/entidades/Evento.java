@@ -14,7 +14,7 @@ public class Evento {
 
     protected static final String LOG_NAME = "Evento";
 
-    private int id;
+    private long id;
     private Date fechaHora;
     private Zona zona;
     private Deporte deporte;
@@ -23,7 +23,7 @@ public class Evento {
 
     private Date fechaCreacion;
 
-    public Evento(int id, Date fechaHora, Zona zona, Deporte deporte, Usuario organizador) {
+    public Evento(long id, Date fechaHora, Zona zona, Deporte deporte, Usuario organizador) {
         this.id = id;
         this.fechaHora = fechaHora;
         this.zona = zona;
@@ -31,13 +31,13 @@ public class Evento {
         this.organizador = organizador;
     }
 
-    protected Evento(int id, Date fechaHora, Date fechaCreacion) {
+    protected Evento(long id, Date fechaHora, Date fechaCreacion) {
         this.id = id;
         this.fechaHora = fechaHora;
         this.fechaCreacion = fechaCreacion;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

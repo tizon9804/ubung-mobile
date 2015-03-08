@@ -59,7 +59,7 @@ public class Singleton implements InterfazUbung {
 // -----------------------------------------------------
     public void inicializar(Context context) {
         if (this.context == null) {
-            Log.i(LOG_NAME+".inicializar()", "Inicializando Singleton...");
+            Log.i(LOG_NAME+".inicializar()", System.currentTimeMillis()+" Inicializando Singleton...");
             Log.i(LOG_NAME+".inicializar()", "Definiendo contexto...");
             this.context = context;
 
@@ -87,7 +87,7 @@ public class Singleton implements InterfazUbung {
             else Log.i(LOG_NAME+".inicializar()", "Usuario encontrado, restableciendo la información de "+propietario.getNombreUsuario()+"...");
 
         } else {
-            Log.w(LOG_NAME + ".inicializar()", "Está tratanto de volver a inicializar un Singleton ya inicializado!");
+            Log.w(LOG_NAME + ".inicializar()", System.currentTimeMillis()+" Está tratanto de volver a inicializar un Singleton ya inicializado!");
         }
     }
 
@@ -131,14 +131,14 @@ public class Singleton implements InterfazUbung {
             } else Log.i(LOG_NAME+".modifProp","Propietario ya existe como usuario! Solo fue necesario definirlo...");
 
             Editor editor = configuracionLocal.edit();
-            editor.putInt(CONF_ID_PROPIETARIO, propietario.getId());
+            editor.putLong(CONF_ID_PROPIETARIO, propietario.getId());
             editor.commit();
             Log.i(LOG_NAME+".modifProp","Almacenando propietario en configuracion local...");
         }
     }
 
     @Override
-    public void inscribirseEvento(int idEvento) throws ExcepcionPersistencia {
+    public void inscribirseEvento(long idEvento) throws ExcepcionPersistencia {
         manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
     }
 
@@ -152,7 +152,7 @@ public class Singleton implements InterfazUbung {
     }
 
     @Override
-    public Deporte darDeporte(int id) {
+    public Deporte darDeporte(long id) {
         return manejadorPersistencia.darDeporte(id);
     }
 
@@ -162,7 +162,7 @@ public class Singleton implements InterfazUbung {
     }
 
     @Override
-    public Usuario darUsuario(int id) {
+    public Usuario darUsuario(long id) {
         return manejadorPersistencia.darUsuario(id);
     }
 
@@ -177,7 +177,7 @@ public class Singleton implements InterfazUbung {
     }
 
     @Override
-    public Zona darZona(int id) {
+    public Zona darZona(long id) {
         return manejadorPersistencia.darZona(id);
     }
 
@@ -198,12 +198,12 @@ public class Singleton implements InterfazUbung {
     }
 
     @Override
-    public ArrayList<Evento> darEventos(int idZona) {
+    public ArrayList<Evento> darEventos(long idZona) {
         return manejadorPersistencia.darEventos(idZona);
     }
 
     @Override
-    public Evento darEvento(int id) {
+    public Evento darEvento(long id) {
         return manejadorPersistencia.darEvento(id);
     }
 }

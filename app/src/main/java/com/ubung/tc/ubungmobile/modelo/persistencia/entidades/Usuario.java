@@ -8,22 +8,22 @@ public class Usuario {
 
     protected static final String LOG_NAME = "Usuario";
 
-    private int id;
+    private long id;
     private String nombreUsuario;
     private Deporte deporte; // Es el deporte seleccionado por el usuario en este momento
 
-    public Usuario(int id, String nombreUsuario, Deporte deporte) {
+    public Usuario(long id, String nombreUsuario, Deporte deporte) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.deporte = deporte;
     }
 
-    protected Usuario(int id, String nombreUsuario) {
+    protected Usuario(long id, String nombreUsuario) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

@@ -8,14 +8,14 @@ import android.util.Log;
 public class UsuarioLazyLoad extends Usuario {
     private ManejadorPersistencia manejadorPersistencia;
 
-    private int idDeporte;
+    private long idDeporte;
 
     /**
      * Permite a la clase instanciarse con una referencia directa al ManejadorPersistencia para
      * implementar LazyLoad de los demás objetos asociados a la clase
      * @param manejadorPersistencia Referencia al ManejadorPersistencia que instació la clase
      */
-    protected UsuarioLazyLoad(int id, String nombreUsuario, int idDeporte, ManejadorPersistencia manejadorPersistencia) {
+    protected UsuarioLazyLoad(long id, String nombreUsuario, long idDeporte, ManejadorPersistencia manejadorPersistencia) {
         super(id,nombreUsuario);
         this.idDeporte = idDeporte;
         this.manejadorPersistencia = manejadorPersistencia;
