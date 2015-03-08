@@ -27,6 +27,6 @@ public interface InterfazUbung extends InterfazPersistencia {
      * Permite inscribir al propietario en un evento
      * @param idEvento el id del evento al cual se inscribirá el propietario
      */
-    public int inscribirseEvento(int idEvento, int idUsuario);
+    public void inscribirseEvento(int idEvento, int idUsuario);
 
 }

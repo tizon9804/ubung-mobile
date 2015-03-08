@@ -139,8 +139,8 @@ public class Singleton implements InterfazUbung {
     }
 
     @Override
-    public int inscribirseEvento(int idEvento, int idUsuario) {
-        return 0;
+    public void inscribirseEvento(int idEvento, int idUsuario) {
+
     }
 
     // -----------------------------------------------------
