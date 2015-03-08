@@ -33,23 +33,47 @@ public class EventoLazyLoad extends Evento {
     }
 
     @Override
+    public void setDeporte(Deporte deporte) {
+        idDeporte = deporte.getId();
+        super.setDeporte(deporte);
+    }
+
+    @Override
     public Deporte getDeporte() {
-        Log.i(LOG_NAME + "getDeporte", "Obteniendo deporte a través de LazyLoad");
-        super.setDeporte(manejadorPersistencia.darDeporte(idDeporte));
+        if (super.getDeporte() == null) {
+            Log.i(LOG_NAME + "getDeporte", "Obteniendo deporte a través de LazyLoad");
+            super.setDeporte(manejadorPersistencia.darDeporte(idDeporte));
+        }
         return super.getDeporte();
     }
 
     @Override
+    public void setZona(Zona zona) {
+        idZona = zona.getId();
+        super.setZona(zona);
+    }
+
+    @Override
     public Zona getZona() {
-        Log.i(LOG_NAME + "getZona", "Obteniendo zona a través de LazyLoad");
-        super.setZona(manejadorPersistencia.darZona(idZona));
+        if (super.getZona() == null) {
+            Log.i(LOG_NAME + "getZona", "Obteniendo zona a través de LazyLoad");
+            super.setZona(manejadorPersistencia.darZona(idZona));
+        }
         return super.getZona();
     }
 
     @Override
+    public void setOrganizador(Usuario organizador) {
+        idOrganizador = organizador.getId();
+        super.setOrganizador(organizador);
+    }
+
+    @Override
     public Usuario getOrganizador() {
-        Log.i(LOG_NAME + "getOrganizador", "Obteniendo organizador a través de LazyLoad");
-        super.setOrganizador(manejadorPersistencia.darUsuario(idOrganizador));
+        if (super.getOrganizador() == null) {
+            Log.i(LOG_NAME + "getOrganizador", "Obteniendo organizador a través de LazyLoad");
+            super.setOrganizador(manejadorPersistencia.darUsuario(idOrganizador));
+        }
         return super.getOrganizador();
     }
 }

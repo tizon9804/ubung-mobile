@@ -29,8 +29,10 @@ public class UsuarioLazyLoad extends Usuario {
 
     @Override
     public Deporte getDeporte() {
-        super.setDeporte(manejadorPersistencia.darDeporte(idDeporte));
-        Log.i(LOG_NAME + "getDeporte", "Deporte "+super.getDeporte().getNombre() +" obtendio a través de LazyLoad");
+        if (super.getDeporte() == null) {
+            Log.i(LOG_NAME + "getDeporte", "Obteniendo deporte a través de LazyLoad");
+            super.setDeporte(manejadorPersistencia.darDeporte(idDeporte));
+        }
         return super.getDeporte();
     }
 

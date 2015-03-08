@@ -122,38 +122,21 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         return bdLectura.rawQuery(consulta, null);
     }
 
+
 // -----------------------------------------------------
-// MÉTODOS OVERRIDE SQLiteOpenHelper
-// -----------------------------------------------------
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        Log.i(LOG_NAME + ".onCreate()", "Creando base de datos local por primera vez...");
-
-        String scriptSQL = singleton.darConfiguracion().getProperty(SCRIPT_INICIAL);
-        AssetManager assetManager = singleton.darContexto().getAssets();
-
-        try {
-            InputStream inputStream = assetManager.open(scriptSQL);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String consulta;
-            while ((consulta = bufferedReader.readLine()) != null) {
-                db.execSQL(consulta);
-            }
-        } catch (IOException e) {
-            Log.e(LOG_NAME + ".onCreate()", "Error al cargar " + SCRIPT_INICIAL + ": " + e.toString());
-        }
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
-// -----------------------------------------------------
-// MÉTODOS INTERFAZ InterfazPersistencia
+// MÉTODOS PÚBLICOS (utilizados por Singleton)
 // -----------------------------------------------------
 
     // CREATE ------------------------------------------
-    @Override
+
+    /**
+     * Crea un usuario en la aplicación
+     * @param nombreUsuario El nombre de usuario único con el que se registrará el usuario en la
+     *                      base de datos
+     * @param deporte El deporte inicial que practica el usuario
+     * @return El id del usurio recién creado
+     * @throws ExcepcionPersistencia en caso que el usuario ya exista o se presente algún otro error.
+     */
     public int crearUsuario(String nombreUsuario, Deporte deporte) throws ExcepcionPersistencia {
         if (this.darUsuario(nombreUsuario) != null)
             throw new ExcepcionPersistencia("Ya existe un usuario con nombre "+nombreUsuario);
@@ -169,6 +152,49 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         return (int) resultado;
     }
 
+    public void agregarInscritoEvento(int idEvento, int idInscrito) throws ExcepcionPersistencia {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CAMPO_INSCRITOSEVENTO_IDEVENTO, idEvento);
+        contentValues.put(CAMPO_INSCRITOSEVENTO_IDINSCRITO, idInscrito);
+        long resultado = this.getWritableDatabase().insertOrThrow(TABLA_INSCRITOSEVENTO, null, contentValues);
+        if (resultado == -1) throw new ExcepcionPersistencia("Se presentó un error no especificado al " +
+                "registrar el usuario "+idInscrito+" en el evento "+idEvento);
+        Log.i(LOG_NAME+"agrInscEven","Se ha inscrito el usuario "+idInscrito+" al evento "+idEvento);
+    }
+
+    // UPDATE ------------------------------------------
+
+    /**
+     * Actualiza un usuario existente en la aplicación. El objeto usuario debe tener su identificador
+     * definido. Se actualizan todos los atributos del usuario en la base de datos por aquellos
+     * contenidos en el objeto.
+     * @param usuario objeto con la información del usuario a actualizar
+     * @throws ExcepcionPersistencia en caso que no se actualice ningún usuario
+     */
+    public Usuario actualizarUsuario(Usuario usuario) throws ExcepcionPersistencia {
+        Log.i(LOG_NAME+"actualizUsu","Actualizando usuario ("+usuario.getId()+";"+usuario.getNombreUsuario()
+                +";"+usuario.getDeporte().getNombre()+")");
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CAMPO_USUARIOS_NOMBRE, usuario.getNombreUsuario());
+        contentValues.put(CAMPO_USUARIOS_DEPORTE, usuario.getDeporte().getId());
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        long resultado = sqLiteDatabase.update(TABLA_USUARIOS,contentValues,ID+"="+usuario.getId(),null);
+        if (resultado != 1) {
+            throw new ExcepcionPersistencia("Se actualizaron "+resultado+" filas en la tabla");
+        }
+        Usuario usuarioModificado = darUsuario(usuario.getId());
+        Log.i(LOG_NAME+"actualizUsu","Usuario actualizado a ("+usuarioModificado.getId()+";"+usuario.getNombreUsuario()
+                +";"+usuarioModificado.getDeporte().getNombre()+")");
+        return usuarioModificado;
+    }
+
+
+
+// -----------------------------------------------------
+// MÉTODOS INTERFAZ InterfazPersistencia
+// -----------------------------------------------------
+
+    // CREATE ------------------------------------------
     @Override
     public int crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador)
             throws  ExcepcionPersistencia {
@@ -330,34 +356,34 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
 
     // UPDATE ------------------------------------------
     @Override
-    public Usuario actualizarUsuario(Usuario usuario) throws ExcepcionPersistencia {
-        Log.i(LOG_NAME+"actualizUsu","Actualizando usuario ("+usuario.getId()+";"+usuario.getNombreUsuario()
-                +";"+usuario.getDeporte().getNombre()+")");
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(CAMPO_USUARIOS_NOMBRE, usuario.getNombreUsuario());
-        contentValues.put(CAMPO_USUARIOS_DEPORTE, usuario.getDeporte().getId());
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        long resultado = sqLiteDatabase.update(TABLA_USUARIOS,contentValues,ID+"="+usuario.getId(),null);
-        if (resultado != 1) {
-            throw new ExcepcionPersistencia("Se actualizaron "+resultado+" filas en la tabla");
-        }
-        Usuario usuarioModificado = darUsuario(usuario.getId());
-        Log.i(LOG_NAME+"actualizUsu","Usuario actualizado a ("+usuarioModificado.getId()+";"+usuario.getNombreUsuario()
-                +";"+usuarioModificado.getDeporte().getNombre()+")");
-        return usuarioModificado;
-    }
-
-
-
-
-
-
-
-
-    @Override
     public void actualizarEvento(Evento evento) throws ExcepcionPersistencia {
 
     }
 
+// -----------------------------------------------------
+// MÉTODOS OVERRIDE SQLiteOpenHelper
+// -----------------------------------------------------
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        Log.i(LOG_NAME + ".onCreate()", "Creando base de datos local por primera vez...");
 
+        String scriptSQL = singleton.darConfiguracion().getProperty(SCRIPT_INICIAL);
+        AssetManager assetManager = singleton.darContexto().getAssets();
+
+        try {
+            InputStream inputStream = assetManager.open(scriptSQL);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String consulta;
+            while ((consulta = bufferedReader.readLine()) != null) {
+                db.execSQL(consulta);
+            }
+        } catch (IOException e) {
+            Log.e(LOG_NAME + ".onCreate()", "Error al cargar " + SCRIPT_INICIAL + ": " + e.toString());
+        }
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
 }

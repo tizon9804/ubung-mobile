@@ -12,7 +12,6 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
-import com.ubung.tc.ubungmobile.modelo.persistencia.InterfazPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.ManejadorPersistencia;
@@ -46,7 +45,7 @@ public class Singleton implements InterfazUbung {
 
     private Usuario propietario;
 
-    private InterfazPersistencia manejadorPersistencia;
+    private ManejadorPersistencia manejadorPersistencia;
 
 // -----------------------------------------------------
 // CONSTRUCTOR (patrón singleton)
@@ -139,11 +138,11 @@ public class Singleton implements InterfazUbung {
     }
 
     @Override
-    public void inscribirseEvento(int idEvento, int idUsuario) {
-
+    public void inscribirseEvento(int idEvento) throws ExcepcionPersistencia {
+        manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
     }
 
-    // -----------------------------------------------------
+// -----------------------------------------------------
 // MÉTODOS INTERFAZ PERSISTENCIA
 // -----------------------------------------------------
 
@@ -155,16 +154,6 @@ public class Singleton implements InterfazUbung {
     @Override
     public Deporte darDeporte(int id) {
         return manejadorPersistencia.darDeporte(id);
-    }
-
-    @Override
-    public int crearUsuario(String nombreUsuario, Deporte deporte) throws ExcepcionPersistencia {
-        return manejadorPersistencia.crearUsuario(nombreUsuario, deporte);
-    }
-
-    @Override
-    public Usuario actualizarUsuario(Usuario usuario) throws ExcepcionPersistencia {
-        return manejadorPersistencia.actualizarUsuario(usuario);
     }
 
     @Override

@@ -30,26 +30,6 @@ public interface InterfazPersistencia {
     public Deporte darDeporte(int id);
 
     /**
-     * Crea un usuario en la aplicación
-     *
-     * @param nombreUsuario El nombre de usuario único con el que se registrará el usuario en la
-     *                      base de datos
-     * @param deporte El deporte inicial que practica el usuario
-     * @return El id del usurio recién creado
-     * @throws ExcepcionPersistencia en caso que el usuario ya exista o se presente algún otro error.
-     */
-    public int crearUsuario(String nombreUsuario, Deporte deporte) throws ExcepcionPersistencia;
-
-    /**
-     * Actualiza un usuario existente en la aplicación. El objeto usuario debe tener su identificador
-     * definido. Se actualizan todos los atributos del usuario en la base de datos por aquellos
-     * contenidos en el objeto.
-     * @param usuario objeto con la información del usuario a actualizar
-     * @throws ExcepcionPersistencia en caso que no se actualice ningún usuario
-     */
-    public Usuario actualizarUsuario(Usuario usuario) throws ExcepcionPersistencia;
-
-    /**
      * Devuelve todos los usuarios
      * @return Arreglo con todos los usuarios registrados, el arreglo estará vacío si no hay ningún
      * usuario registrado en la base de datos.
