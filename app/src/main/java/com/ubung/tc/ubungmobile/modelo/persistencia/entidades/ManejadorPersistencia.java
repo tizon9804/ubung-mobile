@@ -330,7 +330,9 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
 
     // UPDATE ------------------------------------------
     @Override
-    public void actualizarUsuario(Usuario usuario) throws ExcepcionPersistencia {
+    public Usuario actualizarUsuario(Usuario usuario) throws ExcepcionPersistencia {
+        Log.i(LOG_NAME+"actualizUsu","Actualizando usuario ("+usuario.getId()+";"+usuario.getNombreUsuario()
+                +";"+usuario.getDeporte().getNombre()+")");
         ContentValues contentValues = new ContentValues();
         contentValues.put(CAMPO_USUARIOS_NOMBRE, usuario.getNombreUsuario());
         contentValues.put(CAMPO_USUARIOS_DEPORTE, usuario.getDeporte().getId());
@@ -339,6 +341,10 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         if (resultado != 1) {
             throw new ExcepcionPersistencia("Se actualizaron "+resultado+" filas en la tabla");
         }
+        Usuario usuarioModificado = darUsuario(usuario.getId());
+        Log.i(LOG_NAME+"actualizUsu","Usuario actualizado a ("+usuarioModificado.getId()+";"+usuario.getNombreUsuario()
+                +";"+usuarioModificado.getDeporte().getNombre()+")");
+        return usuarioModificado;
     }
 
 

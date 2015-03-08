@@ -47,7 +47,7 @@ public interface InterfazPersistencia {
      * @param usuario objeto con la información del usuario a actualizar
      * @throws ExcepcionPersistencia en caso que no se actualice ningún usuario
      */
-    public void actualizarUsuario(Usuario usuario) throws ExcepcionPersistencia;
+    public Usuario actualizarUsuario(Usuario usuario) throws ExcepcionPersistencia;
 
     /**
      * Devuelve todos los usuarios

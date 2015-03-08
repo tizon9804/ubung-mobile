@@ -22,9 +22,15 @@ public class UsuarioLazyLoad extends Usuario {
     }
 
     @Override
+    public void setDeporte(Deporte deporte) {
+        idDeporte = deporte.getId();
+        super.setDeporte(deporte);
+    }
+
+    @Override
     public Deporte getDeporte() {
-        Log.i(LOG_NAME + "getDeporte", "Obteniendo deporte a través de LazyLoad");
         super.setDeporte(manejadorPersistencia.darDeporte(idDeporte));
+        Log.i(LOG_NAME + "getDeporte", "Deporte "+super.getDeporte().getNombre() +" obtendio a través de LazyLoad");
         return super.getDeporte();
     }
 
