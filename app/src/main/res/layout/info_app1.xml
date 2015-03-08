@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@android:color/holo_green_dark">
 
     <TextView
         android:layout_width="wrap_content"
@@ -12,8 +13,8 @@
         android:textColor="#ffffffff"
         android:textSize="14dp"
         android:layout_above="@+id/textView6"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="26dp" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="24dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,7 +22,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/flip"
         android:id="@+id/textView6"
-        android:layout_marginBottom="79dp"
+        android:layout_marginBottom="71dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
@@ -36,5 +37,13 @@
         android:textColor="#ffffffff"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="73dp" />
+        android:layout_marginTop="35dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:src="@drawable/info_img1"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

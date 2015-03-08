@@ -14,7 +14,7 @@
     <string name="title_activity_description_sport">Descripción</string>
     <string name="btn_continue">Continuar</string>
     <string name="title_activity_programacion">ProgramacionActivity</string>
-    <string name="flip">Deslice</string>
+    <string name="flip">&lt; Deslice</string>
     <string name="title_user">Danos Tu Nombre!</string>
     <string name="nombre_usuario">Nombre de Usuario</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -27,5 +27,7 @@
     <string name="title_activity_user_registation">user_registation</string>
     <string name="description_titlle">descripcion:</string>
     <string name="title_activity_descripcion_programacion">DescripcionProgramacionActivity</string>
+    <string name="title_organiza">Organiza:</string>
+    <string name="organiza">organiza</string>
 
 </resources>

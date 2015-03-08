@@ -1,14 +1,14 @@
 package com.ubung.tc.ubungmobile.controlador;
 
-import android.app.ActionBar;
+
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
+
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +20,6 @@ import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
 
-import java.util.ArrayList;
 
 
 public class DescriptionSportActivity extends ActionBarActivity {
@@ -58,13 +57,8 @@ public final static String LAST="last";
         String user = t.getStringExtra(MainUbungActivity.USER);
         String deporte = "Basketball";
         String descripcion = "hola";
+        Deporte deporteU = Singleton.getInstance().darDeporte(position);
 
-
-        ArrayList<Deporte> deportes = Singleton.getInstance().darDeportes();
-        Deporte deporteU=null;
-        if(deportes.size() > position){
-            deporteU=deportes.get(position);
-        }
 
         if(deporteU!=null){
             deporte=deporteU.getNombre();
@@ -102,14 +96,19 @@ public final static String LAST="last";
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     start.setTextColor(getResources().getColor(R.color.holo_green_light));
 
-                    try {
-                      Singleton.getInstance().modificarPropietario(usuario,deporteCrear);
-                    } catch (ExcepcionPersistencia excepcionPersistencia) {
-                        Toast.makeText(getBaseContext(),"Hubo un problema al Crear el usuario "+ usuario, Toast.LENGTH_LONG).show();
-                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     start.setTextColor(getResources().getColor(R.color.white));
+
+                    try {
+                        Singleton.getInstance().modificarPropietario(usuario,deporteCrear);
+                        Log.e("deporte_sin_moficar:", usuario + "##" + deporteCrear.getNombre() + ":");
+                        Usuario u= Singleton.getInstance().darPropietario();
+                        Log.e("deporte_modificado:", u.getNombreUsuario() + "##" + u.getDeporte().getNombre() + ":");
+
+                    } catch (ExcepcionPersistencia excepcionPersistencia) {
+                        Toast.makeText(getBaseContext(),"Hubo un problema al Crear el usuario "+ usuario, Toast.LENGTH_LONG).show();
+                    }
                 }
                 return false;
             }

@@ -4,19 +4,13 @@ import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Editable;
-import android.text.TextWatcher;
+
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.MainUbungActivity;
-import com.ubung.tc.ubungmobile.modelo.Singleton;
 
 
 public class GettingStartAdapter extends PagerAdapter {
@@ -60,7 +54,7 @@ public class GettingStartAdapter extends PagerAdapter {
         ((ViewPager) collection).addView(view, 0);
 
         if (position == 4) {
-           main.initGridView();
+           main.initView();
         }
         else if(position == 3){
             main.initUser_registation();

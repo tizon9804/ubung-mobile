@@ -8,20 +8,24 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
+
 import android.widget.EditText;
-import android.widget.GridView;
+
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
-import com.ubung.tc.ubungmobile.controlador.adapters.ButtonViewAdapter;
 import com.ubung.tc.ubungmobile.controlador.adapters.GettingStartAdapter;
 import com.ubung.tc.ubungmobile.modelo.InterfazUbung;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
+
+import java.util.ArrayList;
 
 
 public class MainUbungActivity extends Activity {
@@ -86,34 +90,55 @@ public class MainUbungActivity extends Activity {
         ubungThread.start();
     }
 
-    public void initGridView() {
+    // -----------------------------------------------------
+// carga informacion
+// -----------------------------------------------------
+    public void initView() {
+        //recorre la lista de deportes
+        final ArrayList<Deporte> deportes = Singleton.getInstance().darDeportes();
+        if (deportes != null) {
+            Integer[] identificadores = new Integer[deportes.size()];
+            for (int i = 0; i < deportes.size(); i++) {
+                //asigna la imagen del deporte a su respectivo boton
+                ImageButton button= (ImageButton) findViewById(getResources().getIdentifier(ChooseSportActivity.IMAGEBUTTON + i, "id", getPackageName()));
+                button.setImageResource(getResources().getIdentifier(deportes.get(i).getNombreArchivoImagen(), "drawable", getPackageName()));
+                final int finalI = i;
+                button.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
+                            //todo boton seleccionado
+                        }
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            String usuario= ((EditText)findViewById(R.id.user_name)).getText().toString();
+                            intentDescription(deportes.get(finalI).getId(),v.getId(),usuario);
+                        }
 
-            //String mDrawableName = "myimg";
-            // int resID = getResources().getIdentifier(mDrawableName , "drawable", getPackageName());
-            GridView g = (GridView) findViewById(R.id.grid_button_view);
+                        return true;
+                    }
+                });
+            }
 
-            //  Toast.makeText(this, usuario, Toast.LENGTH_LONG).show();
-            g.setAdapter(new ButtonViewAdapter(this));
-            g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String usuario = ((EditText) findViewById(R.id.user_name)).getText().toString().trim();
-                    intentDescription(position, id, usuario);
-                }
-            });
-
+        }
+        else{
+            Log.e("Carga deportes", " deportes[]:" + deportes);
+            Toast.makeText(this, "Hubo un problema al Cargar Deportes ", Toast.LENGTH_LONG).show();
+        }
 
     }
 
-    public void intentDescription(int position, long id, String usuario) {
+    public void intentDescription(int id_deporte, long id, String usuario) {
+        finish();
         Intent t = new Intent(this, DescriptionSportActivity.class);
-        t.putExtra(POSITION, position+"");
+        t.putExtra(POSITION, id_deporte+"");
         t.putExtra(ID, id+"");
         t.putExtra(USER, usuario);
         startActivity(t);
     }
+
+
+
 
 
     public void initUser_registation() {
