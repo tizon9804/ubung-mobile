@@ -171,7 +171,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
      * @param usuario objeto con la información del usuario a actualizar
      * @throws ExcepcionPersistencia en caso que no se actualice ningún usuario
      */
-    public Usuario actualizarUsuario(Usuario usuario) throws ExcepcionPersistencia {
+    public void actualizarUsuario(Usuario usuario) throws ExcepcionPersistencia {
         Log.i(LOG_NAME+"actualizUsu","Actualizando usuario ("+usuario.getId()+";"+usuario.getNombreUsuario()
                 +";"+usuario.getDeporte().getNombre()+")");
         ContentValues contentValues = new ContentValues();
@@ -182,10 +182,6 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         if (resultado != 1) {
             throw new ExcepcionPersistencia("Se actualizaron "+resultado+" filas en la tabla");
         }
-        Usuario usuarioModificado = darUsuario(usuario.getId());
-        Log.i(LOG_NAME+"actualizUsu","Usuario actualizado a ("+usuarioModificado.getId()+";"+usuario.getNombreUsuario()
-                +";"+usuarioModificado.getDeporte().getNombre()+")");
-        return usuarioModificado;
     }
 
 
@@ -357,7 +353,23 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
     // UPDATE ------------------------------------------
     @Override
     public void actualizarEvento(Evento evento) throws ExcepcionPersistencia {
+        Log.i(LOG_NAME+"actualizEve","Actualizando evento ("+evento.getId()+";"+evento.getZona().getNombre()
+                +";"+evento.getDeporte().getNombre()+";"+evento.getOrganizador().getNombreUsuario()+")");
 
+        ContentValues contentValues = new ContentValues();
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        contentValues.put(CAMPO_EVENTOS_IDORGANIZADOR, evento.getOrganizador().getId());
+        contentValues.put(CAMPO_EVENTOS_IDZONA, evento.getZona().getId());
+        contentValues.put(CAMPO_EVENTOS_FECHAHORA, formatoFecha.format(evento.getFechaHora()));
+        contentValues.put(CAMPO_EVENTOS_IDDEPORTE, evento.getDeporte().getId());
+
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        long resultado = sqLiteDatabase.update(TABLA_EVENTOS,contentValues,ID+"="+evento.getId(),null);
+
+        if (resultado != 1) {
+            throw new ExcepcionPersistencia("Se actualizaron "+resultado+" filas en la tabla");
+        }
     }
 
 // -----------------------------------------------------

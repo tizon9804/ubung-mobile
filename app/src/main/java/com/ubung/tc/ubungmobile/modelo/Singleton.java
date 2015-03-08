@@ -120,7 +120,7 @@ public class Singleton implements InterfazUbung {
                         +" a "+deporte.getNombre());
                 this.propietario.setDeporte(deporte);
             }
-            propietario = manejadorPersistencia.actualizarUsuario(propietario);
+            manejadorPersistencia.actualizarUsuario(propietario);
         } else {
             Log.i(LOG_NAME+".modifProp","Definiendo propietario...");
             if(nombreUsuario.length()<1) throw new ExcepcionPersistencia("El nombre de usuario tiene "+nombreUsuario.length()+" caracteres");
