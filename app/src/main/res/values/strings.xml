@@ -13,6 +13,7 @@
     <string name="btnstart">Empezar</string>
     <string name="title_activity_description_sport">Descripción</string>
     <string name="btn_continue">Continuar</string>
+    <string name="btn_inscripcion">Inscribir</string>
     <string name="title_activity_programacion">ProgramacionActivity</string>
     <string name="flip">&lt; Deslice</string>
     <string name="title_user">Danos Tu Nombre!</string>

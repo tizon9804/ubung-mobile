@@ -4,9 +4,7 @@ import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-
 import android.view.LayoutInflater;
-
 import android.view.View;
 
 import com.ubung.tc.ubungmobile.R;
@@ -28,7 +26,7 @@ public class GettingStartAdapter extends PagerAdapter {
 
     public Object instantiateItem(View collection, int position) {
 
-       LayoutInflater inflater = (LayoutInflater) collection.getContext()
+        LayoutInflater inflater = (LayoutInflater) collection.getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         int resId = 0;
@@ -54,9 +52,8 @@ public class GettingStartAdapter extends PagerAdapter {
         ((ViewPager) collection).addView(view, 0);
 
         if (position == 4) {
-           main.initView();
-        }
-        else if(position == 3){
+            main.initView();
+        } else if (position == 3) {
             main.initUser_registation();
 
 

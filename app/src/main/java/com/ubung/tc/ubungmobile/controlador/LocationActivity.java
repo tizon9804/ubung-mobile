@@ -1,12 +1,10 @@
 package com.ubung.tc.ubungmobile.controlador;
 
-import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
@@ -18,8 +16,6 @@ import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -28,10 +24,9 @@ import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
 import java.util.ArrayList;
-import java.util.logging.Handler;
 
 
-public class LocationActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener{
+public class LocationActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener {
 
 
     private GoogleMap map;
@@ -74,24 +69,21 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
      */
     private void crearZonas() {
         map.setOnMarkerClickListener(this);
-       ArrayList<Zona> zonas= Singleton.getInstance().darZonas();
-        markers=new ArrayList<Marker>();
-        for(Zona z:zonas){
-        LatLng latlng= new LatLng(z.getLatLongZoom()[0],z.getLatLongZoom()[1]);
-          Marker m=map.addMarker(new MarkerOptions()
-                  .position(latlng)
-                  .title(z.getNombre())
-                  .snippet(z.getNombre())
-                  .icon(BitmapDescriptorFactory.fromResource(R.drawable.zona_imagen)));
+        ArrayList<Zona> zonas = Singleton.getInstance().darZonas();
+        markers = new ArrayList<Marker>();
+        for (Zona z : zonas) {
+            LatLng latlng = new LatLng(z.getLatLongZoom()[0], z.getLatLongZoom()[1]);
+            Marker m = map.addMarker(new MarkerOptions()
+                    .position(latlng)
+                    .title(z.getNombre())
+                    .snippet(z.getNombre())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.zona_imagen)));
 
-          markers.add(m);
+            markers.add(m);
         }
 
 
-
     }
-
-
 
 
     public void darUbicacion(View v) {
@@ -107,19 +99,19 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         }
     }
 
-/*
-* evento que maneja cuando se hace click sobre una zona
- */
+    /*
+    * evento que maneja cuando se hace click sobre una zona
+     */
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        for(Marker m:markers){
+        for (Marker m : markers) {
             m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.zona_imagen));
         }
         marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.zona_imagen_focused));
         marker.showInfoWindow();
 
-      //  map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 17));
-        CameraPosition p= new CameraPosition(marker.getPosition(),17,0,0);
+        //  map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 17));
+        CameraPosition p = new CameraPosition(marker.getPosition(), 17, 0, 0);
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
 
@@ -129,8 +121,8 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         return true;
     }
 
-    private void animation(final Marker m){
-     final android.os.Handler handler= new android.os.Handler();
+    private void animation(final Marker m) {
+        final android.os.Handler handler = new android.os.Handler();
         final long startTime = SystemClock.uptimeMillis();
         final long duration = 2000;
 
@@ -150,14 +142,15 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                 double lng = t * markerLatLng.longitude + (1 - t) * startLatLng.longitude;
                 double lat = t * markerLatLng.latitude + (1 - t) * startLatLng.latitude;
                 m.setPosition(new LatLng(lat, lng));
-               // m.setIcon(BitmapDescriptorFactory.fromResource(getResources().getIdentifier("animacion" + elapsed%11, "drawable", getPackageName())));
+                // m.setIcon(BitmapDescriptorFactory.fromResource(getResources().getIdentifier("animacion" + elapsed%11, "drawable", getPackageName())));
                 if (t < 1.0) {
                     // Post again 16ms later.
                     handler.postDelayed(this, 16);
                 }
 
 
-            }});
+            }
+        });
 
 
     }

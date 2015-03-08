@@ -2,13 +2,11 @@ package com.ubung.tc.ubungmobile.controlador;
 
 
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,14 +19,13 @@ import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
 
 
-
 public class DescriptionSportActivity extends ActionBarActivity {
 
     // -----------------------------------------------------
 // Constantes
 // -----------------------------------------------------
 
-public final static String LAST="last";
+    public final static String LAST = "last";
     // -----------------------------------------------------
 // Atributos
 // -----------------------------------------------------
@@ -60,9 +57,9 @@ public final static String LAST="last";
         Deporte deporteU = Singleton.getInstance().darDeporte(position);
 
 
-        if(deporteU!=null){
-            deporte=deporteU.getNombre();
-            descripcion=deporteU.getDescripcion();
+        if (deporteU != null) {
+            deporte = deporteU.getNombre();
+            descripcion = deporteU.getDescripcion();
             TextView txtv = (TextView) findViewById(R.id.title_description_sport);
             txtv.setText("Enhorabuena! " + user + " has escogido " + deporte + ".");
             ImageView image = (ImageView) findViewById(R.id.image_sport_description);
@@ -70,14 +67,13 @@ public final static String LAST="last";
             image.setImageResource(imagePath);
             TextView txtdesc = (TextView) findViewById(R.id.description_sport);
             txtdesc.setText("Descripción:\n" + descripcion);
-        }
-        else{
-            Toast.makeText(this,"Hubo un problema al cargar el deporte.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Hubo un problema al cargar el deporte.", Toast.LENGTH_LONG).show();
         }
 
 
-        usuario=user;
-        deporteCrear=deporteU;
+        usuario = user;
+        deporteCrear = deporteU;
     }
 
     private void initButtons() {
@@ -101,13 +97,13 @@ public final static String LAST="last";
                     start.setTextColor(getResources().getColor(R.color.white));
 
                     try {
-                        Singleton.getInstance().modificarPropietario(usuario,deporteCrear);
+                        Singleton.getInstance().modificarPropietario(usuario, deporteCrear);
                         Log.e("deporte_sin_moficar:", usuario + "##" + deporteCrear.getNombre() + ":");
-                        Usuario u= Singleton.getInstance().darPropietario();
+                        Usuario u = Singleton.getInstance().darPropietario();
                         Log.e("deporte_modificado:", u.getNombreUsuario() + "##" + u.getDeporte().getNombre() + ":");
 
                     } catch (ExcepcionPersistencia excepcionPersistencia) {
-                        Toast.makeText(getBaseContext(),"Hubo un problema al Crear el usuario "+ usuario, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Hubo un problema al Crear el usuario " + usuario, Toast.LENGTH_LONG).show();
                     }
                 }
                 return false;

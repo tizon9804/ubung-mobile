@@ -6,15 +6,11 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-
-
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-
 import android.widget.EditText;
-
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,10 +45,9 @@ public class MainUbungActivity extends Activity {
         singleton.inicializar(this.getApplicationContext());
         this.singleton = singleton;
 
-        if(singleton.darPropietario()!=null){
+        if (singleton.darPropietario() != null) {
             animationUbung();
-        }
-        else {
+        } else {
             setContentView(R.layout.activity_main_ubung);
             GettingStartAdapter adapter = new GettingStartAdapter(this);
             ViewPager myPager = (ViewPager) findViewById(R.id.gettingstartpager);
@@ -65,23 +60,23 @@ public class MainUbungActivity extends Activity {
     private void animationUbung() {
 
         setContentView(R.layout.inicio_ubung);
-        TextView deslice= (TextView)findViewById(R.id.deslice_inicio);
+        TextView deslice = (TextView) findViewById(R.id.deslice_inicio);
         deslice.setText("");
-        ubungThread = new Thread(){
+        ubungThread = new Thread() {
             @Override
-            public void run(){
-                try{
+            public void run() {
+                try {
                     int waited = 0;
-                    while(active && (waited < ubungTime)){
+                    while (active && (waited < ubungTime)) {
                         sleep(100);
-                        if(active){
+                        if (active) {
                             waited += 100;
                         }
 
                     }
-                } catch(InterruptedException e){
+                } catch (InterruptedException e) {
 
-                } finally{
+                } finally {
                     openMap();
                 }
 
@@ -100,7 +95,7 @@ public class MainUbungActivity extends Activity {
             Integer[] identificadores = new Integer[deportes.size()];
             for (int i = 0; i < deportes.size(); i++) {
                 //asigna la imagen del deporte a su respectivo boton
-                ImageButton button= (ImageButton) findViewById(getResources().getIdentifier(ChooseSportActivity.IMAGEBUTTON + i, "id", getPackageName()));
+                ImageButton button = (ImageButton) findViewById(getResources().getIdentifier(ChooseSportActivity.IMAGEBUTTON + i, "id", getPackageName()));
                 button.setImageResource(getResources().getIdentifier(deportes.get(i).getNombreArchivoImagen(), "drawable", getPackageName()));
                 final int finalI = i;
                 button.setOnTouchListener(new View.OnTouchListener() {
@@ -111,8 +106,8 @@ public class MainUbungActivity extends Activity {
                             //todo boton seleccionado
                         }
                         if (event.getAction() == MotionEvent.ACTION_UP) {
-                            String usuario= ((EditText)findViewById(R.id.user_name)).getText().toString();
-                            intentDescription(deportes.get(finalI).getId(),v.getId(),usuario);
+                            String usuario = ((EditText) findViewById(R.id.user_name)).getText().toString();
+                            intentDescription(deportes.get(finalI).getId(), v.getId(), usuario);
                         }
 
                         return true;
@@ -120,8 +115,7 @@ public class MainUbungActivity extends Activity {
                 });
             }
 
-        }
-        else{
+        } else {
             Log.e("Carga deportes", " deportes[]:" + deportes);
             Toast.makeText(this, "Hubo un problema al Cargar Deportes ", Toast.LENGTH_LONG).show();
         }
@@ -131,23 +125,20 @@ public class MainUbungActivity extends Activity {
     public void intentDescription(int id_deporte, long id, String usuario) {
         finish();
         Intent t = new Intent(this, DescriptionSportActivity.class);
-        t.putExtra(POSITION, id_deporte+"");
-        t.putExtra(ID, id+"");
+        t.putExtra(POSITION, id_deporte + "");
+        t.putExtra(ID, id + "");
         t.putExtra(USER, usuario);
         startActivity(t);
     }
 
 
-
-
-
     public void initUser_registation() {
-        EditText user= (EditText)findViewById(R.id.user_name);
+        EditText user = (EditText) findViewById(R.id.user_name);
         user.requestFocus();
         user.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                InputMethodManager imgr=(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                 return true;
             }
@@ -156,9 +147,9 @@ public class MainUbungActivity extends Activity {
     }
 
 
-    private void openMap(){
+    private void openMap() {
         finish();
-        startActivity(new Intent(this,LocationActivity.class));
+        startActivity(new Intent(this, LocationActivity.class));
     }
 
 

@@ -17,12 +17,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @SuppressWarnings("ALL")
-public class ListaProgramacionAdapter extends BaseAdapter {
+public class ListaInscritosAdapter extends BaseAdapter {
 
     private Context cnt;
     private ArrayList<Evento> eventos;
 
-    public ListaProgramacionAdapter(Context c) {
+    public ListaInscritosAdapter(Context c) {
         cnt = c;
         geteventos();
     }

@@ -62,7 +62,7 @@
             android:label="@string/title_activity_user_registation" >
         </activity>
         <activity
-            android:name=".DescripcionProgramacionActivity"
+            android:name=".controlador.DescripcionProgramacionActivity"
             android:label="@string/title_activity_descripcion_programacion" >
         </activity>
     </application>

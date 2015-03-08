@@ -2,9 +2,6 @@ package com.ubung.tc.ubungmobile.controlador;
 
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
-import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,11 +9,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
 
 /*
@@ -24,8 +19,8 @@ import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
  */
 public class PanelMapFragment extends Fragment {
 
-    public final static String NORMAL="_normal";
-    public final static String FOCUSED="_focused";
+    public final static String NORMAL = "_normal";
+    public final static String FOCUSED = "_focused";
 
 
     @Override
@@ -50,8 +45,8 @@ public class PanelMapFragment extends Fragment {
         });
 //boton deporte
         final Button button2 = (Button) view.findViewById(R.id.imageButton_sport);
-        final Usuario u=Singleton.getInstance().darPropietario();
-        if(u!=null) {
+        final Usuario u = Singleton.getInstance().darPropietario();
+        if (u != null) {
             button2.setBackgroundResource(getResources().getIdentifier(u.getDeporte().getNombreArchivoImagen() + NORMAL, "drawable", getActivity().getPackageName()));
             button2.setOnTouchListener(new View.OnTouchListener() {
 
@@ -91,19 +86,20 @@ public class PanelMapFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-     //   try {
-         //   finalize();
+        //   try {
+        //   finalize();
         //    getActivity().finish();
         //    Intent intent = new Intent(Intent.ACTION_MAIN);
         //    intent.addCategory(Intent.CATEGORY_HOME);
-         //   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //    startActivity(intent);
-       //     }
-      //  catch(Throwable throwable){
-      //          throwable.printStackTrace();
-      //      }
+        //     }
+        //  catch(Throwable throwable){
+        //          throwable.printStackTrace();
+        //      }
 
-        }
+    }
+
     public void nextActivity(Class clase) {
         try {
             finalize();

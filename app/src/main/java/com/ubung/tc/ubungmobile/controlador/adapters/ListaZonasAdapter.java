@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
@@ -54,16 +55,16 @@ public class ListaZonasAdapter extends BaseAdapter {
 
         // Set data into the view.
         TextView nombreZona = (TextView) rowView.findViewById(R.id.nombreZona);
-        Zona z=  zonas.get(position);
+        Zona z = zonas.get(position);
         nombreZona.setText(z.getNombre());
         return rowView;
     }
 
     // obtener las imagenes de los deportes
     private void getZonas() {
-        zonas= Singleton.getInstance().darZonas();
+        zonas = Singleton.getInstance().darZonas();
         if (zonas == null) {
-            Log.e("Carga zonas"," zonas[]:"+ zonas);
+            Log.e("Carga zonas", " zonas[]:" + zonas);
             Toast.makeText(cnt, "Hubo un problema al Cargar zonas ", Toast.LENGTH_LONG).show();
         }
 

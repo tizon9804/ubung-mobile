@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ListaZonasAdapter;
 
@@ -28,15 +29,15 @@ public class ListaZonasActivity extends ActionBarActivity {
 // carga informacion
 // -----------------------------------------------------
     public void initListView() {
-       ListView g = (ListView) findViewById(R.id.listViewZonas);
+        ListView g = (ListView) findViewById(R.id.listViewZonas);
 
         g.setAdapter(new ListaZonasAdapter(this));
         g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-              //  String usuario = Singleton.getInstance().darPropietario().getNombreUsuario();
-                TextView t= (TextView)view.findViewById(R.id.nombreZona);
+                //  String usuario = Singleton.getInstance().darPropietario().getNombreUsuario();
+                TextView t = (TextView) view.findViewById(R.id.nombreZona);
                 intentDescription(t.getText().toString());
             }
         });
@@ -46,7 +47,7 @@ public class ListaZonasActivity extends ActionBarActivity {
     public void intentDescription(String zona) {
         finish();
         Intent t = new Intent(this, ProgramacionActivity.class);
-        t.putExtra(ZONA,zona);
+        t.putExtra(ZONA, zona);
         startActivity(t);
     }
 

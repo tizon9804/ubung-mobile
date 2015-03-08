@@ -7,23 +7,23 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.ubung.tc.ubungmobile.DescripcionProgramacionActivity;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ListaProgramacionAdapter;
 
 
 public class ProgramacionActivity extends ActionBarActivity {
 
-    private static final String  PROGRAMACION = "Programación: ";
+    public static final String PROGRAMACION = "Programación: ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_programacion);
-        String nameZona=getIntent().getStringExtra(ListaZonasActivity.ZONA);
-        setTitle(PROGRAMACION+nameZona);
+        String nameZona = getIntent().getStringExtra(ListaZonasActivity.ZONA);
+        setTitle(PROGRAMACION + nameZona);
         initListView();
     }
+
     // -----------------------------------------------------
 // carga informacion
 // -----------------------------------------------------
@@ -35,19 +35,19 @@ public class ProgramacionActivity extends ActionBarActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-           //     String usuario = Singleton.getInstance().darPropietario().getNombreUsuario();
-                intentDescription();
+
+                intentDescription(position);
             }
         });
 
     }
 
-    public void intentDescription() {
-       finish();
-       Intent t = new Intent(this, DescripcionProgramacionActivity.class);
-       startActivity(t);
+    public void intentDescription(int position) {
+        finish();
+        Intent t = new Intent(this, DescripcionProgramacionActivity.class);
+        t.putExtra(MainUbungActivity.POSITION, position + "");
+        startActivity(t);
     }
-
 
 
     @Override

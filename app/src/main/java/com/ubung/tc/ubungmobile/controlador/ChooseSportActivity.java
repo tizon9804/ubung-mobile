@@ -7,13 +7,11 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 
 import java.util.ArrayList;
@@ -57,7 +55,7 @@ public class ChooseSportActivity extends FragmentActivity {
             Integer[] identificadores = new Integer[deportes.size()];
             for (int i = 0; i < deportes.size(); i++) {
                 //asigna la imagen del deporte a su respectivo boton
-                ImageButton button= (ImageButton) findViewById(getResources().getIdentifier(IMAGEBUTTON + i, "id", getPackageName()));
+                ImageButton button = (ImageButton) findViewById(getResources().getIdentifier(IMAGEBUTTON + i, "id", getPackageName()));
                 button.setImageResource(getResources().getIdentifier(deportes.get(i).getNombreArchivoImagen(), "drawable", getPackageName()));
                 final int finalI = i;
                 button.setOnTouchListener(new View.OnTouchListener() {
@@ -65,23 +63,22 @@ public class ChooseSportActivity extends FragmentActivity {
                     public boolean onTouch(View v, MotionEvent event) {
                         if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
-                          //todo boton seleccionado
+                            //todo boton seleccionado
                         }
                         if (event.getAction() == MotionEvent.ACTION_UP) {
-                            String usuario= Singleton.getInstance().darPropietario().getNombreUsuario();
-                            intentDescription(deportes.get(finalI).getId(),v.getId(),usuario);
+                            String usuario = Singleton.getInstance().darPropietario().getNombreUsuario();
+                            intentDescription(deportes.get(finalI).getId(), v.getId(), usuario);
                         }
 
                         return true;
                     }
                 });
             }
-            imgDeportes= identificadores;
-        }
-        else{
+            imgDeportes = identificadores;
+        } else {
             Log.e("Carga deportes", " deportes[]:" + deportes);
             Toast.makeText(this, "Hubo un problema al Cargar Deportes ", Toast.LENGTH_LONG).show();
-            imgDeportes= new Integer[]{R.drawable.ic_launcher,R.drawable.ic_launcher};
+            imgDeportes = new Integer[]{R.drawable.ic_launcher, R.drawable.ic_launcher};
         }
 
     }
@@ -89,14 +86,11 @@ public class ChooseSportActivity extends FragmentActivity {
     public void intentDescription(int id_deporte, long id, String usuario) {
         finish();
         Intent t = new Intent(this, DescriptionSportActivity.class);
-        t.putExtra(POSITION, id_deporte+"");
-        t.putExtra(ID, id+"");
+        t.putExtra(POSITION, id_deporte + "");
+        t.putExtra(ID, id + "");
         t.putExtra(USER, usuario);
         startActivity(t);
     }
-
-
-
 
 
 }
