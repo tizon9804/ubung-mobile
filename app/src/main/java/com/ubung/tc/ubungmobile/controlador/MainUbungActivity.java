@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -38,6 +39,7 @@ public class MainUbungActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Singleton singleton = Singleton.getInstance();
         singleton.inicializar(this.getApplicationContext());

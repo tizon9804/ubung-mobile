@@ -17,15 +17,17 @@ import java.util.ArrayList;
 public class ListaZonasAdapter extends BaseAdapter {
 
     private Context cnt;
+    private ArrayList<Zona> zonas;
 
     public ListaZonasAdapter(Context c) {
         cnt = c;
+        getZonas();
     }
 
 
     @Override
     public int getCount() {
-        return getZonas().size();
+        return zonas.size();
     }
 
     @Override
@@ -52,19 +54,19 @@ public class ListaZonasAdapter extends BaseAdapter {
 
         // Set data into the view.
         TextView nombreZona = (TextView) rowView.findViewById(R.id.nombreZona);
-        Zona z=  getZonas().get(position);
+        Zona z=  zonas.get(position);
         nombreZona.setText(z.getNombre());
         return rowView;
     }
 
     // obtener las imagenes de los deportes
-    private ArrayList<Zona> getZonas() {
-        ArrayList<Zona> zonas= Singleton.getInstance().darZonas();
+    private void getZonas() {
+        zonas= Singleton.getInstance().darZonas();
         if (zonas == null) {
             Log.e("Carga zonas"," zonas[]:"+ zonas);
             Toast.makeText(cnt, "Hubo un problema al Cargar zonas ", Toast.LENGTH_LONG).show();
         }
-        return zonas;
+
     }
 
 }

@@ -18,15 +18,18 @@ import java.util.ArrayList;
 public class ButtonViewAdapter extends BaseAdapter {
 
     private Context cnt;
+    private Integer[] imgDeportes;
 
     public ButtonViewAdapter(Context c) {
+
         cnt = c;
+        getDeportes();
     }
 
 
     @Override
     public int getCount() {
-        return getDeportes().length;
+        return imgDeportes.length;
     }
 
     @Override
@@ -51,24 +54,24 @@ public class ButtonViewAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(getDeportes()[position]);
+        imageView.setImageResource(imgDeportes[position]);
         return imageView;
     }
 
     // obtener las imagenes de los deportes
-    private Integer[] getDeportes() {
+    private void getDeportes() {
         ArrayList<Deporte> deportes = Singleton.getInstance().darDeportes();
         if (deportes != null) {
             Integer[] identificadores = new Integer[deportes.size()];
             for (int i = 0; i < deportes.size(); i++) {
                 identificadores[i] = cnt.getResources().getIdentifier(deportes.get(i).getNombreArchivoImagen(), "drawable", cnt.getPackageName());
             }
-            return identificadores;
+            imgDeportes= identificadores;
         }
         else{
             Log.e("Carga deportes"," deportes[]:"+ deportes);
             Toast.makeText(cnt, "Hubo un problema al Cargar Deportes ", Toast.LENGTH_LONG).show();
-            return new Integer[]{R.drawable.ic_launcher,R.drawable.ic_launcher};
+            imgDeportes= new Integer[]{R.drawable.ic_launcher,R.drawable.ic_launcher};
         }
     }
 

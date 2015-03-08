@@ -19,16 +19,18 @@ import java.util.ArrayList;
 public class ListaProgramacionAdapter extends BaseAdapter {
 
     private Context cnt;
+    private ArrayList<Evento> eventos;
 
     public ListaProgramacionAdapter(Context c) {
         cnt = c;
+        geteventos();
     }
 
 
     @Override
     public int getCount() {
-       if(geteventos()!=null)
-           return geteventos().size();
+       if(eventos!=null)
+           return eventos.size();
            else
            return 0;
 
@@ -54,24 +56,24 @@ public class ListaProgramacionAdapter extends BaseAdapter {
             // Create a new view into the list.
             LayoutInflater inflater = (LayoutInflater) cnt
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.activity_programacion, parent, false);
+            rowView = inflater.inflate(R.layout.list_row_programacion, parent, false);
         }
 
         // Set data into the view.
-        TextView nombreZona = (TextView) rowView.findViewById(R.id.nombreZona);
-        Evento z=  geteventos().get(position);
+        TextView nombreZona = (TextView) rowView.findViewById(R.id.nombre_deporte_programacion);
+        Evento z=  eventos.get(position);
         nombreZona.setText(z.getDeporte().getNombre());
         return rowView;
     }
 
     // obtener las imagenes de los deportes
-    private ArrayList<Evento> geteventos() {
-        ArrayList<Evento> eventos= Singleton.getInstance().darEventos();
+    private void geteventos() {
+        eventos= Singleton.getInstance().darEventos();
         if (eventos == null) {
             Log.e("Carga eventos"," eventos[]:"+ eventos);
             Toast.makeText(cnt, "Hubo un problema al Cargar eventos ", Toast.LENGTH_LONG).show();
         }
-        return eventos;
+
     }
 
 }

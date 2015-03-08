@@ -91,17 +91,17 @@ public class PanelMapFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        try {
-            finalize();
-            getActivity().finish();
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            }
-        catch(Throwable throwable){
-                throwable.printStackTrace();
-            }
+     //   try {
+         //   finalize();
+        //    getActivity().finish();
+        //    Intent intent = new Intent(Intent.ACTION_MAIN);
+        //    intent.addCategory(Intent.CATEGORY_HOME);
+         //   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //    startActivity(intent);
+       //     }
+      //  catch(Throwable throwable){
+      //          throwable.printStackTrace();
+      //      }
 
         }
     public void nextActivity(Class clase) {
