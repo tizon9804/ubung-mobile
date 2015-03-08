@@ -122,7 +122,7 @@ public class MainUbungActivity extends Activity {
 
     }
 
-    public void intentDescription(int id_deporte, long id, String usuario) {
+    public void intentDescription(Long id_deporte, long id, String usuario) {
         finish();
         Intent t = new Intent(this, DescriptionSportActivity.class);
         t.putExtra(POSITION, id_deporte + "");

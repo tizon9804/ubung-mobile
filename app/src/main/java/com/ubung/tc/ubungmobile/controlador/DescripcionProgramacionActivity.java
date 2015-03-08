@@ -37,7 +37,7 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
             ImageView img = (ImageView) findViewById(R.id.image_descripcion_programacion);
             TextClock hora = (TextClock) findViewById(R.id.textClock_descripcion_programacion);
             ListView inscritos=(ListView) findViewById(R.id.listView_inscritos);
-            ListaInscritosAdapter l= new ListaInscritosAdapter(this);
+            ListaInscritosAdapter l= new ListaInscritosAdapter(this,v);
             inscritos.setAdapter(l);
             inscritos.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -97,7 +97,7 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
         super.onBackPressed();
         finish();
         Intent t = new Intent(this, ProgramacionActivity.class);
-        t.putExtra(ListaZonasActivity.ZONA, true);
+        t.putExtra(ListaZonasActivity.ZONA, getIntent().getStringExtra(ListaZonasActivity.ZONA));
         startActivity(t);
 
     }

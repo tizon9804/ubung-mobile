@@ -11,27 +11,33 @@ import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
+import com.ubung.tc.ubungmobile.modelo.persistencia.Tupla;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-@SuppressWarnings("ALL")
+
 public class ListaInscritosAdapter extends BaseAdapter {
 
     private Context cnt;
-    private ArrayList<Evento> eventos;
+    private Evento evento;
+    private ArrayList<Tupla<Usuario, Date>> usuarios;
+   // private ArrayList usuarios;
 
-    public ListaInscritosAdapter(Context c) {
+    public ListaInscritosAdapter(Context c, Evento v) {
         cnt = c;
-        geteventos();
+        evento=v;
+        getUsuarios();
+
     }
 
 
     @Override
     public int getCount() {
-        if (eventos != null)
-            return eventos.size();
+        if (usuarios != null)
+            return usuarios.size();
         else
             return 0;
 
@@ -57,28 +63,24 @@ public class ListaInscritosAdapter extends BaseAdapter {
             // Create a new view into the list.
             LayoutInflater inflater = (LayoutInflater) cnt
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.list_row_programacion, parent, false);
+            rowView = inflater.inflate(R.layout.list_row_incritos, parent, false);
         }
 
         // Set data into the view.
-        TextView nombreZona = (TextView) rowView.findViewById(R.id.nombre_deporte_programacion);
-        TextView inscritpsZona = (TextView) rowView.findViewById(R.id.inscritos_programacion);
-        TextView horaZona = (TextView) rowView.findViewById(R.id.hora_programacion);
-        Evento z = eventos.get(position);
-        Date d = z.getFechaHora();
-        String hora = d.getHours() + ":" + d.getMinutes();
-        nombreZona.setText(z.getDeporte().getNombre());
-        horaZona.setText(hora);
-        inscritpsZona.setText(": " + z.getInscritos().size());
+        TextView inscritosZona = (TextView) rowView.findViewById(R.id.inscritos_nombre);
+        Usuario z = usuarios.get(position).getIzq();
+        Log.e("inscritos:",z+"");
+        inscritosZona.setText(z.getNombreUsuario());
         return rowView;
     }
 
-    // obtener las imagenes de los deportes
-    private void geteventos() {
-        eventos = Singleton.getInstance().darEventos();
-        if (eventos == null) {
-            Log.e("Carga eventos", " eventos[]:" + null);
-            Toast.makeText(cnt, "Hubo un problema al Cargar eventos ", Toast.LENGTH_LONG).show();
+    // obtener las imagenes de los usuarios
+    private void getUsuarios() {
+        usuarios = evento.getInscritos();
+        Log.e("inscritos:",usuarios.size()+"");
+        if (usuarios == null) {
+            Log.e("Carga inscritos", " inscritos[]:" + null);
+            Toast.makeText(cnt, "Hubo un problema al Cargar Inscritos ", Toast.LENGTH_LONG).show();
         }
 
     }

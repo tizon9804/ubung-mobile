@@ -10,7 +10,10 @@
         android:text="usuario"
         android:id="@+id/inscritos_nombre"
         android:layout_gravity="left|center_vertical"
-        android:layout_alignParentTop="true"/>
+        android:textColor="#ffffffff"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="26dp" />
 
 
 </RelativeLayout>

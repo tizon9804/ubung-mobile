@@ -6,8 +6,9 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text=""
+        android:text="zona1"
         android:id="@+id/nombreZona"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffffff" />
 </RelativeLayout>

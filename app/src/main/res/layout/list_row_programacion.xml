@@ -12,7 +12,8 @@
         android:layout_gravity="left|center_vertical"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/inscritos_programacion"
-        android:layout_alignEnd="@+id/inscritos_programacion" />
+        android:layout_alignEnd="@+id/inscritos_programacion"
+        android:textColor="#ffffffff" />
 
     <TextView
         android:layout_width="100dp"
@@ -26,7 +27,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:textSize="30dp"
-        android:textIsSelectable="true" />
+        android:textIsSelectable="true"
+        android:textColor="#ffffffff" />
 
     <TextView
         android:layout_width="50dp"
@@ -37,7 +39,8 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_alignTop="@+id/image_inscritos"
         android:layout_toRightOf="@+id/image_inscritos"
-        android:layout_toEndOf="@+id/image_inscritos" />
+        android:layout_toEndOf="@+id/image_inscritos"
+        android:textColor="#ffffffff" />
 
     <ImageView
         android:layout_width="30dp"

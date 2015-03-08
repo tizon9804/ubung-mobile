@@ -14,12 +14,13 @@ import com.ubung.tc.ubungmobile.controlador.adapters.ListaProgramacionAdapter;
 public class ProgramacionActivity extends ActionBarActivity {
 
     public static final String PROGRAMACION = "Programación: ";
+    private String nameZona;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_programacion);
-        String nameZona = getIntent().getStringExtra(ListaZonasActivity.ZONA);
+        nameZona = getIntent().getStringExtra(ListaZonasActivity.ZONA);
         setTitle(PROGRAMACION + nameZona);
         initListView();
     }
@@ -45,6 +46,7 @@ public class ProgramacionActivity extends ActionBarActivity {
     public void intentDescription(int position) {
         finish();
         Intent t = new Intent(this, DescripcionProgramacionActivity.class);
+        t.putExtra(ListaZonasActivity.ZONA, nameZona);
         t.putExtra(MainUbungActivity.POSITION, position + "");
         startActivity(t);
     }
