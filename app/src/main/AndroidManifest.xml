@@ -61,6 +61,10 @@
             android:name=".controlador.User_registation"
             android:label="@string/title_activity_user_registation" >
         </activity>
+        <activity
+            android:name=".DescripcionProgramacionActivity"
+            android:label="@string/title_activity_descripcion_programacion" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,13 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent" android:descendantFocusability="blocksDescendants"
+   >
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text=""
+        android:text="deporte"
         android:id="@+id/nombre_deporte_programacion"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_gravity="left|center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/inscritos_programacion"
+        android:layout_alignEnd="@+id/inscritos_programacion" />
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="hora"
+        android:gravity="center"
+        android:id="@+id/hora_programacion"
+        android:layout_gravity="right|center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="30dp"
+        android:textIsSelectable="true" />
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="9"
+        android:id="@+id/inscritos_programacion"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_alignTop="@+id/image_inscritos"
+        android:layout_toRightOf="@+id/image_inscritos"
+        android:layout_toEndOf="@+id/image_inscritos" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/image_inscritos"
+        android:background="@drawable/img_inscritos"
+        android:layout_gravity="left|bottom"
+        android:layout_below="@+id/nombre_deporte_programacion"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

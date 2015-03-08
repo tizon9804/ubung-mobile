@@ -1,23 +1,20 @@
 package com.ubung.tc.ubungmobile.controlador;
 
-import android.app.ProgressDialog;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ListView;
-
+import android.widget.TextView;
 import com.ubung.tc.ubungmobile.R;
-import com.ubung.tc.ubungmobile.controlador.adapters.ButtonViewAdapter;
 import com.ubung.tc.ubungmobile.controlador.adapters.ListaZonasAdapter;
-import com.ubung.tc.ubungmobile.modelo.Singleton;
+
 
 public class ListaZonasActivity extends ActionBarActivity {
+
+    public static final String ZONA = "zona";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +35,18 @@ public class ListaZonasActivity extends ActionBarActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String usuario = Singleton.getInstance().darPropietario().getNombreUsuario();
-                intentDescription();
+              //  String usuario = Singleton.getInstance().darPropietario().getNombreUsuario();
+                TextView t= (TextView)view.findViewById(R.id.nombreZona);
+                intentDescription(t.getText().toString());
             }
         });
 
     }
 
-    public void intentDescription() {
+    public void intentDescription(String zona) {
         finish();
         Intent t = new Intent(this, ProgramacionActivity.class);
+        t.putExtra(ZONA,zona);
         startActivity(t);
     }
 

@@ -7,18 +7,21 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.ubung.tc.ubungmobile.DescripcionProgramacionActivity;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ListaProgramacionAdapter;
-import com.ubung.tc.ubungmobile.controlador.adapters.ListaZonasAdapter;
-import com.ubung.tc.ubungmobile.modelo.Singleton;
 
 
 public class ProgramacionActivity extends ActionBarActivity {
+
+    private static final String  PROGRAMACION = "Programación: ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_programacion);
+        String nameZona=getIntent().getStringExtra(ListaZonasActivity.ZONA);
+        setTitle(PROGRAMACION+nameZona);
         initListView();
     }
     // -----------------------------------------------------
@@ -32,7 +35,7 @@ public class ProgramacionActivity extends ActionBarActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String usuario = Singleton.getInstance().darPropietario().getNombreUsuario();
+           //     String usuario = Singleton.getInstance().darPropietario().getNombreUsuario();
                 intentDescription();
             }
         });
@@ -40,9 +43,9 @@ public class ProgramacionActivity extends ActionBarActivity {
     }
 
     public void intentDescription() {
-     //   finish();
-      //  Intent t = new Intent(this, ProgramacionActivity.class);
-       // startActivity(t);
+       finish();
+       Intent t = new Intent(this, DescripcionProgramacionActivity.class);
+       startActivity(t);
     }
 
 

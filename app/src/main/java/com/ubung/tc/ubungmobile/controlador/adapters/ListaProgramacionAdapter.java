@@ -12,10 +12,12 @@ import android.widget.Toast;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
+
 
 import java.util.ArrayList;
+import java.util.Date;
 
+@SuppressWarnings("ALL")
 public class ListaProgramacionAdapter extends BaseAdapter {
 
     private Context cnt;
@@ -61,8 +63,14 @@ public class ListaProgramacionAdapter extends BaseAdapter {
 
         // Set data into the view.
         TextView nombreZona = (TextView) rowView.findViewById(R.id.nombre_deporte_programacion);
+        TextView inscritpsZona = (TextView) rowView.findViewById(R.id.inscritos_programacion);
+        TextView horaZona = (TextView) rowView.findViewById(R.id.hora_programacion);
         Evento z=  eventos.get(position);
+        Date d= z.getFechaHora();
+        String hora= d.getHours()+":"+d.getMinutes();
         nombreZona.setText(z.getDeporte().getNombre());
+        horaZona.setText(hora);
+        inscritpsZona.setText(": " + z.getInscritos().size());
         return rowView;
     }
 
@@ -70,7 +78,7 @@ public class ListaProgramacionAdapter extends BaseAdapter {
     private void geteventos() {
         eventos= Singleton.getInstance().darEventos();
         if (eventos == null) {
-            Log.e("Carga eventos"," eventos[]:"+ eventos);
+            Log.e("Carga eventos"," eventos[]:"+ null);
             Toast.makeText(cnt, "Hubo un problema al Cargar eventos ", Toast.LENGTH_LONG).show();
         }
 

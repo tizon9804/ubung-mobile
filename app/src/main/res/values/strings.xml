@@ -26,5 +26,6 @@
     <string name="bienvenida2">Funciones de Übung</string>
     <string name="title_activity_user_registation">user_registation</string>
     <string name="description_titlle">descripcion:</string>
+    <string name="title_activity_descripcion_programacion">DescripcionProgramacionActivity</string>
 
 </resources>
