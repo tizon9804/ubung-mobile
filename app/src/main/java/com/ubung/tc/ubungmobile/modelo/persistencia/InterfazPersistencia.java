@@ -7,7 +7,6 @@ import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by cvargasc on 4/03/15.
@@ -65,18 +64,6 @@ public interface InterfazPersistencia {
      * @return La zona con el id especificado. Null si no existe ninguna zona con ese id
      */
     public Zona darZona(long id);
-
-    /**
-     * Crea un nuevo evento en la aplicación
-     * @param fechaHora La fecha y hora en la cual se desarrollará el evento
-     * @param zona La zona en la cual se desarrollará el evento
-     * @param deporte El deporte que se practicará
-     * @param organizador El usuario organizador del evento
-     * @throws ExcepcionPersistencia en caso que se presente algún error al guardar el evento.
-     * @return El id del evento recién creado
-     */
-    public long crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador)
-            throws  ExcepcionPersistencia;
 
     /**
      * Actualiza un evento existente en la aplicación. El objeto evento debe tener su identificador

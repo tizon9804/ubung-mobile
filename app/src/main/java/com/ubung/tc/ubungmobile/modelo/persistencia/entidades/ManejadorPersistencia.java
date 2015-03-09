@@ -153,6 +153,35 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         return resultado;
     }
 
+    /**
+     * Crea un nuevo evento en la aplicación
+     * @param fechaHora La fecha y hora en la cual se desarrollará el evento
+     * @param zona La zona en la cual se desarrollará el evento
+     * @param deporte El deporte que se practicará
+     * @param organizador El usuario organizador del evento
+     * @throws ExcepcionPersistencia en caso que se presente algún error al guardar el evento.
+     * @return El id del evento recién creado
+     */
+    public long crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador)
+            throws  ExcepcionPersistencia {
+
+        ContentValues contentValues = new ContentValues();
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        contentValues.put(ID,System.currentTimeMillis());
+        contentValues.put(CAMPO_EVENTOS_FECHAHORA, formatoFecha.format(fechaHora));
+        contentValues.put(CAMPO_EVENTOS_IDZONA, zona.getId());
+        contentValues.put(CAMPO_EVENTOS_IDDEPORTE, deporte.getId());
+        contentValues.put(CAMPO_EVENTOS_IDORGANIZADOR, organizador.getId());
+
+        long resultado = this.getWritableDatabase().insertOrThrow(TABLA_EVENTOS,null,contentValues);
+        if (resultado == -1) throw new ExcepcionPersistencia("Se presentó un error no especificado al " +
+                "insertar el evento del "+formatoFecha.format(fechaHora)+" en la zona "+
+                zona.getNombre()+" en la base de datos");
+        Log.i(LOG_NAME+"crearEvento","Se ha creado el evento ("+formatoFecha.format(fechaHora)+","+
+                zona.getNombre()+") con id "+resultado);
+        return resultado;
+    }
+
     public long agregarInscritoEvento(long idEvento, long idInscrito) throws ExcepcionPersistencia {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ID,System.currentTimeMillis());
@@ -194,26 +223,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
 // -----------------------------------------------------
 
     // CREATE ------------------------------------------
-    @Override
-    public long crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador)
-            throws  ExcepcionPersistencia {
 
-        ContentValues contentValues = new ContentValues();
-        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        contentValues.put(ID,System.currentTimeMillis());
-        contentValues.put(CAMPO_EVENTOS_FECHAHORA, formatoFecha.format(fechaHora));
-        contentValues.put(CAMPO_EVENTOS_IDZONA, zona.getId());
-        contentValues.put(CAMPO_EVENTOS_IDDEPORTE, deporte.getId());
-        contentValues.put(CAMPO_EVENTOS_IDORGANIZADOR, organizador.getId());
-
-        long resultado = this.getWritableDatabase().insertOrThrow(TABLA_EVENTOS,null,contentValues);
-        if (resultado == -1) throw new ExcepcionPersistencia("Se presentó un error no especificado al " +
-                "insertar el evento del "+formatoFecha.format(fechaHora)+" en la zona "+
-                zona.getNombre()+" en la base de datos");
-        Log.i(LOG_NAME+"crearEvento","Se ha creado el evento ("+formatoFecha.format(fechaHora)+","+
-                zona.getNombre()+") con id "+resultado);
-        return resultado;
-    }
 
     // READ   ------------------------------------------
     @Override

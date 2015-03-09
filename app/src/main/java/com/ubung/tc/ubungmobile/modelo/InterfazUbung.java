@@ -4,6 +4,9 @@ import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.InterfazPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
+
+import java.util.Date;
 
 /*
 Metodos que consumira la interfaz
@@ -30,5 +33,15 @@ public interface InterfazUbung extends InterfazPersistencia {
      * @throws ExcepcionPersistencia en caso que se presente algún error al persistir los cambios
      */
     public long inscribirseEvento(long idEvento) throws ExcepcionPersistencia;
+
+    /**
+     * Crea un nuevo evento e inscribe al propietario a ese evento
+     * @param fechaHora en la que se realizará el evento
+     * @param zona en la que se realizará el evento
+     * @param deporte que se practicará durante el evento
+     * @return el identificador del evento recién creado
+     * @throws ExcepcionPersistencia en caso que se presente algún error al persistir los cambios
+     */
+    public long crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws  ExcepcionPersistencia;
 
 }

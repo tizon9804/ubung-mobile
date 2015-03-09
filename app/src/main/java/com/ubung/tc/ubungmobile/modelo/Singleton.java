@@ -150,6 +150,13 @@ public class Singleton implements InterfazUbung {
     }
 
     @Override
+    public long crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws  ExcepcionPersistencia {
+        long idEvento = manejadorPersistencia.crearEvento(fechaHora, zona, deporte, propietario );
+        inscribirseEvento(idEvento);
+        return idEvento;
+    }
+
+    @Override
     public long inscribirseEvento(long idEvento) throws ExcepcionPersistencia {
         return manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
     }
@@ -191,12 +198,6 @@ public class Singleton implements InterfazUbung {
     @Override
     public Zona darZona(long id) {
         return manejadorPersistencia.darZona(id);
-    }
-
-    @Override
-    public long crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador)
-            throws  ExcepcionPersistencia {
-        return manejadorPersistencia.crearEvento(fechaHora, zona, deporte, organizador );
     }
 
     @Override
