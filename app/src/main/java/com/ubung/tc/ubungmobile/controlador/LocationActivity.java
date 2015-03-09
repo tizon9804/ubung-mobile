@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
 import java.util.ArrayList;
@@ -29,11 +31,15 @@ import java.util.ArrayList;
 public class LocationActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener {
 
 
+    private static final double CENTRAR = 0.0010 ;
+    public static final String NOMBRE ="NOMBRE_ZONA" ;
+    public static final String DETALLES = "detalles_zona";
     private GoogleMap map;
     private ArrayList<Marker> markers;
     protected boolean active = true;
     protected int ubungTime = 10000;
     private Thread mapzoneThread;
+    private ArrayList<Zona> zonas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +75,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
      */
     private void crearZonas() {
         map.setOnMarkerClickListener(this);
-        ArrayList<Zona> zonas = Singleton.getInstance().darZonas();
+        zonas = Singleton.getInstance().darZonas();
         markers = new ArrayList<Marker>();
         for (Zona z : zonas) {
             LatLng latlng = new LatLng(z.getLatLongZoom()[0], z.getLatLongZoom()[1]);
@@ -110,11 +116,43 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.zona_imagen_focused));
         marker.showInfoWindow();
 
+        double l= marker.getPosition().latitude;
+        double lonl= marker.getPosition().longitude;
+
+        LatLng latlng= new LatLng(l-CENTRAR,lonl);
+
+
+
         //  map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 17));
-        CameraPosition p = new CameraPosition(marker.getPosition(), 17, 0, 0);
+        CameraPosition p = new CameraPosition(latlng, 17, 0, 0);
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
+        String detalles="En esta zona se practica: ";
+        String nombre="zona";
+        for(Zona z:zonas){
+            if(z.getNombre().equals(marker.getTitle())){
+                ArrayList<Evento> eventos = Singleton.getInstance().darEventos(z.getId());
+                nombre=z.getNombre();
+                for (Evento e:eventos){
+                    detalles+="\n "+e.getDeporte().getNombre();
 
+                }
+                break;
+            }
+        }
+
+        FragmentDescriptionZona zona = new FragmentDescriptionZona();
+        Bundle bundle = new Bundle();
+        bundle.putString(NOMBRE,nombre);
+        bundle.putString(DETALLES,detalles);
+        zona.setArguments(bundle);
+        FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+        t.replace(R.id.activity_location, zona);
+        t.addToBackStack(null);
+        t.commit();
+
+
+        
        // animation(marker);
 
 

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ListaInscritosAdapter;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
+import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
 
@@ -36,6 +37,7 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_descripcion_programacion);
+        setTitle( getIntent().getStringExtra(ListaZonasActivity.ZONA));
         int position=Integer.parseInt(getIntent().getStringExtra(MainUbungActivity.POSITION));
         eventos=Singleton.getInstance().darEventos();
         if(eventos!=null) {
@@ -96,6 +98,8 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
                         excepcionPersistencia.printStackTrace();
                         Toast.makeText(getBaseContext(), "Hubo un problema de inscripción: "+ excepcionPersistencia.getMessage(), Toast.LENGTH_LONG).show();
                         nextActivity();
+                    } catch (ExcepcionComunicacion excepcionComunicacion) {
+                        excepcionComunicacion.printStackTrace();
                     }
 
                 }
