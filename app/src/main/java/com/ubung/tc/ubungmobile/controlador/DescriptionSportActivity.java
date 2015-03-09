@@ -1,9 +1,11 @@
 package com.ubung.tc.ubungmobile.controlador;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,6 +34,7 @@ public class DescriptionSportActivity extends ActionBarActivity {
 
     private String usuario;
     private Deporte deporteCrear;
+    private long celular;
 
     // -----------------------------------------------------
 // CONSTRUCTOR
@@ -52,6 +55,7 @@ public class DescriptionSportActivity extends ActionBarActivity {
         Intent t = getIntent();
         long position = Long.parseLong(t.getStringExtra(MainUbungActivity.POSITION));
         String user = t.getStringExtra(MainUbungActivity.USER);
+        String phone= t.getStringExtra(MainUbungActivity.PHONE);
         String deporte = "Basketball";
         String descripcion = "hola";
         Deporte deporteU = Singleton.getInstance().darDeporte(position);
@@ -71,7 +75,7 @@ public class DescriptionSportActivity extends ActionBarActivity {
             Toast.makeText(this, "Hubo un problema al cargar el deporte.", Toast.LENGTH_LONG).show();
         }
 
-
+        celular=Long.parseLong(phone);
         usuario = user;
         deporteCrear = deporteU;
     }
@@ -97,10 +101,10 @@ public class DescriptionSportActivity extends ActionBarActivity {
                     start.setTextColor(getResources().getColor(R.color.white));
 
                     try {
-                        Singleton.getInstance().modificarPropietario(usuario, deporteCrear);
-                        Log.e("deporte_sin_moficar:", usuario + "##" + deporteCrear.getNombre() + ":");
-                        Usuario u = Singleton.getInstance().darPropietario();
-                        Log.e("deporte_modificado:", u.getNombreUsuario() + "##" + u.getDeporte().getNombre() + ":");
+                        Singleton.getInstance().modificarPropietario(usuario,celular, deporteCrear);
+
+
+
 
                     } catch (ExcepcionPersistencia excepcionPersistencia) {
                         Toast.makeText(getBaseContext(), "Hubo un problema al Crear el usuario " + usuario, Toast.LENGTH_LONG).show();
@@ -111,6 +115,7 @@ public class DescriptionSportActivity extends ActionBarActivity {
         });
 
     }
+
 
     // -----------------------------------------------------
 // CONEXION SIGUIENTE ACTIVIDAD

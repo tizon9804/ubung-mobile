@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -29,6 +30,7 @@ public class MainUbungActivity extends Activity {
     public static final String POSITION = "position";
     public static final String ID = "id";
     public static final String USER = "usuario";
+    public static final String PHONE = "phone" ;
 
     private InterfazUbung singleton;
     protected boolean active = true;
@@ -107,7 +109,9 @@ public class MainUbungActivity extends Activity {
                         }
                         if (event.getAction() == MotionEvent.ACTION_UP) {
                             String usuario = ((EditText) findViewById(R.id.user_name)).getText().toString();
-                            intentDescription(deportes.get(finalI).getId(), v.getId(), usuario);
+                            String phone = ((EditText)findViewById(R.id.phone)).getText().toString();
+
+                            intentDescription(deportes.get(finalI).getId(), v.getId(), usuario,phone);
                         }
 
                         return true;
@@ -122,12 +126,13 @@ public class MainUbungActivity extends Activity {
 
     }
 
-    public void intentDescription(Long id_deporte, long id, String usuario) {
+    public void intentDescription(Long id_deporte, long id, String usuario,String phone) {
         finish();
         Intent t = new Intent(this, DescriptionSportActivity.class);
         t.putExtra(POSITION, id_deporte + "");
         t.putExtra(ID, id + "");
         t.putExtra(USER, usuario);
+        t.putExtra(PHONE, phone);
         startActivity(t);
     }
 
@@ -143,7 +148,7 @@ public class MainUbungActivity extends Activity {
                 return true;
             }
         });
-//Todo implementar que el usuario no se repita con los del exterior
+
     }
 
 

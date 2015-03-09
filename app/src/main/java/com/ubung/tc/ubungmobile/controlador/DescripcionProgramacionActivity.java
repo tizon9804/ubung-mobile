@@ -122,6 +122,7 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
         finish();
         Intent t = new Intent(this, ProgramacionActivity.class);
         t.putExtra(ListaZonasActivity.ZONA, getIntent().getStringExtra(ListaZonasActivity.ZONA));
+        t.putExtra(MainUbungActivity.POSITION, getIntent().getStringExtra(MainUbungActivity.POSITION));
         startActivity(t);
 
     }
