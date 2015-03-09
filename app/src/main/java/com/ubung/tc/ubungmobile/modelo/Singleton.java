@@ -81,8 +81,8 @@ public class Singleton implements InterfazUbung {
             Log.i(LOG_NAME+".inicializar()", "Cargando configuración local...");
             configuracionLocal = context.getSharedPreferences(ARCHIVO_CONF_LOC,Context.MODE_PRIVATE);
 
-            Log.i(LOG_NAME+".inicializar()", "Recuperando la información del usuario "+ configuracionLocal.getInt(CONF_ID_PROPIETARIO, -1)+"...");
-            propietario = manejadorPersistencia.darUsuario(configuracionLocal.getInt(CONF_ID_PROPIETARIO,-1));
+            Log.i(LOG_NAME+".inicializar()", "Recuperando la información del usuario "+ configuracionLocal.getLong(CONF_ID_PROPIETARIO, -1)+"...");
+            propietario = manejadorPersistencia.darUsuario(configuracionLocal.getLong(CONF_ID_PROPIETARIO,-1));
             if (propietario == null) Log.w(LOG_NAME+".inicializar()", "Usuario no encontrado...");
             else Log.i(LOG_NAME+".inicializar()", "Usuario encontrado, restableciendo la información de "+propietario.getNombreUsuario()+"...");
 
