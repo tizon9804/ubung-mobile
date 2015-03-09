@@ -6,6 +6,7 @@ Implementacion de los metodos de Ubung
  */
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.AssetManager;
@@ -14,6 +15,7 @@ import android.util.Log;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
+import com.ubung.tc.ubungmobile.modelo.comunicacion.ManejadorSMS;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
@@ -41,8 +43,8 @@ public class Singleton implements InterfazUbung {
     public static final String CONF_ID_PROPIETARIO = "idPropietario";
     public static final String CONF_CEL_PROPIETARIO = "celPropietario";
 
-    // El protocolo para el mensaje es ubung;idEvento:idUsuario
-    public static final String SMS_INSCR_EVENTO = "ubung:";
+    // El protocolo para el mensaje es ubung:idInscripcion:idEvento:idUsuario
+    public static final String SMS_INSCR_EVENTO = "ubung";
 // -----------------------------------------------------
 // ATRIBUTOS
 // -----------------------------------------------------
@@ -55,6 +57,7 @@ public class Singleton implements InterfazUbung {
     private long numCelular;
 
     private ManejadorPersistencia manejadorPersistencia;
+    private ManejadorSMS manejadorSMS;
 
 // -----------------------------------------------------
 // CONSTRUCTOR (patrón singleton)
@@ -96,6 +99,11 @@ public class Singleton implements InterfazUbung {
             /*ParseObject testObject = new ParseObject("TestObject");
             testObject.put("foo", "bar");
             testObject.saveInBackground();*/
+
+            Log.i(LOG_NAME+"inicializar()", "Instanciando y registrando ManejadorSMS (BroadcastReceiver)...");
+            manejadorSMS = new ManejadorSMS(this);
+            IntentFilter intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+            this.context.registerReceiver(manejadorSMS,intentFilter);
 
             Log.i(LOG_NAME+".inicializar()", "Cargando configuración local...");
             configuracionLocal = context.getSharedPreferences(ARCHIVO_CONF_LOC,Context.MODE_PRIVATE);
@@ -162,19 +170,23 @@ public class Singleton implements InterfazUbung {
     public long crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws  ExcepcionPersistencia {
         long idEvento = manejadorPersistencia.crearEvento(fechaHora, zona, deporte, propietario, numCelular);
         manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
+        Log.i(LOG_NAME+"crearEven", "Creado evento "+idEvento+" e inscrito propietario como participante");
         return idEvento;
     }
 
     @Override
     public long inscribirseEvento(long idEvento) throws ExcepcionPersistencia, ExcepcionComunicacion {
         long idInscripcion = manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
+        Log.i(LOG_NAME+"inscrEve","Inscrito el propietario al evento "+idEvento);
         // Voy a notificar al creador del evento
         try {
             Evento evento = manejadorPersistencia.darEvento(idEvento);
+            String mensaje = SMS_INSCR_EVENTO + ":" + idInscripcion+":"+evento.getId() + ":" + propietario.getId();
+            Log.i(LOG_NAME+"inscrEve", "Enviando SMS '"+mensaje+"' a "+evento.getCelNotificacion());
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage("" + evento.getCelNotificacion(),
                     null,
-                    SMS_INSCR_EVENTO + evento.getId() + ":" + propietario.getId(),
+                    mensaje,
                     null,
                     null);
         } catch (Exception e) {
