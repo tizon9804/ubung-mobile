@@ -172,6 +172,7 @@ public class EventoActivity extends ActionBarActivity {
         finish();
         Intent t = new Intent(this, LocationActivity.class);
         t.putExtra("last", true);
+        startActivity(t);
 
     }
 

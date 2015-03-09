@@ -4,6 +4,7 @@ package com.ubung.tc.ubungmobile.controlador;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -85,22 +86,6 @@ public class PanelMapFragment extends Fragment {
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        //   try {
-        //   finalize();
-        //    getActivity().finish();
-        //    Intent intent = new Intent(Intent.ACTION_MAIN);
-        //    intent.addCategory(Intent.CATEGORY_HOME);
-        //   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //    startActivity(intent);
-        //     }
-        //  catch(Throwable throwable){
-        //          throwable.printStackTrace();
-        //      }
-
-    }
 
     public void nextActivity(Class clase) {
         try {

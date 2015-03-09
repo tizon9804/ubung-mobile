@@ -1,5 +1,6 @@
 package com.ubung.tc.ubungmobile.controlador;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -34,6 +35,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
     private static final double CENTRAR = 0.0010 ;
     public static final String NOMBRE ="NOMBRE_ZONA" ;
     public static final String DETALLES = "detalles_zona";
+    public static final String POS = "pos";
     private GoogleMap map;
     private ArrayList<Marker> markers;
     protected boolean active = true;
@@ -129,22 +131,27 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
         String detalles="En esta zona se practica: ";
         String nombre="zona";
+        int pos=0;
+        int i=0;
         for(Zona z:zonas){
             if(z.getNombre().equals(marker.getTitle())){
                 ArrayList<Evento> eventos = Singleton.getInstance().darEventos(z.getId());
                 nombre=z.getNombre();
+                pos=i;
                 for (Evento e:eventos){
                     detalles+="\n "+e.getDeporte().getNombre();
 
                 }
                 break;
             }
+            i++;
         }
 
         FragmentDescriptionZona zona = new FragmentDescriptionZona();
         Bundle bundle = new Bundle();
         bundle.putString(NOMBRE,nombre);
         bundle.putString(DETALLES,detalles);
+        bundle.putString(POS, pos + "");
         zona.setArguments(bundle);
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.replace(R.id.activity_location, zona);
@@ -192,4 +199,20 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
 
     }
+
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+            this.finish();
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            getFragmentManager().popBackStack();
+        }
+    }
+
 }

@@ -37,5 +37,6 @@
     <string name="title_zona_evento">Zona: </string>
     <string name="btn_crear">Crear Evento</string>
     <string name="title_fecha">Fecha:</string>
+    <string name="btn_programacion">Programación</string>
 
 </resources>
