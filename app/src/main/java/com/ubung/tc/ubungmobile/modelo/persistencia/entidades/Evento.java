@@ -21,20 +21,24 @@ public class Evento {
     private Usuario organizador;
     protected InscritosEvento inscritosEvento;
 
+    private long celNotificacion;
+
     private Date fechaCreacion;
 
-    public Evento(long id, Date fechaHora, Zona zona, Deporte deporte, Usuario organizador) {
+    public Evento(long id, long celNotificacion, Date fechaHora, Zona zona, Deporte deporte, Usuario organizador) {
         this.id = id;
+        this.celNotificacion = celNotificacion;
         this.fechaHora = fechaHora;
         this.zona = zona;
         this.deporte = deporte;
         this.organizador = organizador;
     }
 
-    protected Evento(long id, Date fechaHora, Date fechaCreacion) {
+    protected Evento(long id, Date fechaHora, Date fechaCreacion, long celNotificacion) {
         this.id = id;
         this.fechaHora = fechaHora;
         this.fechaCreacion = fechaCreacion;
+        this.celNotificacion = celNotificacion;
     }
 
     public long getId() {
@@ -71,6 +75,14 @@ public class Evento {
 
     public void setOrganizador(Usuario organizador) {
         this.organizador = organizador;
+    }
+
+    public long getCelNotificacion() {
+        return celNotificacion;
+    }
+
+    public void setCelNotificacion(long celNotificacion) {
+        this.celNotificacion = celNotificacion;
     }
 
     /**

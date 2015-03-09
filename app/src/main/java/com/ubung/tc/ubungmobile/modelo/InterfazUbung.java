@@ -1,5 +1,6 @@
 package com.ubung.tc.ubungmobile.modelo;
 
+import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.InterfazPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
@@ -32,8 +33,10 @@ public interface InterfazUbung extends InterfazPersistencia {
      * @param idEvento el id del evento al cual se inscribirá el propietario
      * @throws ExcepcionPersistencia en caso que el usuario especificado ya se haya inscrito al evento
      * especificado o se presente algún error al persistir los cambios
+     * @throws ExcepcionComunicacion en caso que no sea posible enviar el SMS al usuario organizador
+     * del evento notificando la inscripción.
      */
-    public long inscribirseEvento(long idEvento) throws ExcepcionPersistencia;
+    public long inscribirseEvento(long idEvento) throws ExcepcionPersistencia, ExcepcionComunicacion;
 
     /**
      * Crea un nuevo evento e inscribe al propietario a ese evento

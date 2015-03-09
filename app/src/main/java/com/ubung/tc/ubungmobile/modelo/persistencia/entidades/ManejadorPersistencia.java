@@ -46,6 +46,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
     protected static final String TABLA_ZONAS = "Zonas";
 // EVENTOS ---------------------------------------------
     protected static final String TABLA_EVENTOS = "Eventos";
+    protected static final String CAMPO_EVENTOS_CELNOTIFICACION = "celNotificacion";
     protected static final String CAMPO_EVENTOS_FECHAHORA = "fechaHora";
     protected static final String CAMPO_EVENTOS_IDZONA = "idZona";
     protected static final String CAMPO_EVENTOS_IDDEPORTE = "idDeporte";
@@ -162,7 +163,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
      * @throws ExcepcionPersistencia en caso que se presente algún error al guardar el evento.
      * @return El id del evento recién creado
      */
-    public long crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador)
+    public long crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador, long celNotificiacion)
             throws  ExcepcionPersistencia {
 
         ContentValues contentValues = new ContentValues();
@@ -172,6 +173,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         contentValues.put(CAMPO_EVENTOS_IDZONA, zona.getId());
         contentValues.put(CAMPO_EVENTOS_IDDEPORTE, deporte.getId());
         contentValues.put(CAMPO_EVENTOS_IDORGANIZADOR, organizador.getId());
+        contentValues.put(CAMPO_EVENTOS_CELNOTIFICACION, celNotificiacion);
 
         long resultado = this.getWritableDatabase().insertOrThrow(TABLA_EVENTOS,null,contentValues);
         if (resultado == -1) throw new ExcepcionPersistencia("Se presentó un error no especificado al " +
@@ -323,7 +325,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
                     Log.e(LOG_NAME+"darEven(id)","No fue posible convertir string to date para el campo fechaHora");
                 }
                 resultado.add(new EventoLazyLoad(cursor.getLong(0), fechaHora, cursor.getLong(2),
-                        cursor.getLong(3), cursor.getLong(4), fechaCreacion, this));
+                        cursor.getLong(3), cursor.getLong(4), fechaCreacion, cursor.getLong(6), this));
             } while (cursor.moveToNext());
         }
         Log.i(LOG_NAME+"darEventos","Se recuperaron "+cursor.getCount()+" eventos de la base de datos");
@@ -346,7 +348,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
                     Log.e(LOG_NAME+"darEven(id)","No fue posible convertir string to date para el campo fechaHora");
                 }
                 resultado.add(new EventoLazyLoad(cursor.getLong(0), fechaHora, cursor.getLong(2),
-                        cursor.getLong(3), cursor.getLong(4), fechaCreacion, this));
+                        cursor.getLong(3), cursor.getLong(4), fechaCreacion, cursor.getLong(6), this));
             } while (cursor.moveToNext());
         }
         Log.i(LOG_NAME+"darEventZon","Se recuperaron "+cursor.getCount()+" eventos para la zona "+idZona);
@@ -369,7 +371,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         }
 
         return new EventoLazyLoad(cursor.getLong(0), fechaHora, cursor.getLong(2),
-                cursor.getLong(3), cursor.getLong(4), fechaCreacion, this);
+                cursor.getLong(3), cursor.getLong(4), fechaCreacion, cursor.getLong(6), this);
     }
 
     // UPDATE ------------------------------------------
@@ -385,6 +387,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         contentValues.put(CAMPO_EVENTOS_IDZONA, evento.getZona().getId());
         contentValues.put(CAMPO_EVENTOS_FECHAHORA, formatoFecha.format(evento.getFechaHora()));
         contentValues.put(CAMPO_EVENTOS_IDDEPORTE, evento.getDeporte().getId());
+        contentValues.put(CAMPO_EVENTOS_CELNOTIFICACION, evento.getCelNotificacion());
 
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         long resultado = sqLiteDatabase.update(TABLA_EVENTOS,contentValues,ID+"="+evento.getId(),null);

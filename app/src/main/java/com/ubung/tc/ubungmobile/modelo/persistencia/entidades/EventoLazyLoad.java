@@ -20,8 +20,8 @@ public class EventoLazyLoad extends Evento {
      * @param manejadorPersistencia Referencia al ManejadorPersistencia que instació la clase
      */
     protected EventoLazyLoad(long id, Date fechaHora, long idZona, long idDeporte, long idOrganizador,
-                     Date fechaCreacion, ManejadorPersistencia manejadorPersistencia) {
-        super(id, fechaHora, fechaCreacion);
+                     Date fechaCreacion, long celNotificacion, ManejadorPersistencia manejadorPersistencia) {
+        super(id, fechaHora, fechaCreacion, celNotificacion);
 
         this.manejadorPersistencia = manejadorPersistencia;
 

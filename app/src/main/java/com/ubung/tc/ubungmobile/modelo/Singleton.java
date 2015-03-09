@@ -9,10 +9,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.AssetManager;
+import android.telephony.SmsManager;
 import android.util.Log;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
+import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
@@ -38,6 +40,9 @@ public class Singleton implements InterfazUbung {
 
     public static final String CONF_ID_PROPIETARIO = "idPropietario";
     public static final String CONF_CEL_PROPIETARIO = "celPropietario";
+
+    // El protocolo para el mensaje es ubung;idEvento:idUsuario
+    public static final String SMS_INSCR_EVENTO = "ubung:";
 // -----------------------------------------------------
 // ATRIBUTOS
 // -----------------------------------------------------
@@ -155,14 +160,27 @@ public class Singleton implements InterfazUbung {
 
     @Override
     public long crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws  ExcepcionPersistencia {
-        long idEvento = manejadorPersistencia.crearEvento(fechaHora, zona, deporte, propietario );
-        inscribirseEvento(idEvento);
+        long idEvento = manejadorPersistencia.crearEvento(fechaHora, zona, deporte, propietario, numCelular);
+        manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
         return idEvento;
     }
 
     @Override
-    public long inscribirseEvento(long idEvento) throws ExcepcionPersistencia {
-        return manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
+    public long inscribirseEvento(long idEvento) throws ExcepcionPersistencia, ExcepcionComunicacion {
+        long idInscripcion = manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
+        // Voy a notificar al creador del evento
+        try {
+            Evento evento = manejadorPersistencia.darEvento(idEvento);
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage("" + evento.getCelNotificacion(),
+                    null,
+                    SMS_INSCR_EVENTO + evento.getId() + ":" + propietario.getId(),
+                    null,
+                    null);
+        } catch (Exception e) {
+            throw new ExcepcionComunicacion("No fue posible enviar SMS "+e.getMessage());
+        }
+        return idInscripcion;
     }
 
 // -----------------------------------------------------
