@@ -46,9 +46,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/title_deporte_evento"
         android:id="@+id/title_deporte_evento"
-        android:layout_alignTop="@+id/deportes"
+        android:layout_alignTop="@+id/deportes_spinner"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/deportes"
+        android:layout_toStartOf="@+id/deportes_spinner"
         android:textColor="#ffffffff" />
 
     <TextView
@@ -59,7 +59,7 @@
         android:id="@+id/title_zona_evento"
         android:layout_marginTop="61dp"
         android:layout_below="@+id/title_organiza_evento"
-        android:layout_toStartOf="@+id/zonas"
+        android:layout_toStartOf="@+id/zonas_spinner"
         android:textColor="#ffffffff" />
 
 
@@ -67,21 +67,21 @@
     <Spinner
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:id="@+id/deportes"
-        android:layout_below="@+id/zonas"
-        android:layout_alignStart="@+id/zonas"
+        android:id="@+id/deportes_spinner"
+        android:layout_below="@+id/zonas_spinner"
+        android:layout_alignStart="@+id/zonas_spinner"
         android:layout_marginTop="36dp"
         android:gravity="center"
-        android:background="@android:color/holo_green_dark" />
+        android:background="@drawable/border_button" />
 
     <Spinner
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:id="@+id/zonas"
+        android:id="@+id/zonas_spinner"
         android:layout_alignTop="@+id/title_zona_evento"
         android:layout_alignStart="@+id/organiza_evento"
         android:gravity="center"
-        android:background="@android:color/holo_green_dark" />
+        android:background="@drawable/border_button" />
 
     <Button
         android:id="@+id/button"

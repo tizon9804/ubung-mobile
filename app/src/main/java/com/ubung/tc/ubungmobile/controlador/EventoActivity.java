@@ -8,6 +8,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
@@ -23,7 +26,7 @@ import java.util.Date;
 
 public class EventoActivity extends ActionBarActivity {
 
-    private ArrayList<Deporte> deprotes;
+    private ArrayList<Deporte> deportes;
     private ArrayList<Zona> zonas;
 
     @Override
@@ -35,7 +38,29 @@ public class EventoActivity extends ActionBarActivity {
 
     private void initFormat() {
         zonas= Singleton.getInstance().darZonas();
-        deprotes= Singleton.getInstance().darDeportes();
+        deportes= Singleton.getInstance().darDeportes();
+        String[]sdeportes=new String[deportes.size()];
+        for(int i=0;i<deportes.size();i++){
+            sdeportes[i]=deportes.get(i).getNombre();
+        }
+        String[]szonas=new String[zonas.size()];
+        for(int j=0;j<zonas.size();j++){
+            szonas[j]=zonas.get(j).getNombre();
+        }
+
+        Spinner spinnerDeportes = (Spinner) findViewById(R.id.deportes_spinner);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sdeportes); //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDeportes.setAdapter(spinnerArrayAdapter);
+
+        Spinner spinnerZonas = (Spinner) findViewById(R.id.zonas_spinner);
+        ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, szonas); //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerZonas.setAdapter(spinnerArrayAdapter2);
+
+        Usuario u= Singleton.getInstance().darPropietario();
+        TextView usuario=(TextView)findViewById(R.id.organiza_evento);
+        usuario.setText(u.getNombreUsuario());
 
     }
 

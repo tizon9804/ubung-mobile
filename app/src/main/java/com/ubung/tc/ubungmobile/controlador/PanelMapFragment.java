@@ -41,6 +41,8 @@ public class PanelMapFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                nextActivity(EventoActivity.class);
+
             }
         });
 //boton deporte

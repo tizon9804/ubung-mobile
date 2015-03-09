@@ -53,6 +53,16 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/title_inscritos"
+        android:id="@+id/title_inscritos_descripcion_programacion"
+        android:layout_above="@+id/textClock_descripcion_programacion"
+        android:layout_alignParentStart="true"
+        android:textColor="#ffffffff" />
+
     <ListView
         android:layout_width="200dp"
         android:layout_height="250dp"
@@ -71,7 +81,7 @@
         android:gravity="center"
         android:textColor="#ffffffff"
         android:textSize="20dp"
-        android:background="@android:color/holo_orange_dark"
+        android:background="@drawable/border_button2"
         android:layout_alignTop="@+id/listView_inscritos"
         android:layout_alignParentEnd="true" />
 
@@ -81,7 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@android:color/holo_orange_dark"
+        android:background="@drawable/border_button2"
         android:text="@string/btn_inscripcion"
         android:textColor="#ffffffff"
         android:textSize="30dp"
@@ -89,14 +99,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="38dp" />
 
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/title_inscritos"
-        android:id="@+id/title_inscritos_descripcion_programacion"
-        android:layout_above="@+id/textClock_descripcion_programacion"
-        android:layout_alignParentStart="true"
-        android:textColor="#ffffffff" />
+
 
 </RelativeLayout>
