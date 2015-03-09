@@ -183,6 +183,14 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
     }
 
     public long agregarInscritoEvento(long idEvento, long idInscrito) throws ExcepcionPersistencia {
+
+        String consulta = "SELECT "+CAMPO_INSCRITOSEVENTO_FECHAINSCRIP+" FROM "+TABLA_INSCRITOSEVENTO+" WHERE "
+                +CAMPO_INSCRITOSEVENTO_IDEVENTO+"="+idEvento+" AND "
+                +CAMPO_INSCRITOSEVENTO_IDINSCRITO+"="+idInscrito;
+        Cursor cursor =consultaPlana(consulta);
+        if (cursor.moveToFirst())
+            throw new ExcepcionPersistencia("Este usuario se inscribió a este evento el "+cursor.getString(0));
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(ID,System.currentTimeMillis());
         contentValues.put(CAMPO_INSCRITOSEVENTO_IDEVENTO, idEvento);
