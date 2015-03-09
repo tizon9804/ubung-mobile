@@ -84,7 +84,7 @@ public class Singleton implements InterfazUbung {
             Log.i(LOG_NAME+".inicializar()", "Recuperando la información del usuario "+ configuracionLocal.getLong(CONF_ID_PROPIETARIO, -1)+"...");
             propietario = manejadorPersistencia.darUsuario(configuracionLocal.getLong(CONF_ID_PROPIETARIO,-1));
             if (propietario == null) Log.w(LOG_NAME+".inicializar()", "Usuario no encontrado...");
-            else Log.i(LOG_NAME+".inicializar()", "Usuario encontrado, restableciendo la información de "+propietario.getNombreUsuario()+"...");
+            else Log.i(LOG_NAME+".inicializar()", "Usuario encontrado, restableciendo la información de ("+propietario.getNombreUsuario()+";"+propietario.getDeporte().getNombre()+")");
 
         } else {
             Log.w(LOG_NAME + ".inicializar()", System.currentTimeMillis()+" Está tratanto de volver a inicializar un Singleton ya inicializado!");
