@@ -11,6 +11,8 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.AssetManager;
 import android.util.Log;
 
+import com.parse.Parse;
+import com.parse.ParseInstallation;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
@@ -78,11 +80,21 @@ public class Singleton implements InterfazUbung {
             Log.i(LOG_NAME+".inicializar()", "Instanciando manejadorPersistencia...");
             manejadorPersistencia = new ManejadorPersistencia(this);
 
+            Log.i(LOG_NAME+".inicializar()", "Inicializando com.parse SDK...");
+            Parse.enableLocalDatastore(this.context);
+            Parse.initialize(this.context, "fiOX1IZj9jaDptWkDP4fRnPvxheKiNUYsRRMh3qP", "vJNCHxNX7ENY1Fml9Cp55liNXs6MJhTCHMoefYbv");
+            ParseInstallation.getCurrentInstallation().saveInBackground();
+
+            // Probar Parse SDK
+            /*ParseObject testObject = new ParseObject("TestObject");
+            testObject.put("foo", "bar");
+            testObject.saveInBackground();*/
+
             Log.i(LOG_NAME+".inicializar()", "Cargando configuración local...");
             configuracionLocal = context.getSharedPreferences(ARCHIVO_CONF_LOC,Context.MODE_PRIVATE);
 
             Log.i(LOG_NAME+".inicializar()", "Recuperando la información del usuario "+ configuracionLocal.getLong(CONF_ID_PROPIETARIO, -1)+"...");
-            propietario = manejadorPersistencia.darUsuario(configuracionLocal.getLong(CONF_ID_PROPIETARIO,-1));
+            propietario = manejadorPersistencia.darUsuario(configuracionLocal.getLong(CONF_ID_PROPIETARIO, -1));
             if (propietario == null) Log.w(LOG_NAME+".inicializar()", "Usuario no encontrado...");
             else Log.i(LOG_NAME+".inicializar()", "Usuario encontrado, restableciendo la información de ("+propietario.getNombreUsuario()+";"+propietario.getDeporte().getNombre()+")");
 
