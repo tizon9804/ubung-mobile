@@ -37,6 +37,7 @@ public class Singleton implements InterfazUbung {
     public static final String ARCHIVO_CONF_LOC = "config";
 
     public static final String CONF_ID_PROPIETARIO = "idPropietario";
+    public static final String CONF_CEL_PROPIETARIO = "celPropietario";
 // -----------------------------------------------------
 // ATRIBUTOS
 // -----------------------------------------------------
@@ -46,6 +47,7 @@ public class Singleton implements InterfazUbung {
     private SharedPreferences configuracionLocal;
 
     private Usuario propietario;
+    private long numCelular;
 
     private ManejadorPersistencia manejadorPersistencia;
 
@@ -95,6 +97,7 @@ public class Singleton implements InterfazUbung {
 
             Log.i(LOG_NAME+".inicializar()", "Recuperando la información del usuario "+ configuracionLocal.getLong(CONF_ID_PROPIETARIO, -1)+"...");
             propietario = manejadorPersistencia.darUsuario(configuracionLocal.getLong(CONF_ID_PROPIETARIO, -1));
+            numCelular = configuracionLocal.getLong(CONF_CEL_PROPIETARIO, -1);
             if (propietario == null) Log.w(LOG_NAME+".inicializar()", "Usuario no encontrado...");
             else Log.i(LOG_NAME+".inicializar()", "Usuario encontrado, restableciendo la información de ("+propietario.getNombreUsuario()+";"+propietario.getDeporte().getNombre()+")");
 
@@ -120,7 +123,7 @@ public class Singleton implements InterfazUbung {
     }
 
     @Override
-    public void modificarPropietario(String nombreUsuario, Deporte deporte) throws ExcepcionPersistencia {
+    public void modificarPropietario(String nombreUsuario, long numCelular, Deporte deporte) throws ExcepcionPersistencia {
         if (propietario != null) {
             if (nombreUsuario != null) {
                 Log.i(LOG_NAME+".modifProp","Actualizando nombre del propietario desde "+propietario.getNombreUsuario()
@@ -144,6 +147,7 @@ public class Singleton implements InterfazUbung {
 
             Editor editor = configuracionLocal.edit();
             editor.putLong(CONF_ID_PROPIETARIO, propietario.getId());
+            editor.putLong(CONF_CEL_PROPIETARIO,numCelular);
             editor.commit();
             Log.i(LOG_NAME+".modifProp","Almacenando propietario en configuracion local...");
         }

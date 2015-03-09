@@ -25,7 +25,7 @@ public interface InterfazUbung extends InterfazPersistencia {
      * @param deporte el deporte que el propietario del dispositivo practica
      * @throws ExcepcionPersistencia en caso que se presente algún error al persistir los cambios
      */
-    public void modificarPropietario(String nombreUsuario, Deporte deporte) throws ExcepcionPersistencia;
+    public void modificarPropietario(String nombreUsuario, long celular, Deporte deporte) throws ExcepcionPersistencia;
 
     /**
      * Permite inscribir al propietario en un evento
