@@ -75,7 +75,7 @@ public interface InterfazPersistencia {
      * @throws ExcepcionPersistencia en caso que se presente algún error al guardar el evento.
      * @return El id del evento recién creado
      */
-    public int crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador)
+    public long crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador)
             throws  ExcepcionPersistencia;
 
     /**

@@ -137,11 +137,12 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
      * @return El id del usurio recién creado
      * @throws ExcepcionPersistencia en caso que el usuario ya exista o se presente algún otro error.
      */
-    public int crearUsuario(String nombreUsuario, Deporte deporte) throws ExcepcionPersistencia {
+    public long crearUsuario(String nombreUsuario, Deporte deporte) throws ExcepcionPersistencia {
         if (this.darUsuario(nombreUsuario) != null)
             throw new ExcepcionPersistencia("Ya existe un usuario con nombre "+nombreUsuario);
 
         ContentValues contentValues = new ContentValues();
+        contentValues.put(ID,System.currentTimeMillis());
         contentValues.put(CAMPO_USUARIOS_NOMBRE, nombreUsuario);
         contentValues.put(CAMPO_USUARIOS_DEPORTE, deporte.getId());
 
@@ -149,17 +150,19 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         if (resultado == -1) throw new ExcepcionPersistencia("Se presentó un error no especificado al " +
                 "insertar el usuario "+nombreUsuario+" en la base de datos");
         Log.i(LOG_NAME+"crearUsuari","Se ha creado el usuario "+nombreUsuario+" con id "+resultado);
-        return (int) resultado;
+        return resultado;
     }
 
-    public void agregarInscritoEvento(long idEvento, long idInscrito) throws ExcepcionPersistencia {
+    public long agregarInscritoEvento(long idEvento, long idInscrito) throws ExcepcionPersistencia {
         ContentValues contentValues = new ContentValues();
+        contentValues.put(ID,System.currentTimeMillis());
         contentValues.put(CAMPO_INSCRITOSEVENTO_IDEVENTO, idEvento);
         contentValues.put(CAMPO_INSCRITOSEVENTO_IDINSCRITO, idInscrito);
         long resultado = this.getWritableDatabase().insertOrThrow(TABLA_INSCRITOSEVENTO, null, contentValues);
         if (resultado == -1) throw new ExcepcionPersistencia("Se presentó un error no especificado al " +
                 "registrar el usuario "+idInscrito+" en el evento "+idEvento);
         Log.i(LOG_NAME+"agrInscEven","Se ha inscrito el usuario "+idInscrito+" al evento "+idEvento);
+        return resultado;
     }
 
     // UPDATE ------------------------------------------
@@ -192,11 +195,12 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
 
     // CREATE ------------------------------------------
     @Override
-    public int crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador)
+    public long crearEvento(Date fechaHora, Zona zona, Deporte deporte, Usuario organizador)
             throws  ExcepcionPersistencia {
 
         ContentValues contentValues = new ContentValues();
         SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        contentValues.put(ID,System.currentTimeMillis());
         contentValues.put(CAMPO_EVENTOS_FECHAHORA, formatoFecha.format(fechaHora));
         contentValues.put(CAMPO_EVENTOS_IDZONA, zona.getId());
         contentValues.put(CAMPO_EVENTOS_IDDEPORTE, deporte.getId());
@@ -208,7 +212,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
                 zona.getNombre()+" en la base de datos");
         Log.i(LOG_NAME+"crearEvento","Se ha creado el evento ("+formatoFecha.format(fechaHora)+","+
                 zona.getNombre()+") con id "+resultado);
-        return (int) resultado;
+        return resultado;
     }
 
     // READ   ------------------------------------------

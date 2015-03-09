@@ -29,6 +29,6 @@ public interface InterfazUbung extends InterfazPersistencia {
      * @param idEvento el id del evento al cual se inscribirá el propietario
      * @throws ExcepcionPersistencia en caso que se presente algún error al persistir los cambios
      */
-    public void inscribirseEvento(long idEvento) throws ExcepcionPersistencia;
+    public long inscribirseEvento(long idEvento) throws ExcepcionPersistencia;
 
 }
