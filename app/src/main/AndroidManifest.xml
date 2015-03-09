@@ -65,6 +65,10 @@
             android:name=".controlador.DescripcionProgramacionActivity"
             android:label="@string/title_activity_descripcion_programacion" >
         </activity>
+        <activity
+            android:name=".controlador.EventoActivity"
+            android:label="@string/title_activity_evento" >
+        </activity>
     </application>
 
 </manifest>

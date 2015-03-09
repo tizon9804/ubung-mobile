@@ -48,7 +48,7 @@
         android:layout_marginBottom="65dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@android:color/holo_green_dark"
+        android:background="@drawable/border_button"
         android:text="@string/btn_continue"
         android:textColor="#ffffffff"
         android:textSize="30dp" />

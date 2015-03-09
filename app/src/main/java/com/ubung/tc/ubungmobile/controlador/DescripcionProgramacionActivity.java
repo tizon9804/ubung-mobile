@@ -1,6 +1,7 @@
 package com.ubung.tc.ubungmobile.controlador;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MotionEvent;
@@ -23,6 +24,7 @@ import java.util.Date;
 
 public class DescripcionProgramacionActivity extends ActionBarActivity {
 
+    private static final String INSCRITOS_TITULO = "Inscritos: ";
     private ArrayList<Evento> eventos;
 
     @Override
@@ -33,10 +35,13 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
         eventos=Singleton.getInstance().darEventos();
         if(eventos!=null) {
             Evento v = eventos.get(position);
+            //llamado a todos los elementos graficos
             TextView organiza = (TextView) findViewById(R.id.txt_organiza);
             ImageView img = (ImageView) findViewById(R.id.image_descripcion_programacion);
             TextClock hora = (TextClock) findViewById(R.id.textClock_descripcion_programacion);
             ListView inscritos=(ListView) findViewById(R.id.listView_inscritos);
+            TextView inscritosTitulo = (TextView) findViewById(R.id.title_inscritos_descripcion_programacion);
+            //carga de informacion a los elementos graficos
             ListaInscritosAdapter l= new ListaInscritosAdapter(this,v);
             inscritos.setAdapter(l);
             inscritos.setOnTouchListener(new View.OnTouchListener() {
@@ -50,6 +55,7 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
             Date d = v.getFechaHora();
             String horap = d.getHours() + ":" + d.getMinutes();
             hora.setText(horap);
+            inscritosTitulo.setText(INSCRITOS_TITULO + v.getInscritos().size());
         }
         initButtons();
     }

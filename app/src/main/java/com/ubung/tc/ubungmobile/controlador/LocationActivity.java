@@ -115,7 +115,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
 
-        animation(marker);
+       // animation(marker);
 
 
         return true;

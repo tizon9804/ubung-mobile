@@ -30,5 +30,11 @@
     <string name="title_activity_descripcion_programacion">DescripcionProgramacionActivity</string>
     <string name="title_organiza">Organiza:</string>
     <string name="organiza">organiza</string>
+    <string name="title_inscritos">Inscritos:t</string>
+    <string name="title_activity_evento">EventoActivity</string>
+    <string name="title_crear_evento">Crear Evento</string>
+    <string name="title_deporte_evento">Escoge un Deporte: </string>
+    <string name="title_zona_evento">Escoge una Zona: </string>
+    <string name="btn_crear">Crear Evento</string>
 
 </resources>

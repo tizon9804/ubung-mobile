@@ -19,7 +19,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="18dp"
-        android:textColor="#ffffffff" />
+        android:textColor="#ffffffff"
+        android:textSize="30dp"
+        android:textIsSelectable="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,10 +29,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/organiza"
         android:id="@+id/txt_organiza"
-        android:layout_alignTop="@+id/textView5"
-        android:layout_toRightOf="@+id/textView5"
-        android:layout_toEndOf="@+id/textView5"
-        android:textColor="#ffffffff" />
+        android:textColor="#ffffffff"
+        android:textSize="25dp"
+        android:layout_above="@+id/image_descripcion_programacion"
+        android:layout_alignEnd="@+id/ratingBar" />
 
     <RatingBar
         android:layout_width="wrap_content"
@@ -86,5 +88,15 @@
         android:layout_below="@+id/listView_inscritos"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="38dp" />
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/title_inscritos"
+        android:id="@+id/title_inscritos_descripcion_programacion"
+        android:layout_above="@+id/textClock_descripcion_programacion"
+        android:layout_alignParentStart="true"
+        android:textColor="#ffffffff" />
 
 </RelativeLayout>

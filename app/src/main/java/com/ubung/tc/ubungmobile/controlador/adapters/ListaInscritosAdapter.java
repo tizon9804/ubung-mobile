@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
-import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.persistencia.Tupla;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
@@ -63,7 +62,7 @@ public class ListaInscritosAdapter extends BaseAdapter {
             // Create a new view into the list.
             LayoutInflater inflater = (LayoutInflater) cnt
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.list_row_incritos, parent, false);
+            rowView = inflater.inflate(R.layout.list_row_inscritos, parent, false);
         }
 
         // Set data into the view.
