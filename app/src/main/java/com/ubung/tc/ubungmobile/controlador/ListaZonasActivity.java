@@ -38,16 +38,17 @@ public class ListaZonasActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //  String usuario = Singleton.getInstance().darPropietario().getNombreUsuario();
                 TextView t = (TextView) view.findViewById(R.id.nombreZona);
-                intentDescription(t.getText().toString());
+                intentDescription(t.getText().toString(),position);
             }
         });
 
     }
 
-    public void intentDescription(String zona) {
+    public void intentDescription(String zona, int position) {
         finish();
         Intent t = new Intent(this, ProgramacionActivity.class);
         t.putExtra(ZONA, zona);
+        t.putExtra(MainUbungActivity.POSITION,position+"");
         startActivity(t);
     }
 

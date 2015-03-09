@@ -19,11 +19,14 @@ import java.util.Date;
 @SuppressWarnings("ALL")
 public class ListaProgramacionAdapter extends BaseAdapter {
 
+    private static final String NOHAYEVENTOS = "No hay eventos para esta Zona";
+    private long zona;
     private Context cnt;
     private ArrayList<Evento> eventos;
 
-    public ListaProgramacionAdapter(Context c) {
+    public ListaProgramacionAdapter(Context c, long nameZona) {
         cnt = c;
+        zona=nameZona;
         geteventos();
     }
 
@@ -65,21 +68,26 @@ public class ListaProgramacionAdapter extends BaseAdapter {
         TextView inscritpsZona = (TextView) rowView.findViewById(R.id.inscritos_programacion);
         TextView horaZona = (TextView) rowView.findViewById(R.id.hora_programacion);
         Evento z = eventos.get(position);
-        Date d = z.getFechaHora();
-        String hora = d.getHours() + ":" + d.getMinutes();
-        Log.e("zona",z.getDeporte()+"");
-        nombreDeporte.setText(z.getDeporte().getNombre());
-        horaZona.setText(hora);
-        inscritpsZona.setText(": " + z.getInscritos().size());
+
+            Date d = z.getFechaHora();
+            String hora = d.getHours() + ":" + d.getMinutes();
+            Log.e("zona", z.getDeporte() + "");
+            nombreDeporte.setText(z.getDeporte().getNombre());
+            horaZona.setText(hora);
+            inscritpsZona.setText(": " + z.getInscritos().size());
+
         return rowView;
     }
 
     // obtener las imagenes de los deportes
     private void geteventos() {
-        eventos = Singleton.getInstance().darEventos();
+        eventos = Singleton.getInstance().darEventos(zona);
         if (eventos == null) {
             Log.e("Carga eventos", " eventos[]:" + null);
             Toast.makeText(cnt, "Hubo un problema al Cargar eventos ", Toast.LENGTH_LONG).show();
+        }
+        else if(eventos.size()==0){
+            Toast.makeText(cnt,NOHAYEVENTOS, Toast.LENGTH_LONG).show();
         }
 
     }

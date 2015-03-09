@@ -9,18 +9,23 @@ import android.widget.ListView;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ListaProgramacionAdapter;
+import com.ubung.tc.ubungmobile.modelo.Singleton;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
 
 public class ProgramacionActivity extends ActionBarActivity {
 
     public static final String PROGRAMACION = "Programación: ";
     private String nameZona;
+    private Zona z;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_programacion);
         nameZona = getIntent().getStringExtra(ListaZonasActivity.ZONA);
+        int pos=Integer.parseInt(getIntent().getStringExtra(MainUbungActivity.POSITION));
+        z=(Zona)Singleton.getInstance().darZonas().get(pos);
         setTitle(PROGRAMACION + nameZona);
         initListView();
     }
@@ -31,7 +36,7 @@ public class ProgramacionActivity extends ActionBarActivity {
     public void initListView() {
         ListView g = (ListView) findViewById(R.id.listView_programacion);
 
-        g.setAdapter(new ListaProgramacionAdapter(this));
+        g.setAdapter(new ListaProgramacionAdapter(this,z.getId()));
         g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
