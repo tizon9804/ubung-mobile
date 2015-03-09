@@ -23,7 +23,6 @@ public class ListaInscritosAdapter extends BaseAdapter {
     private Context cnt;
     private Evento evento;
     private ArrayList<Tupla<Usuario, Date>> usuarios;
-   // private ArrayList usuarios;
 
     public ListaInscritosAdapter(Context c, Evento v) {
         cnt = c;
@@ -43,6 +42,7 @@ public class ListaInscritosAdapter extends BaseAdapter {
 
     }
 
+
     @Override
     public Object getItem(int position) {
         return null;
@@ -55,7 +55,6 @@ public class ListaInscritosAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         View rowView = convertView;
 
         if (convertView == null) {
@@ -67,6 +66,7 @@ public class ListaInscritosAdapter extends BaseAdapter {
 
         // Set data into the view.
         TextView inscritosZona = (TextView) rowView.findViewById(R.id.inscritos_nombre);
+
         Usuario z = usuarios.get(position).getIzq();
         Log.e("inscritos:",z+"");
         inscritosZona.setText(z.getNombreUsuario());

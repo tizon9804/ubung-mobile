@@ -61,13 +61,14 @@ public class ListaProgramacionAdapter extends BaseAdapter {
         }
 
         // Set data into the view.
-        TextView nombreZona = (TextView) rowView.findViewById(R.id.nombre_deporte_programacion);
+        TextView nombreDeporte = (TextView) rowView.findViewById(R.id.nombre_deporte_programacion);
         TextView inscritpsZona = (TextView) rowView.findViewById(R.id.inscritos_programacion);
         TextView horaZona = (TextView) rowView.findViewById(R.id.hora_programacion);
         Evento z = eventos.get(position);
         Date d = z.getFechaHora();
         String hora = d.getHours() + ":" + d.getMinutes();
-        nombreZona.setText(z.getDeporte().getNombre());
+        Log.e("zona",z.getDeporte()+"");
+        nombreDeporte.setText(z.getDeporte().getNombre());
         horaZona.setText(hora);
         inscritpsZona.setText(": " + z.getInscritos().size());
         return rowView;

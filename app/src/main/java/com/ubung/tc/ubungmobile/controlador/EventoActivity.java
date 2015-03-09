@@ -4,11 +4,18 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,26 +55,86 @@ public class EventoActivity extends ActionBarActivity {
             szonas[j]=zonas.get(j).getNombre();
         }
 
-        Spinner spinnerDeportes = (Spinner) findViewById(R.id.deportes_spinner);
+        final Spinner spinnerDeportes = (Spinner) findViewById(R.id.deportes_spinner);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sdeportes); //selected item will look like a spinner set from XML
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDeportes.setAdapter(spinnerArrayAdapter);
 
-        Spinner spinnerZonas = (Spinner) findViewById(R.id.zonas_spinner);
+        final Spinner spinnerZonas = (Spinner) findViewById(R.id.zonas_spinner);
         ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, szonas); //selected item will look like a spinner set from XML
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerZonas.setAdapter(spinnerArrayAdapter2);
+
+        final EditText date=(EditText)findViewById(R.id.date_picker);
+        final EditText hora=(EditText)findViewById(R.id.hour_picker);
+        date.setText("23/02/2015");
+        hora.setText("8:35");
+
+        date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    DialogFragment newFragment = new DatePickerFragment();
+                    newFragment.show(getSupportFragmentManager(), "Hora del evento");
+
+                }
+            }
+        });
+
+        hora.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    DialogFragment newFragment = new TimePickerFragment();
+                    newFragment.show(getSupportFragmentManager(), "Fecha del evento");
+                }
+            }
+        });
 
         Usuario u= Singleton.getInstance().darPropietario();
         TextView usuario=(TextView)findViewById(R.id.organiza_evento);
         usuario.setText(u.getNombreUsuario());
 
+        final Button crear= (Button)findViewById(R.id.button_crear_evento);
+        crear.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    crear.setTextColor(getResources().getColor(R.color.holo_green_light));
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    crear.setTextColor(getResources().getColor(R.color.white));
+                    Calendar d= Calendar.getInstance();
+                    String t=date.getText().toString();
+                    String h=hora.getText().toString();
+                    int año=Integer.parseInt(t.split("/")[2]);
+                    int mes=Integer.parseInt(t.split("/")[1]);
+                    int dia=Integer.parseInt(t.split("/")[0]);
+                    int hora=Integer.parseInt(h.split(":")[0]);
+                    int min=Integer.parseInt(h.split(":")[1]);
+                    d.set(año,mes,dia,hora,min);
+                    Date horafecha=new Date();
+                    horafecha.setTime(d.getTimeInMillis());
+                    long z= zonas.get(spinnerZonas.getSelectedItemPosition()).getId();
+                    long dep=deportes.get(spinnerDeportes.getSelectedItemPosition()).getId();
+                    Zona zonap=Singleton.getInstance().darZona(z);
+                    Deporte sport=Singleton.getInstance().darDeporte(dep);
+                    crearEvento(horafecha,zonap,sport);
+
+                }
+
+                return true;
+            }
+        });
+
+
     }
 
     private void crearEvento(Date fechaHora,Zona zona,Deporte deporte){
-        Usuario organizador= Singleton.getInstance().darPropietario();
         try {
-            Singleton.getInstance().crearEvento(fechaHora,zona,deporte,organizador);
+            Singleton.getInstance().crearEvento(fechaHora,zona,deporte);
+            Toast.makeText(getBaseContext(), "Se ha creado el evento.", Toast.LENGTH_LONG).show();
+            nextActivity();
         } catch (ExcepcionPersistencia excepcionPersistencia) {
             excepcionPersistencia.printStackTrace();
             Toast.makeText(getBaseContext(), "Hubo un problema al Crear el evento ", Toast.LENGTH_LONG).show();
@@ -91,6 +158,21 @@ public class EventoActivity extends ActionBarActivity {
         /* Repeating on every 20 minutes interval */
     //    manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
          //       1000 * 60 * 20, pendingIntent);
+    }
+
+    private void nextActivity() {
+        finish();
+        Intent i = new Intent(this, LocationActivity.class);
+        startActivity(i);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        Intent t = new Intent(this, LocationActivity.class);
+        t.putExtra("last", true);
+
     }
 
 }

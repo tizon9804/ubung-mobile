@@ -11,10 +11,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextClock;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ListaInscritosAdapter;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
+import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
 
 
@@ -26,6 +28,9 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
 
     private static final String INSCRITOS_TITULO = "Inscritos: ";
     private ArrayList<Evento> eventos;
+    private Evento evento;
+    private ListView inscritos;
+    private ListaInscritosAdapter l;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,30 +39,34 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
         int position=Integer.parseInt(getIntent().getStringExtra(MainUbungActivity.POSITION));
         eventos=Singleton.getInstance().darEventos();
         if(eventos!=null) {
-            Evento v = eventos.get(position);
+            evento = eventos.get(position);
             //llamado a todos los elementos graficos
             TextView organiza = (TextView) findViewById(R.id.txt_organiza);
             ImageView img = (ImageView) findViewById(R.id.image_descripcion_programacion);
             TextClock hora = (TextClock) findViewById(R.id.textClock_descripcion_programacion);
-            ListView inscritos=(ListView) findViewById(R.id.listView_inscritos);
             TextView inscritosTitulo = (TextView) findViewById(R.id.title_inscritos_descripcion_programacion);
             //carga de informacion a los elementos graficos
-            ListaInscritosAdapter l= new ListaInscritosAdapter(this,v);
-            inscritos.setAdapter(l);
-            inscritos.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return false;
-                }
-            });
-            organiza.setText(v.getOrganizador().getNombreUsuario());
-            img.setImageResource(getResources().getIdentifier(v.getDeporte().getNombreArchivoImagen(), "drawable", getPackageName()));
-            Date d = v.getFechaHora();
+            initListInscritos();
+            organiza.setText(evento.getOrganizador().getNombreUsuario());
+            img.setImageResource(getResources().getIdentifier(evento.getDeporte().getNombreArchivoImagen(), "drawable", getPackageName()));
+            Date d = evento.getFechaHora();
             String horap = d.getHours() + ":" + d.getMinutes();
             hora.setText(horap);
-            inscritosTitulo.setText(INSCRITOS_TITULO + v.getInscritos().size());
+            inscritosTitulo.setText(INSCRITOS_TITULO + evento.getInscritos().size());
         }
         initButtons();
+    }
+
+    private void initListInscritos() {
+        inscritos=(ListView) findViewById(R.id.listView_inscritos);
+        l= new ListaInscritosAdapter(this,evento);
+        inscritos.setAdapter(l);
+        inscritos.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
     }
 
     private void initButtons() {
@@ -79,7 +88,16 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     start.setTextColor(getResources().getColor(R.color.white));
-                    nextActivity();
+                    try {
+                        Singleton.getInstance().inscribirseEvento(evento.getId());
+                        Toast.makeText(getBaseContext(), "Se ha inscrito al evento", Toast.LENGTH_LONG).show();
+                        nextActivity();
+                    } catch (ExcepcionPersistencia excepcionPersistencia) {
+                        excepcionPersistencia.printStackTrace();
+                        Toast.makeText(getBaseContext(), "Hubo un problema de inscripción: "+ excepcionPersistencia.getMessage(), Toast.LENGTH_LONG).show();
+                        nextActivity();
+                    }
+
                 }
                 return true;
             }

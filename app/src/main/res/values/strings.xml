@@ -33,8 +33,9 @@
     <string name="title_inscritos">Inscritos:t</string>
     <string name="title_activity_evento">EventoActivity</string>
     <string name="title_crear_evento">Crear Evento</string>
-    <string name="title_deporte_evento">Escoge un Deporte: </string>
-    <string name="title_zona_evento">Escoge una Zona: </string>
+    <string name="title_deporte_evento">Deporte: </string>
+    <string name="title_zona_evento">Zona: </string>
     <string name="btn_crear">Crear Evento</string>
+    <string name="title_fecha">Fecha:</string>
 
 </resources>
