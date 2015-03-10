@@ -12,6 +12,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.AssetManager;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
@@ -101,7 +102,7 @@ public class Singleton implements InterfazUbung {
             testObject.saveInBackground();*/
 
             Log.i(LOG_NAME+"inicializar()", "Instanciando y registrando ManejadorSMS (BroadcastReceiver)...");
-            manejadorSMS = new ManejadorSMS(this);
+            manejadorSMS = new ManejadorSMS(this, manejadorPersistencia);
             IntentFilter intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
             this.context.registerReceiver(manejadorSMS,intentFilter);
 
@@ -115,7 +116,7 @@ public class Singleton implements InterfazUbung {
             else Log.i(LOG_NAME+".inicializar()", "Usuario encontrado, restableciendo la información de ("+propietario.getNombreUsuario()+";"+propietario.getDeporte().getNombre()+")");
 
         } else {
-            Log.w(LOG_NAME + ".inicializar()", System.currentTimeMillis()+" Está tratanto de volver a inicializar un Singleton ya inicializado!");
+            Log.w(LOG_NAME + ".inicializar()", System.currentTimeMillis() + " Está tratanto de volver a inicializar un Singleton ya inicializado!");
         }
     }
 
@@ -193,6 +194,23 @@ public class Singleton implements InterfazUbung {
             throw new ExcepcionComunicacion("No fue posible enviar SMS "+e.getMessage());
         }
         return idInscripcion;
+    }
+
+    public void notificarUsuario(long idInscripcion, long idEvento, long idInscrito) {
+        Evento evento = manejadorPersistencia.darEvento(idEvento);
+        Usuario inscrito = manejadorPersistencia.darUsuario(idInscrito);
+
+        String nombreUsuario = inscrito == null ? ""+idInscrito : inscrito.getNombreUsuario();
+        String nombreZona = "ZONeventNull";
+        String nombreDeporte = "DEPeventNull";
+        if (evento != null) {
+            nombreZona = evento.getZona() == null ? "zonaNoEncr" : evento.getZona().getNombre();
+            nombreDeporte = evento.getDeporte() == null ? "deporNoEncr" : evento.getDeporte().getNombre();
+        }
+
+        String mensaje = "El usuario "+nombreUsuario+" se ha inscrito a tu evento "+nombreDeporte
+                +" en "+nombreZona;
+        Toast.makeText(context,mensaje,Toast.LENGTH_LONG).show();
     }
 
 // -----------------------------------------------------

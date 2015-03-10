@@ -6,7 +6,6 @@ INSERT INTO Eventos(id, celNotificacion, fechaHora, idZona, idDeporte, idOrganiz
 INSERT INTO Eventos(id, celNotificacion, fechaHora, idZona, idDeporte, idOrganizador, fechaCreacion) VALUES(1425846235616, 3115055046, '2015-03-09 16:30:00', 1425846235625, 1425846235621, 1425846235614,'2015-03-08 19:12:14');
 CREATE TABLE InscritosEvento (id INTEGER PRIMARY KEY, idEvento INTEGER, idInscrito INTEGER, fechaInscripcion DATETIME DEFAULT CURRENT_TIMESTAMP);
 INSERT INTO InscritosEvento(id, idEvento, idInscrito, fechaInscripcion) VALUES(1425846235617,1425846235615,1425846235613,'2015-03-09 21:33:22');
-INSERT INTO InscritosEvento(id, idEvento, idInscrito, fechaInscripcion) VALUES(1425846235618,1425846235615,1425846235614,'2015-03-10 11:00:00');
 INSERT INTO InscritosEvento(id, idEvento, idInscrito, fechaInscripcion) VALUES(1425846235619,1425846235616,1425846235614,'2015-03-08 19:12:24');
 CREATE TABLE Deportes (id INTEGER PRIMARY KEY, nombre TEXT, nombreArchivoImagen TEXT, descripcion TEXT);
 INSERT INTO Deportes (id, nombre, nombreArchivoImagen, descripcion) VALUES(1425846235620,'Basket', 'basket', 'descripción para BASKET guardada en la BD');
