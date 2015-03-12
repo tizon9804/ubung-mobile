@@ -138,11 +138,12 @@ public class MainUbungActivity extends Activity {
 
 
     public void initUser_registation() {
-        EditText user = (EditText) findViewById(R.id.user_name);
+        final EditText user = (EditText) findViewById(R.id.user_name);
         user.requestFocus();
         user.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                user.requestFocus();
                 InputMethodManager imgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                 return true;

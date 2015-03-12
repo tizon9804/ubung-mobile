@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,8 +31,8 @@ import java.util.ArrayList;
 public class LocationActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener {
 
 
-    private static final double CENTRAR = 0.0010 ;
-    public static final String NOMBRE ="NOMBRE_ZONA" ;
+    private static final double CENTRAR = 0.0010;
+    public static final String NOMBRE = "NOMBRE_ZONA";
     public static final String DETALLES = "detalles_zona";
     public static final String POS = "pos";
     private GoogleMap map;
@@ -59,15 +58,32 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
             map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
         }
         if (map != null) {
-            //properties con las coordenadas
-            // map.addMarker(new MarkerOptions().position(new LatLng(4.660708, -74.132137)).title("Casa Tizon"));
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(4.660708, -74.132137), 1));
+
             map.animateCamera(CameraUpdateFactory.zoomTo(17), 500, null);
             map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
             map.getUiSettings().setZoomGesturesEnabled(true);
             map.setMyLocationEnabled(true);
             map.getUiSettings().setMyLocationButtonEnabled(false);
             crearZonas();
+            //properties con las coordenadas
+            double l;
+            double lonl;
+            CameraPosition p;
+            LatLng latlng;
+            if (map.getMyLocation() != null && map.isMyLocationEnabled()) {
+                l = map.getMyLocation().getLatitude();
+                lonl = map.getMyLocation().getLongitude();
+                latlng = new LatLng(l - CENTRAR, lonl);
+                p= new CameraPosition(latlng, 17, 0, 0);
+            } else {
+                l = 4.660708;
+                lonl = -74.132137;
+                latlng = new LatLng(l - CENTRAR, lonl);
+                p= new CameraPosition(latlng, 12, 0, 0);
+            }
+
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
+
         }
 
     }
@@ -99,10 +115,10 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
         if (map.getMyLocation() == null || !map.isMyLocationEnabled()) {
             Toast.makeText(this, "No se encontró su ubicación, por favor verifique su GPS.", Toast.LENGTH_LONG).show();
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(4.660708, -74.132137), 19));
-            map.animateCamera(CameraUpdateFactory.zoomTo(17), 2000, null);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(4.660708, -74.132137), 12));
+            map.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
         } else {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(map.getMyLocation().getLatitude(), map.getMyLocation().getLongitude()), 19));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(map.getMyLocation().getLatitude(), map.getMyLocation().getLongitude()), 17));
             map.animateCamera(CameraUpdateFactory.zoomTo(17), 2000, null);
         }
     }
@@ -118,28 +134,27 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.zona_imagen_focused));
         marker.showInfoWindow();
 
-        double l= marker.getPosition().latitude;
-        double lonl= marker.getPosition().longitude;
+        double l = marker.getPosition().latitude;
+        double lonl = marker.getPosition().longitude;
 
-        LatLng latlng= new LatLng(l-CENTRAR,lonl);
-
+        LatLng latlng = new LatLng(l - CENTRAR, lonl);
 
 
         //  map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 17));
         CameraPosition p = new CameraPosition(latlng, 17, 0, 0);
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
-        String detalles="En esta zona se practica: ";
-        String nombre="zona";
-        int pos=0;
-        int i=0;
-        for(Zona z:zonas){
-            if(z.getNombre().equals(marker.getTitle())){
+        String detalles = "En esta zona se practica: ";
+        String nombre = "zona";
+        int pos = 0;
+        int i = 0;
+        for (Zona z : zonas) {
+            if (z.getNombre().equals(marker.getTitle())) {
                 ArrayList<Evento> eventos = Singleton.getInstance().darEventos(z.getId());
-                nombre=z.getNombre();
-                pos=i;
-                for (Evento e:eventos){
-                    detalles+="\n "+e.getDeporte().getNombre();
+                nombre = z.getNombre();
+                pos = i;
+                for (Evento e : eventos) {
+                    detalles += "\n " + e.getDeporte().getNombre();
 
                 }
                 break;
@@ -149,8 +164,8 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
         FragmentDescriptionZona zona = new FragmentDescriptionZona();
         Bundle bundle = new Bundle();
-        bundle.putString(NOMBRE,nombre);
-        bundle.putString(DETALLES,detalles);
+        bundle.putString(NOMBRE, nombre);
+        bundle.putString(DETALLES, detalles);
         bundle.putString(POS, pos + "");
         zona.setArguments(bundle);
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
@@ -159,8 +174,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         t.commit();
 
 
-        
-       // animation(marker);
+        // animation(marker);
 
 
         return true;
@@ -202,7 +216,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         super.onBackPressed();
         if (getFragmentManager().getBackStackEntryCount() == 0) {
             this.finish();

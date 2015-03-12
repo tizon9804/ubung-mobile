@@ -67,8 +67,12 @@ public class EventoActivity extends ActionBarActivity {
 
         final EditText date=(EditText)findViewById(R.id.date_picker);
         final EditText hora=(EditText)findViewById(R.id.hour_picker);
-        date.setText("23/02/2015");
-        hora.setText("8:35");
+        date.setFreezesText(true);
+        date.setFocusableInTouchMode(true);
+        hora.setFocusableInTouchMode(true);
+        Date c= new Date();
+        date.setText(c.getDate()+"/"+c.getMonth()+"/"+c.getYear());
+        hora.setText(c.getHours()+":"+c.getMinutes());
 
         date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -103,23 +107,32 @@ public class EventoActivity extends ActionBarActivity {
                     crear.setTextColor(getResources().getColor(R.color.holo_green_light));
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    crear.setTextColor(getResources().getColor(R.color.white));
-                    Calendar d= Calendar.getInstance();
-                    String t=date.getText().toString();
-                    String h=hora.getText().toString();
-                    int año=Integer.parseInt(t.split("/")[2]);
-                    int mes=Integer.parseInt(t.split("/")[1]);
-                    int dia=Integer.parseInt(t.split("/")[0]);
-                    int hora=Integer.parseInt(h.split(":")[0]);
-                    int min=Integer.parseInt(h.split(":")[1]);
-                    d.set(año,mes,dia,hora,min);
-                    Date horafecha=new Date();
-                    horafecha.setTime(d.getTimeInMillis());
-                    long z= zonas.get(spinnerZonas.getSelectedItemPosition()).getId();
-                    long dep=deportes.get(spinnerDeportes.getSelectedItemPosition()).getId();
-                    Zona zonap=Singleton.getInstance().darZona(z);
-                    Deporte sport=Singleton.getInstance().darDeporte(dep);
-                    crearEvento(horafecha,zonap,sport);
+                    try {
+                        crear.setTextColor(getResources().getColor(R.color.white));
+                        Calendar d = Calendar.getInstance();
+                        String t = date.getText().toString();
+                        String h = hora.getText().toString();
+                        int año = Integer.parseInt(t.split("/")[2]);
+                        int mes = Integer.parseInt(t.split("/")[1]);
+                        int dia = Integer.parseInt(t.split("/")[0]);
+                        int hora = Integer.parseInt(h.split(":")[0]);
+                        int min = Integer.parseInt(h.split(":")[1]);
+                        d.set(año, mes, dia, hora, min);
+                        Date horafecha = new Date();
+                        horafecha.setTime(d.getTimeInMillis());
+                        long z = zonas.get(spinnerZonas.getSelectedItemPosition()).getId();
+                        long dep = deportes.get(spinnerDeportes.getSelectedItemPosition()).getId();
+                        Zona zonap = Singleton.getInstance().darZona(z);
+                        Deporte sport = Singleton.getInstance().darDeporte(dep);
+                        crearEvento(horafecha, zonap, sport);
+                    }
+                    catch (Exception e){
+
+                        Toast.makeText(getBaseContext(),"Error en el formato",Toast.LENGTH_LONG).show();
+                        Date c= new Date();
+                        date.setText(c.getDate()+"/"+c.getMonth()+"/"+c.getYear());
+                        hora.setText(c.getHours()+":"+c.getMinutes());
+                    }
 
                 }
 
