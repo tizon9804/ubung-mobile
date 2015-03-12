@@ -38,8 +38,8 @@ public class ManejadorSMS extends BroadcastReceiver {
                 Log.i(LOG_NAME+"onRecei","Se ha recibido el SMS "+mensaje+" desde "+smsMessage.getDisplayOriginatingAddress());
                 String[] protocolo = mensaje.split(":");
                 try {
-                    long idEvento = Long.parseLong(protocolo[1]);
-                    long idInscrito = Long.parseLong(protocolo[2]);
+                    long idEvento = Long.parseLong(protocolo[2]);
+                    long idInscrito = Long.parseLong(protocolo[3]);
                     long idRegistro = manejadorPersistencia.agregarInscritoEvento(idEvento,idInscrito);
                     Log.w(LOG_NAME+"onRecei","idEvento="+idEvento+" idInscrito="+idInscrito);
                     singleton.notificarUsuario(idRegistro,idEvento,idInscrito);
