@@ -91,13 +91,13 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/border_button2"
         android:text="@string/btn_inscripcion"
         android:textColor="#ffffffff"
         android:textSize="30dp"
         android:layout_below="@+id/listView_inscritos"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="38dp" />
+        android:layout_centerHorizontal="true" />
 
 
 

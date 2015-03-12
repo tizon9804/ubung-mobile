@@ -39,10 +39,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/organiza"
         android:id="@+id/organiza_evento"
-        android:layout_alignTop="@+id/title_organiza_evento"
-        android:layout_alignEnd="@+id/tittle_crear_evento"
-        android:textColor="#ffffffff"
-        android:textSize="25dp"/>
+        android:textColor="@android:color/black"
+        android:textSize="25dp"
+        android:layout_alignBottom="@+id/title_organiza_evento"
+        android:layout_alignEnd="@+id/date_picker" />
 
     <TextView
         android:layout_width="wrap_content"

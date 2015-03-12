@@ -38,5 +38,6 @@
     <string name="btn_crear">Crear Evento</string>
     <string name="title_fecha">Fecha:</string>
     <string name="btn_programacion">Programación</string>
+    <string name="Celular">Celular</string>
 
 </resources>
