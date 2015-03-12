@@ -41,6 +41,7 @@ public class ManejadorSMS extends BroadcastReceiver {
                     long idEvento = Long.parseLong(protocolo[1]);
                     long idInscrito = Long.parseLong(protocolo[2]);
                     long idRegistro = manejadorPersistencia.agregarInscritoEvento(idEvento,idInscrito);
+                    Log.w(LOG_NAME+"onRecei","idEvento="+idEvento+" idInscrito="+idInscrito);
                     singleton.notificarUsuario(idRegistro,idEvento,idInscrito);
                 } catch (ExcepcionPersistencia e) {
                     Log.e(LOG_NAME+"onRecei","Error al persistir registro de usuario "+e.getMessage());
