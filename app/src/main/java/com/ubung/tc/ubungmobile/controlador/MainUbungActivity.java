@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.view.ViewPager;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
+import com.ubung.tc.ubungmobile.Services.PushService;
 import com.ubung.tc.ubungmobile.controlador.adapters.GettingStartAdapter;
 import com.ubung.tc.ubungmobile.modelo.InterfazUbung;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
@@ -43,8 +45,9 @@ public class MainUbungActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        Intent p= new Intent(this,PushService.class);
+        this.startService(p);
         Singleton singleton = Singleton.getInstance();
-        singleton.inicializar(this.getApplicationContext());
         this.singleton = singleton;
 
         if (singleton.darPropietario() != null) {
@@ -157,6 +160,18 @@ public class MainUbungActivity extends Activity {
         finish();
         startActivity(new Intent(this, LocationActivity.class));
     }
+    protected void onResume() {
+    super.onResume();
+        Singleton singleton = Singleton.getInstance();
+        singleton.inicializar(this.getApplicationContext());
 
+    }
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Singleton singleton = Singleton.getInstance();
+        singleton.inicializar(this.getApplicationContext());
+
+
+    }
 
 }

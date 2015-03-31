@@ -74,7 +74,7 @@ public class DescriptionSportActivity extends ActionBarActivity {
         } else {
             Toast.makeText(this, "Hubo un problema al cargar el deporte.", Toast.LENGTH_LONG).show();
         }
-        if(phone!=null) {
+        if(phone!=null && !phone.equals("")) {
             celular = Long.parseLong(phone);
         }
         usuario = user;

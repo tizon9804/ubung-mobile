@@ -5,6 +5,7 @@ package com.ubung.tc.ubungmobile.modelo;
 Implementacion de los metodos de Ubung
  */
 
+import android.app.Application;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -66,6 +67,7 @@ public class Singleton implements InterfazUbung {
     public static Singleton getInstance() {
         return singleton;
     }
+
 
 // -----------------------------------------------------
 // MÉTODOS
