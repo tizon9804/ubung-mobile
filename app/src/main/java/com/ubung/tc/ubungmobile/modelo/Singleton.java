@@ -17,9 +17,13 @@ import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
+import com.parse.ParseObject;
+import com.parse.ParsePush;
+import com.ubung.tc.ubungmobile.Services.PushService;
 import com.ubung.tc.ubungmobile.modelo.comunicacion.ManejadorSMS;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
+import com.ubung.tc.ubungmobile.modelo.persistencia.Parse.ParseUsuario;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.ManejadorPersistencia;
@@ -95,13 +99,23 @@ public class Singleton implements InterfazUbung {
 
             Log.i(LOG_NAME+".inicializar()", "Inicializando com.parse SDK...");
             Parse.enableLocalDatastore(this.context);
-            Parse.initialize(this.context, "fiOX1IZj9jaDptWkDP4fRnPvxheKiNUYsRRMh3qP", "vJNCHxNX7ENY1Fml9Cp55liNXs6MJhTCHMoefYbv");
+             // ubung de camilo
+          // Parse.initialize(this.context, "fiOX1IZj9jaDptWkDP4fRnPvxheKiNUYsRRMh3qP", "vJNCHxNX7ENY1Fml9Cp55liNXs6MJhTCHMoefYbv");
+            //ubung tizon
+           Parse.initialize(this.context, "kCmuY1ucbCPH9pRRZKQUcdTlEibuqzsVMsHrZVhJ", "tNELg4aMTozgwQm7WBatobNZJUOiYgbHUQbJ0PBl");
             ParseInstallation.getCurrentInstallation().saveInBackground();
+            ParseObject.registerSubclass(ParseUsuario.class);
+            ParsePush.subscribeInBackground("tizon");
 
-            // Probar Parse SDK
-            /*ParseObject testObject = new ParseObject("TestObject");
-            testObject.put("foo", "bar");
-            testObject.saveInBackground();*/
+            ParseUsuario d= new ParseUsuario();
+            d.setNombreUsuario("mickey");
+            d.setUuidString();
+            d.saveInBackground();
+        // Probar Parse SDK
+        //    ParseObject testObject = new ParseObject("ParseUsuario");
+          //  testObject.put("id","1");
+         //   testObject.put("nombreUsuario", "tizon");
+        //    testObject.saveInBackground();
 
             Log.i(LOG_NAME+"inicializar()", "Instanciando y registrando ManejadorSMS (BroadcastReceiver)...");
             manejadorSMS = new ManejadorSMS(this, manejadorPersistencia);
@@ -145,6 +159,7 @@ public class Singleton implements InterfazUbung {
                 Log.i(LOG_NAME+".modifProp","Actualizando nombre del propietario desde "+propietario.getNombreUsuario()
                         +" a "+nombreUsuario);
                 propietario.setNombreUsuario(nombreUsuario);
+
             }
             if (deporte != null) {
                 Log.i(LOG_NAME+".modifProp","Actualizando deporte del propietario desde "+propietario.getDeporte().getNombre()
@@ -159,6 +174,10 @@ public class Singleton implements InterfazUbung {
             if(propietario == null) {
                 Log.w(LOG_NAME+".modifProp","Propietario no encontrado como usuario! Creando nuevo usuario...");
                 propietario = manejadorPersistencia.darUsuario(manejadorPersistencia.crearUsuario(nombreUsuario, deporte));
+                    ParseObject testObject = new ParseObject("ParseUsuario");
+                  testObject.put("id","1");
+                   testObject.put("nombreUsuario", nombreUsuario);
+                    testObject.saveInBackground();
             } else Log.i(LOG_NAME+".modifProp","Propietario ya existe como usuario! Solo fue necesario definirlo...");
 
             Editor editor = configuracionLocal.edit();

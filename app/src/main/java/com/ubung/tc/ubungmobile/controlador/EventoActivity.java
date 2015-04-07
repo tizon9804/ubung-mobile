@@ -20,12 +20,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -147,6 +154,8 @@ public class EventoActivity extends ActionBarActivity {
         try {
             Singleton.getInstance().crearEvento(fechaHora,zona,deporte);
             Toast.makeText(getBaseContext(), "Se ha creado el evento.", Toast.LENGTH_LONG).show();
+            //ParsePush.sendMessageInBackground("Se ha crado un evento de " + deporte.getNombre(), ParseInstallation.getQuery());
+
             nextActivity();
         } catch (ExcepcionPersistencia excepcionPersistencia) {
             excepcionPersistencia.printStackTrace();

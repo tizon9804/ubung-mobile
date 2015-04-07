@@ -219,6 +219,7 @@ public class ManejadorPersistencia extends SQLiteOpenHelper implements InterfazP
         ContentValues contentValues = new ContentValues();
         contentValues.put(CAMPO_USUARIOS_NOMBRE, usuario.getNombreUsuario());
         contentValues.put(CAMPO_USUARIOS_DEPORTE, usuario.getDeporte().getId());
+
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         long resultado = sqLiteDatabase.update(TABLA_USUARIOS,contentValues,ID+"="+usuario.getId(),null);
         if (resultado != 1) {

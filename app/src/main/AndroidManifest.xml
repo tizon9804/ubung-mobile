@@ -127,6 +127,8 @@
             android:enabled="true"
             android:exported="true" >
         </service>
+        <meta-data android:name="com.parse.push.gcm_sender_id"
+            android:value="id:126995782299" />;
     </application>
 
 </manifest>

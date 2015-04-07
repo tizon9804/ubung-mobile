@@ -3,6 +3,7 @@ package com.ubung.tc.ubungmobile.modelo.persistencia.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 
 import java.util.UUID;
 
@@ -14,6 +15,10 @@ public class ParseUsuario extends ParseObject {
 
     public static final String ID = "id";
     public static final String NOMBRE_USUARIO = "nombreUsuario";
+
+
+
+
 
     public long getId() {
         return getLong(ID);
