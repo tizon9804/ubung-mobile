@@ -5,7 +5,6 @@ package com.ubung.tc.ubungmobile.modelo;
 Implementacion de los metodos de Ubung
  */
 
-import android.app.Application;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -18,8 +17,6 @@ import android.widget.Toast;
 import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
-import com.parse.ParsePush;
-import com.ubung.tc.ubungmobile.Services.PushService;
 import com.ubung.tc.ubungmobile.modelo.comunicacion.ManejadorSMS;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
@@ -43,15 +40,21 @@ public class Singleton implements InterfazUbung {
 // -----------------------------------------------------
     public static final String LOG_NAME = "Singleton";
 
+    // Nombres de los archivos de configuración
     public static final String ARCHIVO_CONF_GLB = "config.properties";
     public static final String ARCHIVO_CONF_LOC = "config";
 
+    // Constantes para leer datos del archivo de configuración
     public static final String CONF_ID_PROPIETARIO = "idPropietario";
     public static final String CONF_CEL_PROPIETARIO = "celPropietario";
 
-    // El protocolo para el mensaje es ubung:idInscripcion:idEvento:idUsuario
+    // El protocolo para el mensaje SMS es ubung:idInscripcion:idEvento:idUsuario
     public static final String SMS_INSCR_EVENTO = "ubung";
-// -----------------------------------------------------
+
+    // Constantes para la inicializar Parse SDK
+    public static final String APPLICATION_ID = "kCmuY1ucbCPH9pRRZKQUcdTlEibuqzsVMsHrZVhJ";
+    public static final String CLIENT_KEY = "tNELg4aMTozgwQm7WBatobNZJUOiYgbHUQbJ0PBl";
+    // -----------------------------------------------------
 // ATRIBUTOS
 // -----------------------------------------------------
     private static Singleton singleton = new Singleton();
@@ -71,7 +74,6 @@ public class Singleton implements InterfazUbung {
     public static Singleton getInstance() {
         return singleton;
     }
-
 
 // -----------------------------------------------------
 // MÉTODOS
@@ -97,25 +99,7 @@ public class Singleton implements InterfazUbung {
             Log.i(LOG_NAME+".inicializar()", "Instanciando manejadorPersistencia...");
             manejadorPersistencia = new ManejadorPersistencia(this);
 
-            Log.i(LOG_NAME+".inicializar()", "Inicializando com.parse SDK...");
-            Parse.enableLocalDatastore(this.context);
-             // ubung de camilo
-          // Parse.initialize(this.context, "fiOX1IZj9jaDptWkDP4fRnPvxheKiNUYsRRMh3qP", "vJNCHxNX7ENY1Fml9Cp55liNXs6MJhTCHMoefYbv");
-            //ubung tizon
-           Parse.initialize(this.context, "kCmuY1ucbCPH9pRRZKQUcdTlEibuqzsVMsHrZVhJ", "tNELg4aMTozgwQm7WBatobNZJUOiYgbHUQbJ0PBl");
-            ParseInstallation.getCurrentInstallation().saveInBackground();
-            ParseObject.registerSubclass(ParseUsuario.class);
-            ParsePush.subscribeInBackground("tizon");
-
-            ParseUsuario d= new ParseUsuario();
-            d.setNombreUsuario("mickey");
-            d.setUuidString();
-            d.saveInBackground();
-        // Probar Parse SDK
-        //    ParseObject testObject = new ParseObject("ParseUsuario");
-          //  testObject.put("id","1");
-         //   testObject.put("nombreUsuario", "tizon");
-        //    testObject.saveInBackground();
+            inicializarParseSDK();
 
             Log.i(LOG_NAME+"inicializar()", "Instanciando y registrando ManejadorSMS (BroadcastReceiver)...");
             manejadorSMS = new ManejadorSMS(this, manejadorPersistencia);
@@ -134,6 +118,16 @@ public class Singleton implements InterfazUbung {
         } else {
             Log.w(LOG_NAME + ".inicializar()", System.currentTimeMillis() + " Está tratanto de volver a inicializar un Singleton ya inicializado!");
         }
+    }
+
+    private void inicializarParseSDK() {
+        Log.i(LOG_NAME+".inicializar()", "Inicializando com.parse SDK...");
+        Parse.enableLocalDatastore(this.context);
+        Parse.initialize(this.context, APPLICATION_ID, CLIENT_KEY);
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+
+        ParseObject.registerSubclass(ParseUsuario.class);
+
     }
 
     public Context darContexto() {
