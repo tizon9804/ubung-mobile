@@ -1,0 +1,1 @@
+Encontrar nuevas personas que practiquen un deporte en común, sin importar la ciudad idioma o que este dentro de la red de contactos.
