@@ -4,7 +4,6 @@ package com.ubung.tc.ubungmobile.controlador;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.Button;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Usuario;
 
 /*
 *Clase que configura el panel de botones que se muestra en el mapa

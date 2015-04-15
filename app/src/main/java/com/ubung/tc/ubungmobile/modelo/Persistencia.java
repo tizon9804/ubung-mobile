@@ -1,4 +1,4 @@
-package com.ubung.tc.ubungmobile.modelo.persistencia;
+package com.ubung.tc.ubungmobile.modelo;
 
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by cvargasc on 4/03/15.
  */
-public interface InterfazPersistencia {
+public interface Persistencia {
 
     /**
      * Devuelve todos los deportes
@@ -26,7 +26,7 @@ public interface InterfazPersistencia {
      * @return El objeto deporte del id  especificado, null si no se encuentra dicho id en la base
      * de datos.
      */
-    public Deporte darDeporte(long id);
+    public Deporte darDeporte(String id);
 
     /**
      * Devuelve todos los usuarios
@@ -41,7 +41,7 @@ public interface InterfazPersistencia {
      * @return El usuario asociado con el id especificado. Null si no existe ningún usuario
      * con ese id.
      */
-    public Usuario darUsuario(long id);
+    public Usuario darUsuario(String id);
 
     /**
      * Devuelve un usuario dado su nombre de usuario
@@ -49,7 +49,7 @@ public interface InterfazPersistencia {
      * @return El usuario con el nombre especificado. Null si no existe ningún usuario con el
      * nombre de usuario especificado.
      */
-    public Usuario darUsuario(String nombreUsuario);
+    public Usuario buscarUsuario(String nombreUsuario);
 
     /**
      * Devuelve todas las zonas
@@ -63,7 +63,7 @@ public interface InterfazPersistencia {
      * @param id El identificado de la zona en la base de datos.
      * @return La zona con el id especificado. Null si no existe ninguna zona con ese id
      */
-    public Zona darZona(long id);
+    public Zona darZona(String id);
 
     /**
      * Actualiza un evento existente en la aplicación. El objeto evento debe tener su identificador
@@ -87,12 +87,12 @@ public interface InterfazPersistencia {
      * @return Arreglo con todos los eventos registrados para la zona especificada, el arreglo
      * estará vacío si no hay ningún evento registrado para esa zona en la base de datos.
      */
-    public ArrayList<Evento> darEventos(long idZona);
+    public ArrayList<Evento> buscarEventos(String idZona);
 
     /**
      * Devuelve el evento dado su id
      * @param id El identificador del evento en la base de datos.
      * @return El evento con el id especificado. Null si no existe ningún evento con ese id.
      */
-    public Evento darEvento(long id);
+    public Evento darEvento(String id);
 }

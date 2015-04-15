@@ -1,35 +1,33 @@
 package com.ubung.tc.ubungmobile.modelo.persistencia.entidades;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+import com.ubung.tc.ubungmobile.modelo.persistencia.ManejadorPersistencia;
+
 /**
- * Created by cvargasc on 1/03/15.
+ * Created by cvargasc on 15/04/15.
  */
-public class Deporte {
+@ParseClassName(ManejadorPersistencia.DEPORTE)
+public class Deporte extends ParseObject {
 
-    private long id;
-    private String nombre;
-    private String nombreArchivoImagen;
-    private String descripcion;
+    private static final String NOMBRE = "nombre";
+    private static final String NOMBRE_ARCHIVO_IMAGEN = "nombreArchivoImagen";
+    private static final String DESCRIPCION = "descripcion";
 
-    public Deporte(long id, String nombre, String nombreArchivoImagen, String descripcion) {
-        this.id = id;
-        this.nombre = nombre;
-        this.nombreArchivoImagen = nombreArchivoImagen;
-        this.descripcion = descripcion;
-    }
-
-    public long getId() {
-        return id;
+    public String getId() {
+        return getObjectId();
     }
 
     public String getNombre() {
-        return nombre;
+        return getString(NOMBRE);
     }
 
     public String getNombreArchivoImagen() {
-        return nombreArchivoImagen;
+        return getString(NOMBRE_ARCHIVO_IMAGEN);
     }
 
     public String getDescripcion() {
-        return descripcion;
+        return getString(DESCRIPCION);
     }
+    
 }

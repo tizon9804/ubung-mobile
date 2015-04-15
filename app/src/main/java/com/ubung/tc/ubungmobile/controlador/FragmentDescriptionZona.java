@@ -12,13 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
-import com.google.android.gms.maps.model.Marker;
 import com.ubung.tc.ubungmobile.R;
-import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
-
-import java.util.ArrayList;
 
 public class FragmentDescriptionZona extends Fragment {
 

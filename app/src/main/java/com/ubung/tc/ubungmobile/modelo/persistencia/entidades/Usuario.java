@@ -1,45 +1,47 @@
 package com.ubung.tc.ubungmobile.modelo.persistencia.entidades;
 
+import com.parse.ParseClassName;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.ubung.tc.ubungmobile.modelo.persistencia.ManejadorPersistencia;
 
 /**
- * Created by cvargasc on 1/03/15.
+ * Created by cvargasc on 15/04/15.
  */
-public class Usuario {
+@ParseClassName(ManejadorPersistencia.USUARIO)
+public class Usuario extends ParseUser {
 
-    protected static final String LOG_NAME = "Usuario";
+    private static final String DEPORTE = "deporte";
+    private static final String NUM_CELULAR = "numCelular";
 
-    private long id;
-    private String nombreUsuario;
-    private Deporte deporte; // Es el deporte seleccionado por el usuario en este momento
-
-    public Usuario(long id, String nombreUsuario, Deporte deporte) {
-        this.id = id;
-        this.nombreUsuario = nombreUsuario;
-        this.deporte = deporte;
-    }
-
-    protected Usuario(long id, String nombreUsuario) {
-        this.id = id;
-        this.nombreUsuario = nombreUsuario;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public String getId() {
+        return getObjectId();
     }
 
     public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+        setUsername(nombreUsuario);
     }
 
-    public Deporte getDeporte() {
-        return deporte;
+    public String getNombreUsuario() {
+        return getUsername();
     }
 
     public void setDeporte(Deporte deporte) {
-        this.deporte = deporte;
+        put(DEPORTE,deporte);
+        saveEventually();
     }
+
+    public Deporte getDeporte() throws ParseException {
+        return getParseObject(DEPORTE).fetch();
+    }
+
+    public void setNumCelular(long numCelular) {
+        put(NUM_CELULAR,numCelular);
+        saveEventually();
+    }
+
+    public long getNumCelular() throws ParseException {
+        return getLong(NUM_CELULAR);
+    }
+
 }

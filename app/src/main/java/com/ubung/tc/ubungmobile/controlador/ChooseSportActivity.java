@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Deporte;
 
 import java.util.ArrayList;
 

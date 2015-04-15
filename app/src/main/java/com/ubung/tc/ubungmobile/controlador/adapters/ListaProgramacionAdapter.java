@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Evento;
 
 import java.util.ArrayList;
 import java.util.Date;

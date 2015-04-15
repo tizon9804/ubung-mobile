@@ -1,8 +1,9 @@
 package com.ubung.tc.ubungmobile.modelo;
 
+import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
-import com.ubung.tc.ubungmobile.modelo.persistencia.InterfazPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
@@ -12,21 +13,35 @@ import java.util.Date;
 /*
 Metodos que consumira la interfaz
  */
-public interface InterfazUbung extends InterfazPersistencia {
+public interface Ubung extends Persistencia {
 
     /**
      * Devuelve el usuario propietario del dispositivo
      * @return el objeto Usuario que corresponde al dispositivo
      */
-    public Usuario darPropietario();
+    public ParseUser darPropietario();
 
     /**
-     * Registra el propietario del dispositivo
+     * Modifica la información del propietario del dispositivo
      * @param nombreUsuario el nombre de usario del propietario del dispositivo
      * @param deporte el deporte que el propietario del dispositivo practica
      * @throws ExcepcionPersistencia en caso que se presente algún error al persistir los cambios
      */
-    public void modificarPropietario(String nombreUsuario, long celular, Deporte deporte) throws ExcepcionPersistencia;
+    public void modificarPropietario(String nombreUsuario, Long celular, Deporte deporte) throws Exception;
+
+    /**
+     * Permite realizar el login del usuario en la aplicación
+     * @param nombreUsuario
+     * @param contrasena
+     */
+    public void logIn(String nombreUsuario, String contrasena);
+
+    /**
+     * Permite registrar un nuevo usuario en la aplicación
+     * @param nombreUsuario
+     * @param contrasena
+     */
+    public void registrarNuevoUsuario(String nombreUsuario, String contrasena);
 
     /**
      * Permite inscribir al propietario en un evento

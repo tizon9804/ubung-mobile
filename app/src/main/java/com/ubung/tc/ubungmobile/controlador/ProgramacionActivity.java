@@ -10,7 +10,7 @@ import android.widget.ListView;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ListaProgramacionAdapter;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Zona;
 
 
 public class ProgramacionActivity extends ActionBarActivity {

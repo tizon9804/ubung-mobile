@@ -1,18 +1,13 @@
 package com.ubung.tc.ubungmobile.controlador;
 
 import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,19 +15,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseInstallation;
-import com.parse.ParsePush;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Deporte;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Usuario;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Zona;
 
 import java.util.ArrayList;
 import java.util.Calendar;

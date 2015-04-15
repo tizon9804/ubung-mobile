@@ -1,7 +1,6 @@
 package com.ubung.tc.ubungmobile.controlador;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MotionEvent;
@@ -18,7 +17,7 @@ import com.ubung.tc.ubungmobile.controlador.adapters.ListaInscritosAdapter;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Evento;
 
 
 import java.util.ArrayList;

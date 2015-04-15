@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.persistencia.Tupla;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Evento;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Usuario;
 
 import java.util.ArrayList;
 import java.util.Date;

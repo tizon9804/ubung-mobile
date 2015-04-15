@@ -3,12 +3,9 @@ package com.ubung.tc.ubungmobile.controlador.Threads;
 import android.location.Location;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Zona;
 
 import java.util.ArrayList;
 

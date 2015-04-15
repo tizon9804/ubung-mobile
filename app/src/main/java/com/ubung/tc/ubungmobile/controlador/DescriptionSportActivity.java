@@ -1,12 +1,9 @@
 package com.ubung.tc.ubungmobile.controlador;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -17,8 +14,7 @@ import android.widget.Toast;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Deporte;
 
 
 public class DescriptionSportActivity extends ActionBarActivity {

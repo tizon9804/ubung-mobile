@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Zona;
 
 import java.util.ArrayList;
 

@@ -1,35 +1,43 @@
 package com.ubung.tc.ubungmobile.modelo.persistencia.entidades;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+import com.ubung.tc.ubungmobile.modelo.persistencia.ManejadorPersistencia;
+
 /**
- * Created by cvargasc on 2/03/15.
+ * Created by cvargasc on 15/04/15.
  */
-public class Zona {
+@ParseClassName(ManejadorPersistencia.ZONA)
+public class Zona extends ParseObject {
 
-    private long id;
-    private String nombre;
-    private double[] latLongZoom;
-    private int radio;
+    private static final String NOMBRE = "nombre";
+    private static final String LATLONGZOOM = "latlongzoom";
+    private static final String RADIO = "radio";
 
-    public Zona(long id, String nombre, double[] latLongZoom, int radio) {
-        this.id = id;
-        this.nombre = nombre;
-        this.latLongZoom = latLongZoom;
-        this.radio = radio;
-    }
+    private double[] LatLongZoom = null;
 
-    public long getId() {
-        return id;
+    public String getId() {
+        return getObjectId();
     }
 
     public String getNombre() {
-        return nombre;
+        return getString(NOMBRE);
     }
 
     public double[] getLatLongZoom() {
-        return latLongZoom;
+        if (LatLongZoom == null) {
+            String cadena = getString(LATLONGZOOM);
+            String[] datos = cadena.split(":");
+            LatLongZoom = new double[3];
+            LatLongZoom[0] = Double.parseDouble(datos[0]);
+            LatLongZoom[1] = Double.parseDouble(datos[1]);
+            LatLongZoom[2] = Double.parseDouble(datos[2]);
+        }
+        return LatLongZoom;
     }
 
     public int getRadio() {
-        return radio;
+        return getInt(RADIO);
     }
+
 }

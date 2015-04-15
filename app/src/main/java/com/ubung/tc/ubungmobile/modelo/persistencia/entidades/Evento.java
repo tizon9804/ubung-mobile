@@ -1,105 +1,19 @@
 package com.ubung.tc.ubungmobile.modelo.persistencia.entidades;
 
-import android.util.Log;
-
-import com.ubung.tc.ubungmobile.modelo.persistencia.Tupla;
-
-import java.util.ArrayList;
-import java.util.Date;
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+import com.ubung.tc.ubungmobile.modelo.persistencia.ManejadorPersistencia;
 
 /**
- * Created by cvargasc on 1/03/15.
+ * Created by cvargasc on 15/04/15.
  */
-public class Evento {
+@ParseClassName(ManejadorPersistencia.EVENTO)
+public class Evento extends ParseObject {
 
-    protected static final String LOG_NAME = "Evento";
 
-    private long id;
-    private Date fechaHora;
-    private Zona zona;
-    private Deporte deporte;
-    private Usuario organizador;
-    protected InscritosEvento inscritosEvento;
-
-    private long celNotificacion;
-
-    private Date fechaCreacion;
-
-    public Evento(long id, long celNotificacion, Date fechaHora, Zona zona, Deporte deporte, Usuario organizador) {
-        this.id = id;
-        this.celNotificacion = celNotificacion;
-        this.fechaHora = fechaHora;
-        this.zona = zona;
-        this.deporte = deporte;
-        this.organizador = organizador;
-    }
-
-    protected Evento(long id, Date fechaHora, Date fechaCreacion, long celNotificacion) {
-        this.id = id;
-        this.fechaHora = fechaHora;
-        this.fechaCreacion = fechaCreacion;
-        this.celNotificacion = celNotificacion;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public Date getFechaHora() {
-        return fechaHora;
-    }
-
-    public void setFechaHora(Date fechaHora) {
-        this.fechaHora = fechaHora;
-    }
-
-    public Zona getZona() {
-        return zona;
-    }
-
-    public void setZona(Zona zona) {
-        this.zona = zona;
-    }
-
-    public Deporte getDeporte() {
-        return deporte;
-    }
-
-    public void setDeporte(Deporte deporte) {
-        this.deporte = deporte;
-    }
-
-    public Usuario getOrganizador() {
-        return organizador;
-    }
-
-    public void setOrganizador(Usuario organizador) {
-        this.organizador = organizador;
-    }
 
     public long getCelNotificacion() {
-        return celNotificacion;
+
     }
 
-    public void setCelNotificacion(long celNotificacion) {
-        this.celNotificacion = celNotificacion;
-    }
-
-    /**
-     * Recupera los usuarios inscritos a este evento
-     * @return un ArrayList vacío en caso que no se hayan inscritos usuarios, null en caso que este
-     * evento no haya sido instanciado desde el modelo.
-     */
-    public ArrayList<Tupla<Usuario, Date>> getInscritos() {
-        if (inscritosEvento == null) {
-            Log.e(LOG_NAME+"getInsc", "No debería estar llamando este método desde aquí... el " +
-                    "arreglo de inscritos no está inicializado, lo cual implica que este objeto " +
-                    "no fue instanciado desde el modelo");
-        }
-        return inscritosEvento.getInscritosEvento();
-    }
-
-    public Date getFechaCreacion() {
-        return fechaCreacion;
-    }
 }

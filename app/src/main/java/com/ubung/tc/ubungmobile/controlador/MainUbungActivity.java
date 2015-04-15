@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -20,9 +18,9 @@ import android.widget.Toast;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.Services.PushService;
 import com.ubung.tc.ubungmobile.controlador.adapters.GettingStartAdapter;
-import com.ubung.tc.ubungmobile.modelo.InterfazUbung;
+import com.ubung.tc.ubungmobile.modelo.Ubung;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Deporte;
 
 import java.util.ArrayList;
 
@@ -34,7 +32,7 @@ public class MainUbungActivity extends Activity {
     public static final String USER = "usuario";
     public static final String PHONE = "phone" ;
 
-    private InterfazUbung singleton;
+    private Ubung singleton;
     protected boolean active = true;
     protected int ubungTime = 1000;
     private Thread ubungThread;

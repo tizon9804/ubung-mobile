@@ -29,8 +29,8 @@ import com.ubung.tc.ubungmobile.controlador.Threads.AnimationZona;
 import com.ubung.tc.ubungmobile.controlador.Threads.DirectionsAdapter;
 import com.ubung.tc.ubungmobile.controlador.Threads.NotifyZonaCercana;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
-import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Evento;
+import com.ubung.tc.ubungmobile.modelo.persistencia.local.Zona;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -224,7 +224,7 @@ map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
         HashMap deportes=new HashMap();
         for (Zona z : zonas) {
             if (z.getNombre().equals(marker.getTitle())) {
-                ArrayList<Evento> eventos = Singleton.getInstance().darEventos(z.getId());
+                ArrayList<Evento> eventos = Singleton.getInstance().buscarEventos(z.getId());
                 nombre = z.getNombre();
                 pos = i;
                 for (Evento e : eventos) {
