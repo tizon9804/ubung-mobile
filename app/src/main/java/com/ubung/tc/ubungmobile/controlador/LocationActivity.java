@@ -1,31 +1,39 @@
 package com.ubung.tc.ubungmobile.controlador;
 
 import android.content.Intent;
-import android.graphics.Point;
+import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
-import android.os.SystemClock;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.Interpolator;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.ubung.tc.ubungmobile.R;
+import com.ubung.tc.ubungmobile.controlador.Threads.AnimationZona;
+import com.ubung.tc.ubungmobile.controlador.Threads.DirectionsAdapter;
+import com.ubung.tc.ubungmobile.controlador.Threads.NotifyZonaCercana;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class LocationActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener {
@@ -36,6 +44,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
     public static final String DETALLES = "detalles_zona";
     public static final String POS = "pos";
     private GoogleMap map;
+    private LatLng ultimaPosicion;
     private ArrayList<Marker> markers;
     protected boolean active = true;
     protected int ubungTime = 10000;
@@ -75,16 +84,73 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                 lonl = map.getMyLocation().getLongitude();
                 latlng = new LatLng(l - CENTRAR, lonl);
                 p= new CameraPosition(latlng, 17, 0, 0);
-            } else {
+            }else if(ultimaPosicion!=null){
+                p= new CameraPosition(ultimaPosicion, 17, 0, 0);
+            }
+            else {
                 l = 4.660708;
                 lonl = -74.132137;
-                latlng = new LatLng(l - CENTRAR, lonl);
-                p= new CameraPosition(latlng, 12, 0, 0);
+                ultimaPosicion = new LatLng(l - CENTRAR, lonl);
+                p= new CameraPosition(ultimaPosicion, 12, 0, 0);
+               // Intent gpsOptionsIntent = new Intent(
+               // android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+               // startActivity(gpsOptionsIntent);
             }
 
             map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
 
+            map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    PanelMapFragment panel = new PanelMapFragment();
+                    FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+                    t.replace(R.id.activity_location, panel);
+                    t.addToBackStack(null);
+                    t.commit();
+
+                }
+            });
+
+
+
         }
+        notifyZonasCercanas();
+    }
+
+    private void notifyZonasCercanas() {
+
+
+map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+    final String[] anteriorZona = {""};
+    final String[] id = {""};
+    ArrayList<Zona> zs=Singleton.getInstance().darZonas();
+    @Override
+    public void onMyLocationChange(Location location) {
+       // Log.e("Change","Cambio mi posicion");
+
+        Handler h= new Handler() {
+            @Override
+            public void handleMessage(Message m) {
+
+                Zona z= (Zona) m.obj;
+
+                if(!z.getNombre().equals(anteriorZona[0])) {
+                    Log.e("Nuevo push", "#### push");
+                    ParsePush p= new ParsePush();
+                    p.setChannel(z.getId()+"");
+                    p.setQuery(ParseInstallation.getQuery());
+                    p.setMessage("Estas Cerca de La zona " + z.getNombre());
+                    p.sendInBackground();
+                    anteriorZona[0] =z.getNombre();
+                    id[0]=z.getId()+"";
+                }
+
+            }};
+
+        NotifyZonaCercana n= new NotifyZonaCercana(location,h,zs);
+        n.start();
+    }
+});
 
     }
 
@@ -93,17 +159,21 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
      */
     private void crearZonas() {
         map.setOnMarkerClickListener(this);
+
+
         zonas = Singleton.getInstance().darZonas();
         markers = new ArrayList<Marker>();
         for (Zona z : zonas) {
-            LatLng latlng = new LatLng(z.getLatLongZoom()[0], z.getLatLongZoom()[1]);
+            LatLng latlng = new LatLng(z.getLatLongZoom()[0], z.getLatLongZoom()[1]-0.0002);
+
             Marker m = map.addMarker(new MarkerOptions()
                     .position(latlng)
                     .title(z.getNombre())
                     .snippet(z.getNombre())
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.zona_imagen)));
 
-            markers.add(m);
+           markers.add(m);
+
         }
 
 
@@ -118,8 +188,10 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(4.660708, -74.132137), 12));
             map.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
         } else {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(map.getMyLocation().getLatitude(), map.getMyLocation().getLongitude()), 17));
+            ultimaPosicion=new LatLng(map.getMyLocation().getLatitude(),map.getMyLocation().getLongitude());
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(ultimaPosicion, 17));
             map.animateCamera(CameraUpdateFactory.zoomTo(17), 2000, null);
+
         }
     }
 
@@ -134,8 +206,8 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.zona_imagen_focused));
         marker.showInfoWindow();
 
-        double l = marker.getPosition().latitude;
-        double lonl = marker.getPosition().longitude;
+        final double l = marker.getPosition().latitude;
+        final double lonl = marker.getPosition().longitude;
 
         LatLng latlng = new LatLng(l - CENTRAR, lonl);
 
@@ -148,13 +220,18 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         String nombre = "zona";
         int pos = 0;
         int i = 0;
+
+        HashMap deportes=new HashMap();
         for (Zona z : zonas) {
             if (z.getNombre().equals(marker.getTitle())) {
                 ArrayList<Evento> eventos = Singleton.getInstance().darEventos(z.getId());
                 nombre = z.getNombre();
                 pos = i;
                 for (Evento e : eventos) {
-                    detalles += "\n " + e.getDeporte().getNombre();
+                    if(!deportes.containsKey(e.getDeporte().getNombre())) {
+                        detalles += "\n " + e.getDeporte().getNombre();
+                        deportes.put(e.getDeporte().getNombre(),true);
+                    }
 
                 }
                 break;
@@ -173,47 +250,102 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         t.addToBackStack(null);
         t.commit();
 
+        final Handler hand=  new Handler() {
+            @Override
+            public void handleMessage(Message m) {
+                int radious= (int) m.obj;
+                if(radious==0) {
+                    map.clear();
 
-        // animation(marker);
+                }
+                else if(radious==-1){
+                    map.clear();
+                    Log.e("fail","muchas zonas");
+                    crearZonas();
+                    getDirections(ultimaPosicion.latitude, ultimaPosicion.longitude, l, lonl);
+                    radious=0;
+                }
+                LatLng l= marker.getPosition();
+                CircleOptions circle= new CircleOptions();
+                circle.center(l);
+                circle.radius(radious);
+                int opacidad=(150-radious)*radious;
+                circle.fillColor(Color.argb(opacidad%10,255, 147, 23));
+                circle.strokeWidth(0);
+                map.addCircle(circle);
+
+            }
+        };
+
+        AnimationZona a= new AnimationZona(hand);
+        a.start();
+
 
 
         return true;
     }
 
-    private void animation(final Marker m) {
-        final android.os.Handler handler = new android.os.Handler();
-        final long startTime = SystemClock.uptimeMillis();
-        final long duration = 2000;
 
-        Projection proj = map.getProjection();
-        final LatLng markerLatLng = m.getPosition();
-        Point startPoint = proj.toScreenLocation(markerLatLng);
-        startPoint.offset(0, -100);
-        final LatLng startLatLng = proj.fromScreenLocation(startPoint);
 
-        final Interpolator interpolator = new BounceInterpolator();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
 
-                long elapsed = SystemClock.uptimeMillis() - startTime;
-                float t = interpolator.getInterpolation((float) elapsed / duration);
-                double lng = t * markerLatLng.longitude + (1 - t) * startLatLng.longitude;
-                double lat = t * markerLatLng.latitude + (1 - t) * startLatLng.latitude;
-                m.setPosition(new LatLng(lat, lng));
-                // m.setIcon(BitmapDescriptorFactory.fromResource(getResources().getIdentifier("animacion" + elapsed%11, "drawable", getPackageName())));
-                if (t < 1.0) {
-                    // Post again 16ms later.
-                    handler.postDelayed(this, 16);
+
+    public  void getDirections(double lat1, double lon1, double lat2, double lon2) {
+
+        final LatLng origen=new LatLng(lat1,lon1);
+        final LatLng destino= new LatLng(lat2,lon2);
+        if(!cercaZona(origen,destino)) {
+            Handler h;
+            h = new Handler() {
+                @Override
+                public void handleMessage(Message m) {
+                    drawPrimaryLinePath((ArrayList<LatLng>) m.obj, origen, destino);
+                    Log.e("direcciones", "tamaño de la lista de nodos: " + ((ArrayList<LatLng>) m.obj).size());
                 }
+            };
+            DirectionsAdapter d = new DirectionsAdapter(lat1, lon1, lat2, lon2, h);
+            d.start();
+        }
+        else{
+            Toast.makeText(this,"Esta muy cerca de su destino!",Toast.LENGTH_LONG).show();
+        }
+    }
 
+    public final synchronized void drawPrimaryLinePath(ArrayList<LatLng> listLocsToDraw, LatLng origen, LatLng destino)
+    {
+        map.clear();
+        crearZonas();
+       PolylineOptions polyop= new PolylineOptions();
+        boolean term=false;
+       for(int i=0;i<listLocsToDraw.size()&&!term;i++){
+           LatLng l= listLocsToDraw.get(i);
+           if(cercaZona(l,destino)){
+               term=true;
+           }
+           polyop.add(l);
+       }
 
-            }
-        });
-
+       polyop.geodesic(true);
+       polyop.color(Color.rgb(255, 147, 23));
+       polyop.width(20);
+       map.addPolyline(polyop);
 
     }
 
+
+    public boolean cercaZona(LatLng pos,LatLng zona){
+
+        double d=0;
+        double x=Math.pow((zona.latitude-pos.latitude),2);
+        double y=Math.pow(zona.longitude-pos.longitude,2);
+        d=Math.sqrt(x+y)*100;
+        d=d*1000;
+           Log.e("calculo dist","La distancia es de:"+d);
+        if(d<200){
+            return true;
+        }
+
+        return false;
+    }
 
     @Override
     public void onBackPressed() {

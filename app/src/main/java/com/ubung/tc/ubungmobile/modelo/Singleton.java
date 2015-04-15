@@ -168,10 +168,10 @@ public class Singleton implements InterfazUbung {
             if(propietario == null) {
                 Log.w(LOG_NAME+".modifProp","Propietario no encontrado como usuario! Creando nuevo usuario...");
                 propietario = manejadorPersistencia.darUsuario(manejadorPersistencia.crearUsuario(nombreUsuario, deporte));
-                    ParseObject testObject = new ParseObject("ParseUsuario");
-                  testObject.put("id","1");
-                   testObject.put("nombreUsuario", nombreUsuario);
-                    testObject.saveInBackground();
+                 //   ParseObject testObject = new ParseObject("ParseUsuario");
+                 // testObject.put("id","1");
+                 //  testObject.put("nombreUsuario", nombreUsuario);
+                  //  testObject.saveInBackground();
             } else Log.i(LOG_NAME+".modifProp","Propietario ya existe como usuario! Solo fue necesario definirlo...");
 
             Editor editor = configuracionLocal.edit();
