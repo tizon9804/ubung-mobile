@@ -174,8 +174,7 @@ public class Singleton implements Ubung {
 
     @Override
     public void crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws ParseException {
-        Evento evento = new Evento(fechaHora,  zona, deporte);
-
+        new Evento(fechaHora,  zona, deporte);
 //        long idEvento = manejadorPersistencia.crearEvento(fechaHora, zona, deporte, propietario, numCelular);
 //        manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
 //        Log.i(LOG_NAME+"crearEven", "Creado evento "+idEvento+" e inscrito propietario como participante");

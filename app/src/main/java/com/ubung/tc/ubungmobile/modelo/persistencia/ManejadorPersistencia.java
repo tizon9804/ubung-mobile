@@ -103,7 +103,7 @@ public class ManejadorPersistencia implements Persistencia {
 
     @Override
     public void actualizarEvento(Evento evento) throws ExcepcionPersistencia {
-
+        //ToDo
     }
 
     @Override

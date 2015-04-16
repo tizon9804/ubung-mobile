@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
+import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.persistencia.ManejadorPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
@@ -27,23 +28,16 @@ public class ManejadorSMS extends BroadcastReceiver {
         this.manejadorPersistencia = manejadorPersistencia;
     }
 
-    private void notificarUsuario(String idRegistro, String idEvento, String idInscrito) {
-        try {Evento evento = manejadorPersistencia.darEvento(idEvento);
-        } catch (com.parse.ParseException e) {
-            e.printStackTrace();
-        }
-        try {Usuario inscrito = manejadorPersistencia.darUsuario(idInscrito);
-        } catch (com.parse.ParseException e) {
-            e.printStackTrace();
-        }
-
+    private void notificarUsuario(String idEvento, String idInscrito) throws ParseException {
+        Evento evento = manejadorPersistencia.darEvento(idEvento);
+        Usuario inscrito = manejadorPersistencia.darUsuario(idInscrito);
         String nombreUsuario = inscrito == null ? ""+idInscrito : inscrito.getNombreUsuario();
         String nombreZona = "ZONeventNull";
         String nombreDeporte = "DEPeventNull";
 
         if (evento != null) {
-            //nombreZona = evento.getZona() == null ? "zonaNoEncr" : evento.getZona().getNombre();
-            //nombreDeporte = evento.getDeporte() == null ? "deporNoEncr" : evento.getDeporte().getNombre();
+            nombreZona = evento.getZona() == null ? "zonaNoEncr" : evento.getZona().getNombre();
+            nombreDeporte = evento.getDeporte() == null ? "deporNoEncr" : evento.getDeporte().getNombre();
         }
 
         //ToDo Manejar estos textos en la forma adecuada con el XML
@@ -65,11 +59,13 @@ public class ManejadorSMS extends BroadcastReceiver {
                 String[] protocolo = mensaje.split(":");
                 String idEvento = protocolo[2];
                 String idInscrito = protocolo[3];
-                //ToDo arreglar esto
-                //String idRegistro = manejadorPersistencia.agregarInscritoEvento(idEvento,idInscrito);
                 Log.w(LOG_NAME+"onRecei","idEvento="+idEvento+" idInscrito="+idInscrito);
-                // ToDo arreglar esto
-                // notificarUsuario(idRegistro,idEvento,idInscrito);
+                try {
+                    notificarUsuario(idEvento, idInscrito);
+                } catch (ParseException e) {
+                    Log.e(LOG_NAME+"onRecei","Error al notificar usuario "+e.getMessage());
+                }
+
             }
         }
     }
