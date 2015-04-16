@@ -69,13 +69,16 @@ public class Singleton implements Ubung {
             this.context = context;
 
             Log.i(LOG_NAME+".inicializar()", "Instanciando manejadorPersistencia...");
-            manejadorPersistencia = new ManejadorPersistencia(this);
+            manejadorPersistencia = new ManejadorPersistencia();
 
             Log.i(LOG_NAME+".inicializar()", "Inicializando com.parse SDK...");
             inicializarParseSDK();
 
             Log.i(LOG_NAME+"inicializar()", "Instanciando y registrando ManejadorSMS (BroadcastReceiver)...");
             inicializarModuloSMS();
+
+            Log.i(LOG_NAME+".inicializar()", "Inicializando manejadorPersistencia...");
+            //manejadorPersistencia.inicializar();
 
             Log.i(LOG_NAME+".inicializar()", "Recuperando la información del usuario...");
             propietario = (Usuario)ParseUser.getCurrentUser();
