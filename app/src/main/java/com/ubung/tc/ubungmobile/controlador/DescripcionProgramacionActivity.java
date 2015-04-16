@@ -102,12 +102,11 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
                         Singleton.getInstance().inscribirseEvento(evento.getId());
                         Toast.makeText(getBaseContext(), "Se ha inscrito al evento", Toast.LENGTH_LONG).show();
                         nextActivity();
-                    } catch (ExcepcionPersistencia excepcionPersistencia) {
-                        excepcionPersistencia.printStackTrace();
-                        Toast.makeText(getBaseContext(), "Hubo un problema de inscripción: " + excepcionPersistencia.getMessage(), Toast.LENGTH_LONG).show();
-                        nextActivity();
                     } catch (ExcepcionComunicacion excepcionComunicacion) {
                         excepcionComunicacion.printStackTrace();
+                    } catch (ParseException e) {
+                        Toast.makeText(getBaseContext(), "Hubo un problema de inscripción: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        nextActivity();
                     }
 
                 }
