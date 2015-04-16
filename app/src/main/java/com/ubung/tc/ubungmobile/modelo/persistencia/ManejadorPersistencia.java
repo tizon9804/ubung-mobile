@@ -41,8 +41,9 @@ public class ManejadorPersistencia implements Persistencia {
     }
 
     @Override
-    public Deporte darDeporte(String id) {
-        return null;
+    public Deporte darDeporte(String id) throws ParseException {
+        ParseQuery<Deporte> query = ParseQuery.getQuery(ManejadorPersistencia.DEPORTE);
+        return query.get(id);
     }
 
     @Override

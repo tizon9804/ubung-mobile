@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
@@ -53,9 +54,13 @@ public class DescriptionSportActivity extends ActionBarActivity {
         String phone = t.getStringExtra(MainUbungActivity.PHONE);
         String deporte = "Basketball";
         String descripcion = "hola";
-        Deporte deporteU = Singleton.getInstance().darDeporte(position);
 
-
+        Deporte deporteU = null;
+        try {
+            deporteU = Singleton.getInstance().darDeporte(position);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         if (deporteU != null) {
             deporte = deporteU.getNombre();
             descripcion = deporteU.getDescripcion();

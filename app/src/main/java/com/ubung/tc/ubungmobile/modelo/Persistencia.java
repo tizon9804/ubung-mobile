@@ -27,7 +27,7 @@ public interface Persistencia {
      * @return El objeto deporte del id  especificado, null si no se encuentra dicho id en la base
      * de datos.
      */
-    public Deporte darDeporte(String id);
+    public Deporte darDeporte(String id) throws ParseException;
 
     /**
      * Devuelve todos los usuarios

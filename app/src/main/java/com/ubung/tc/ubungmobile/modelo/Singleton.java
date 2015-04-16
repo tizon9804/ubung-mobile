@@ -7,7 +7,6 @@ Implementacion de los metodos de Ubung
 
 import android.content.Context;
 import android.content.IntentFilter;
-import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -214,7 +213,7 @@ public class Singleton implements Ubung {
     }
 
     @Override
-    public Deporte darDeporte(String id) {
+    public Deporte darDeporte(String id) throws ParseException {
         return manejadorPersistencia.darDeporte(id);
     }
 
