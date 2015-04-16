@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Usuario;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
+
 
 /*
 *Clase que configura el panel de botones que se muestra en el mapa
@@ -29,11 +31,15 @@ public class PanelMapFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_panel_map, container, false);
-        initButton(view);
+        try {
+            initButton(view);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return view;
     }
 
-    private void initButton(View view) {
+    private void initButton(View view) throws ParseException {
 
         //boton agregar
         Button button = (Button) view.findViewById(R.id.imageButton_add);
@@ -55,11 +61,19 @@ public class PanelMapFragment extends Fragment {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        button2.setBackgroundResource(getResources().getIdentifier(u.getDeporte().getNombreArchivoImagen() + FOCUSED, "drawable", getActivity().getPackageName()));
+                        try {
+                            button2.setBackgroundResource(getResources().getIdentifier(u.getDeporte().getNombreArchivoImagen() + FOCUSED, "drawable", getActivity().getPackageName()));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                     if (event.getAction() == MotionEvent.ACTION_UP) {
-                        button2.setBackgroundResource(getResources().getIdentifier(u.getDeporte().getNombreArchivoImagen() + NORMAL, "drawable", getActivity().getPackageName()));
+                        try {
+                            button2.setBackgroundResource(getResources().getIdentifier(u.getDeporte().getNombreArchivoImagen() + NORMAL, "drawable", getActivity().getPackageName()));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                         nextActivity(ChooseSportActivity.class);
                     }
                     return false;

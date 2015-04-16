@@ -5,14 +5,12 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.ubung.tc.ubungmobile.R;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  * Created by Stevenson on 08/03/2015.
@@ -37,11 +35,11 @@ public class TimePickerFragment extends DialogFragment
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        hora=hourOfDay;
-        minuto=minute;
+        hora = hourOfDay;
+        minuto = minute;
 
-        EditText time=(EditText)getActivity().findViewById(R.id.hour_picker);
-        time.setText(hourOfDay+":"+minute);
+        EditText time = (EditText) getActivity().findViewById(R.id.hour_picker);
+        time.setText(hourOfDay + ":" + minute);
 
     }
 }

@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
@@ -37,11 +36,11 @@ public class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        año=year;
-        mes=month;
-        dia=day;
+        año = year;
+        mes = month;
+        dia = day;
         Calendar cal = new GregorianCalendar(year, month, day);
-        EditText date=(EditText)getActivity().findViewById(R.id.date_picker);
-        date.setText(day+"/"+month+"/"+year);
+        EditText date = (EditText) getActivity().findViewById(R.id.date_picker);
+        date.setText(day + "/" + month + "/" + year);
     }
 }

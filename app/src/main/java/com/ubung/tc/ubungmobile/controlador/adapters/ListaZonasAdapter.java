@@ -9,9 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Zona;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
+
 
 import java.util.ArrayList;
 
@@ -62,7 +64,11 @@ public class ListaZonasAdapter extends BaseAdapter {
 
     // obtener las imagenes de los deportes
     private void getZonas() {
-        zonas = Singleton.getInstance().darZonas();
+        try {
+            zonas = Singleton.getInstance().darZonas();
+        } catch (ParseException e) {
+           Log.e("ListaZonasAdapter",e.getMessage());
+        }
         if (zonas == null) {
             Log.e("Carga zonas", " zonas[]:" + zonas);
             Toast.makeText(cnt, "Hubo un problema al Cargar zonas ", Toast.LENGTH_LONG).show();

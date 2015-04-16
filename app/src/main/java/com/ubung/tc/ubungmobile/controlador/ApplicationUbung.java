@@ -1,8 +1,8 @@
 package com.ubung.tc.ubungmobile.controlador;
 
 import android.app.Application;
-import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 
 /**
@@ -11,10 +11,14 @@ import com.ubung.tc.ubungmobile.modelo.Singleton;
 public class ApplicationUbung extends Application {
 
     public void onCreate() {
-    super.onCreate();
+        super.onCreate();
 
         Singleton singleton = Singleton.getInstance();
-        singleton.inicializar(this.getApplicationContext());
+        try {
+            singleton.inicializar(this.getApplicationContext());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 

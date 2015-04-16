@@ -11,11 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 import com.ubung.tc.ubungmobile.R;
 
 public class FragmentDescriptionZona extends Fragment {
-
 
 
     private View view;
@@ -27,14 +25,14 @@ public class FragmentDescriptionZona extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-         view = inflater.inflate(R.layout.fragment_description_zona, container, false);
+        view = inflater.inflate(R.layout.fragment_description_zona, container, false);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            TextView titulozona=(TextView)view.findViewById(R.id.zona_mapa_titulo);
-            TextView descripcion=(TextView)view.findViewById(R.id.descripcion_zona_mapa);
-             nombre = bundle.get(LocationActivity.NOMBRE).toString();
-             detalles = bundle.get(LocationActivity.DETALLES).toString();
-            pos=bundle.get(LocationActivity.POS).toString();
+            TextView titulozona = (TextView) view.findViewById(R.id.zona_mapa_titulo);
+            TextView descripcion = (TextView) view.findViewById(R.id.descripcion_zona_mapa);
+            nombre = bundle.get(LocationActivity.NOMBRE).toString();
+            detalles = bundle.get(LocationActivity.DETALLES).toString();
+            pos = bundle.get(LocationActivity.POS).toString();
             titulozona.setText(nombre);
             descripcion.setText(detalles);
         }
@@ -50,7 +48,7 @@ public class FragmentDescriptionZona extends Fragment {
             public void onClick(View v) {
 
                 nextActivity();
-                Intent t = new Intent(getActivity(),EventoActivity.class);
+                Intent t = new Intent(getActivity(), EventoActivity.class);
                 startActivity(t);
 
             }
@@ -70,17 +68,18 @@ public class FragmentDescriptionZona extends Fragment {
                     nextActivity();
                     Intent t = new Intent(getActivity(), ProgramacionActivity.class);
                     t.putExtra(ListaZonasActivity.ZONA, nombre);
-                    t.putExtra(MainUbungActivity.POSITION,pos);
+                    t.putExtra(MainUbungActivity.POSITION, pos);
                     startActivity(t);
                 }
                 return false;
             }
         });
     }
+
     public void nextActivity() {
         try {
             finalize();
-            getActivity().finish();            
+            getActivity().finish();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

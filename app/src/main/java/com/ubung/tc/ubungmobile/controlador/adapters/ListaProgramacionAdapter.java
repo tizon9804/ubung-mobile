@@ -9,9 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Evento;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,13 +22,13 @@ import java.util.Date;
 public class ListaProgramacionAdapter extends BaseAdapter {
 
     private static final String NOHAYEVENTOS = "No hay eventos para esta Zona";
-    private long zona;
+    private String zona;
     private Context cnt;
     private ArrayList<Evento> eventos;
 
-    public ListaProgramacionAdapter(Context c, long nameZona) {
+    public ListaProgramacionAdapter(Context c, String nameZona) {
         cnt = c;
-        zona=nameZona;
+        zona = nameZona;
         geteventos();
     }
 
@@ -69,12 +71,17 @@ public class ListaProgramacionAdapter extends BaseAdapter {
         TextView horaZona = (TextView) rowView.findViewById(R.id.hora_programacion);
         Evento z = eventos.get(position);
 
-            Date d = z.getFechaHora();
-            String hora = d.getHours() + ":" + d.getMinutes();
+        Date d = z.getFechaHoraEvento();
+        String hora = d.getHours() + ":" + d.getMinutes();
+        try {
             Log.e("zona", z.getDeporte() + "");
             nombreDeporte.setText(z.getDeporte().getNombre());
             horaZona.setText(hora);
-            inscritpsZona.setText(": " + z.getInscritos().size());
+         //   inscritpsZona.setText(": " + z.getInscritos().size());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 
         return rowView;
     }
@@ -85,9 +92,8 @@ public class ListaProgramacionAdapter extends BaseAdapter {
         if (eventos == null) {
             Log.e("Carga eventos", " eventos[]:" + null);
             Toast.makeText(cnt, "Hubo un problema al Cargar eventos ", Toast.LENGTH_LONG).show();
-        }
-        else if(eventos.size()==0){
-            Toast.makeText(cnt,NOHAYEVENTOS, Toast.LENGTH_LONG).show();
+        } else if (eventos.size() == 0) {
+            Toast.makeText(cnt, NOHAYEVENTOS, Toast.LENGTH_LONG).show();
         }
 
     }

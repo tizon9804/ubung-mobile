@@ -3,14 +3,16 @@ package com.ubung.tc.ubungmobile.controlador;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ListaProgramacionAdapter;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Zona;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
 
 public class ProgramacionActivity extends ActionBarActivity {
@@ -24,8 +26,12 @@ public class ProgramacionActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_programacion);
         nameZona = getIntent().getStringExtra(ListaZonasActivity.ZONA);
-        int pos=Integer.parseInt(getIntent().getStringExtra(MainUbungActivity.POSITION));
-        z=(Zona)Singleton.getInstance().darZonas().get(pos);
+        int pos = Integer.parseInt(getIntent().getStringExtra(MainUbungActivity.POSITION));
+        try {
+            z = (Zona) Singleton.getInstance().darZonas().get(pos);
+        } catch (ParseException e) {
+            Log.e("Programación",e.getMessage());
+        }
         setTitle(PROGRAMACION + nameZona);
         initListView();
     }
@@ -36,7 +42,7 @@ public class ProgramacionActivity extends ActionBarActivity {
     public void initListView() {
         ListView g = (ListView) findViewById(R.id.listView_programacion);
 
-        g.setAdapter(new ListaProgramacionAdapter(this,z.getId()));
+        g.setAdapter(new ListaProgramacionAdapter(this, z.getId()));
         g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

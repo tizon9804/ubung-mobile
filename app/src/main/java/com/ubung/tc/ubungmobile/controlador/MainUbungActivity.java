@@ -15,12 +15,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.R;
-import com.ubung.tc.ubungmobile.Services.PushService;
 import com.ubung.tc.ubungmobile.controlador.adapters.GettingStartAdapter;
-import com.ubung.tc.ubungmobile.modelo.Ubung;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Deporte;
+import com.ubung.tc.ubungmobile.modelo.Ubung;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ public class MainUbungActivity extends Activity {
     public static final String POSITION = "position";
     public static final String ID = "id";
     public static final String USER = "usuario";
-    public static final String PHONE = "phone" ;
+    public static final String PHONE = "phone";
 
     private Ubung singleton;
     protected boolean active = true;
@@ -43,8 +43,6 @@ public class MainUbungActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        Intent p= new Intent(this,PushService.class);
-        this.startService(p);
         Singleton singleton = Singleton.getInstance();
         this.singleton = singleton;
 
@@ -91,7 +89,7 @@ public class MainUbungActivity extends Activity {
     // -----------------------------------------------------
 // carga informacion
 // -----------------------------------------------------
-    public void initView() {
+    public void initView() throws ParseException {
         //recorre la lista de deportes
         final ArrayList<Deporte> deportes = Singleton.getInstance().darDeportes();
         if (deportes != null) {
@@ -110,9 +108,9 @@ public class MainUbungActivity extends Activity {
                         }
                         if (event.getAction() == MotionEvent.ACTION_UP) {
                             String usuario = ((EditText) findViewById(R.id.user_name)).getText().toString();
-                            String phone = ((EditText)findViewById(R.id.phone)).getText().toString();
+                            String phone = ((EditText) findViewById(R.id.phone)).getText().toString();
 
-                            intentDescription(deportes.get(finalI).getId(), v.getId(), usuario,phone);
+                            intentDescription(deportes.get(finalI).getId(), v.getId(), usuario, phone);
                         }
 
                         return true;
@@ -127,7 +125,7 @@ public class MainUbungActivity extends Activity {
 
     }
 
-    public void intentDescription(Long id_deporte, long id, String usuario,String phone) {
+    public void intentDescription(String id_deporte, long id, String usuario, String phone) {
         finish();
         Intent t = new Intent(this, DescriptionSportActivity.class);
         t.putExtra(POSITION, id_deporte + "");
@@ -158,16 +156,26 @@ public class MainUbungActivity extends Activity {
         finish();
         startActivity(new Intent(this, LocationActivity.class));
     }
+
     protected void onResume() {
-    super.onResume();
+        super.onResume();
         Singleton singleton = Singleton.getInstance();
-        singleton.inicializar(this.getApplicationContext());
+        try {
+            singleton.inicializar(this.getApplicationContext());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
+
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         Singleton singleton = Singleton.getInstance();
-        singleton.inicializar(this.getApplicationContext());
+        try {
+            singleton.inicializar(this.getApplicationContext());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
 
     }

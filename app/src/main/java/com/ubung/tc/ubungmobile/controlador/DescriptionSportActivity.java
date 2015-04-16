@@ -13,8 +13,7 @@ import android.widget.Toast;
 
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Deporte;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 
 
 public class DescriptionSportActivity extends ActionBarActivity {
@@ -49,9 +48,9 @@ public class DescriptionSportActivity extends ActionBarActivity {
     private void InitLabels() {
 
         Intent t = getIntent();
-        long position = Long.parseLong(t.getStringExtra(MainUbungActivity.POSITION));
+        String position = t.getStringExtra(MainUbungActivity.POSITION);
         String user = t.getStringExtra(MainUbungActivity.USER);
-        String phone= t.getStringExtra(MainUbungActivity.PHONE);
+        String phone = t.getStringExtra(MainUbungActivity.PHONE);
         String deporte = "Basketball";
         String descripcion = "hola";
         Deporte deporteU = Singleton.getInstance().darDeporte(position);
@@ -70,7 +69,7 @@ public class DescriptionSportActivity extends ActionBarActivity {
         } else {
             Toast.makeText(this, "Hubo un problema al cargar el deporte.", Toast.LENGTH_LONG).show();
         }
-        if(phone!=null && !phone.equals("")) {
+        if (phone != null && !phone.equals("")) {
             celular = Long.parseLong(phone);
         }
         usuario = user;
@@ -98,12 +97,8 @@ public class DescriptionSportActivity extends ActionBarActivity {
                     start.setTextColor(getResources().getColor(R.color.white));
 
                     try {
-                        Singleton.getInstance().modificarPropietario(usuario,celular, deporteCrear);
-
-
-
-
-                    } catch (ExcepcionPersistencia excepcionPersistencia) {
+                        Singleton.getInstance().modificarPropietario(usuario, celular, deporteCrear);
+                    } catch (com.parse.ParseException e) {
                         Toast.makeText(getBaseContext(), "Hubo un problema al Crear el usuario " + usuario, Toast.LENGTH_LONG).show();
                     }
                 }

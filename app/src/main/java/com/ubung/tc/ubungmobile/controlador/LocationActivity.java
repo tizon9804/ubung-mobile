@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 import com.ubung.tc.ubungmobile.R;
@@ -29,8 +30,8 @@ import com.ubung.tc.ubungmobile.controlador.Threads.AnimationZona;
 import com.ubung.tc.ubungmobile.controlador.Threads.DirectionsAdapter;
 import com.ubung.tc.ubungmobile.controlador.Threads.NotifyZonaCercana;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Evento;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Zona;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,18 +84,17 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                 l = map.getMyLocation().getLatitude();
                 lonl = map.getMyLocation().getLongitude();
                 latlng = new LatLng(l - CENTRAR, lonl);
-                p= new CameraPosition(latlng, 17, 0, 0);
-            }else if(ultimaPosicion!=null){
-                p= new CameraPosition(ultimaPosicion, 17, 0, 0);
-            }
-            else {
+                p = new CameraPosition(latlng, 17, 0, 0);
+            } else if (ultimaPosicion != null) {
+                p = new CameraPosition(ultimaPosicion, 17, 0, 0);
+            } else {
                 l = 4.660708;
                 lonl = -74.132137;
                 ultimaPosicion = new LatLng(l - CENTRAR, lonl);
-                p= new CameraPosition(ultimaPosicion, 12, 0, 0);
-               // Intent gpsOptionsIntent = new Intent(
-               // android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-               // startActivity(gpsOptionsIntent);
+                p = new CameraPosition(ultimaPosicion, 12, 0, 0);
+                // Intent gpsOptionsIntent = new Intent(
+                // android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                // startActivity(gpsOptionsIntent);
             }
 
             map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
@@ -112,7 +112,6 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
             });
 
 
-
         }
         notifyZonasCercanas();
     }
@@ -120,37 +119,43 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
     private void notifyZonasCercanas() {
 
 
-map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-    final String[] anteriorZona = {""};
-    final String[] id = {""};
-    ArrayList<Zona> zs=Singleton.getInstance().darZonas();
-    @Override
-    public void onMyLocationChange(Location location) {
-       // Log.e("Change","Cambio mi posicion");
+        try {
+            map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+                final String[] anteriorZona = {""};
+                final String[] id = {""};
+                ArrayList<Zona> zs = Singleton.getInstance().darZonas();
 
-        Handler h= new Handler() {
-            @Override
-            public void handleMessage(Message m) {
+                @Override
+                public void onMyLocationChange(Location location) {
+                    // Log.e("Change","Cambio mi posicion");
 
-                Zona z= (Zona) m.obj;
+                    Handler h = new Handler() {
+                        @Override
+                        public void handleMessage(Message m) {
 
-                if(!z.getNombre().equals(anteriorZona[0])) {
-                    Log.e("Nuevo push", "#### push");
-                    ParsePush p= new ParsePush();
-                    p.setChannel(z.getId()+"");
-                    p.setQuery(ParseInstallation.getQuery());
-                    p.setMessage("Estas Cerca de La zona " + z.getNombre());
-                    p.sendInBackground();
-                    anteriorZona[0] =z.getNombre();
-                    id[0]=z.getId()+"";
+                            Zona z = (Zona) m.obj;
+
+                            if (!z.getNombre().equals(anteriorZona[0])) {
+                                Log.e("Nuevo push", "#### push");
+                                ParsePush p = new ParsePush();
+                                p.setChannel(z.getId() + "");
+                                p.setQuery(ParseInstallation.getQuery());
+                                p.setMessage("Estas Cerca de La zona " + z.getNombre());
+                                p.sendInBackground();
+                                anteriorZona[0] = z.getNombre();
+                                id[0] = z.getId() + "";
+                            }
+
+                        }
+                    };
+
+                    NotifyZonaCercana n = new NotifyZonaCercana(location, h, zs);
+                    n.start();
                 }
-
-            }};
-
-        NotifyZonaCercana n= new NotifyZonaCercana(location,h,zs);
-        n.start();
-    }
-});
+            });
+        } catch (ParseException e) {
+            Log.e("NotifyZonas",e.getMessage());
+        }
 
     }
 
@@ -161,10 +166,14 @@ map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
         map.setOnMarkerClickListener(this);
 
 
-        zonas = Singleton.getInstance().darZonas();
+        try {
+            zonas = Singleton.getInstance().darZonas();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         markers = new ArrayList<Marker>();
         for (Zona z : zonas) {
-            LatLng latlng = new LatLng(z.getLatLongZoom()[0], z.getLatLongZoom()[1]-0.0002);
+            LatLng latlng = new LatLng(z.getLatLongZoom()[0], z.getLatLongZoom()[1] - 0.0002);
 
             Marker m = map.addMarker(new MarkerOptions()
                     .position(latlng)
@@ -172,7 +181,7 @@ map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
                     .snippet(z.getNombre())
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.zona_imagen)));
 
-           markers.add(m);
+            markers.add(m);
 
         }
 
@@ -188,7 +197,7 @@ map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(4.660708, -74.132137), 12));
             map.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
         } else {
-            ultimaPosicion=new LatLng(map.getMyLocation().getLatitude(),map.getMyLocation().getLongitude());
+            ultimaPosicion = new LatLng(map.getMyLocation().getLatitude(), map.getMyLocation().getLongitude());
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(ultimaPosicion, 17));
             map.animateCamera(CameraUpdateFactory.zoomTo(17), 2000, null);
 
@@ -221,16 +230,20 @@ map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
         int pos = 0;
         int i = 0;
 
-        HashMap deportes=new HashMap();
+        HashMap deportes = new HashMap();
         for (Zona z : zonas) {
             if (z.getNombre().equals(marker.getTitle())) {
                 ArrayList<Evento> eventos = Singleton.getInstance().buscarEventos(z.getId());
                 nombre = z.getNombre();
                 pos = i;
                 for (Evento e : eventos) {
-                    if(!deportes.containsKey(e.getDeporte().getNombre())) {
-                        detalles += "\n " + e.getDeporte().getNombre();
-                        deportes.put(e.getDeporte().getNombre(),true);
+                    try {
+                        if (!deportes.containsKey(e.getDeporte().getNombre())) {
+                            detalles += "\n " + e.getDeporte().getNombre();
+                            deportes.put(e.getDeporte().getNombre(), true);
+                        }
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
                     }
 
                 }
@@ -250,50 +263,45 @@ map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
         t.addToBackStack(null);
         t.commit();
 
-        final Handler hand=  new Handler() {
+        final Handler hand = new Handler() {
             @Override
             public void handleMessage(Message m) {
-                int radious= (int) m.obj;
-                if(radious==0) {
+                int radious = (int) m.obj;
+                if (radious == 0) {
                     map.clear();
 
-                }
-                else if(radious==-1){
+                } else if (radious == -1) {
                     map.clear();
-                    Log.e("fail","muchas zonas");
+                    Log.e("fail", "muchas zonas");
                     crearZonas();
                     getDirections(ultimaPosicion.latitude, ultimaPosicion.longitude, l, lonl);
-                    radious=0;
+                    radious = 0;
                 }
-                LatLng l= marker.getPosition();
-                CircleOptions circle= new CircleOptions();
+                LatLng l = marker.getPosition();
+                CircleOptions circle = new CircleOptions();
                 circle.center(l);
                 circle.radius(radious);
-                int opacidad=(150-radious)*radious;
-                circle.fillColor(Color.argb(opacidad%10,255, 147, 23));
+                int opacidad = (150 - radious) * radious;
+                circle.fillColor(Color.argb(opacidad % 10, 255, 147, 23));
                 circle.strokeWidth(0);
                 map.addCircle(circle);
 
             }
         };
 
-        AnimationZona a= new AnimationZona(hand);
+        AnimationZona a = new AnimationZona(hand);
         a.start();
-
 
 
         return true;
     }
 
 
+    public void getDirections(double lat1, double lon1, double lat2, double lon2) {
 
-
-
-    public  void getDirections(double lat1, double lon1, double lat2, double lon2) {
-
-        final LatLng origen=new LatLng(lat1,lon1);
-        final LatLng destino= new LatLng(lat2,lon2);
-        if(!cercaZona(origen,destino)) {
+        final LatLng origen = new LatLng(lat1, lon1);
+        final LatLng destino = new LatLng(lat2, lon2);
+        if (!cercaZona(origen, destino)) {
             Handler h;
             h = new Handler() {
                 @Override
@@ -304,43 +312,41 @@ map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             };
             DirectionsAdapter d = new DirectionsAdapter(lat1, lon1, lat2, lon2, h);
             d.start();
-        }
-        else{
-            Toast.makeText(this,"Esta muy cerca de su destino!",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Esta muy cerca de su destino!", Toast.LENGTH_LONG).show();
         }
     }
 
-    public final synchronized void drawPrimaryLinePath(ArrayList<LatLng> listLocsToDraw, LatLng origen, LatLng destino)
-    {
+    public final synchronized void drawPrimaryLinePath(ArrayList<LatLng> listLocsToDraw, LatLng origen, LatLng destino) {
         map.clear();
         crearZonas();
-       PolylineOptions polyop= new PolylineOptions();
-        boolean term=false;
-       for(int i=0;i<listLocsToDraw.size()&&!term;i++){
-           LatLng l= listLocsToDraw.get(i);
-           if(cercaZona(l,destino)){
-               term=true;
-           }
-           polyop.add(l);
-       }
+        PolylineOptions polyop = new PolylineOptions();
+        boolean term = false;
+        for (int i = 0; i < listLocsToDraw.size() && !term; i++) {
+            LatLng l = listLocsToDraw.get(i);
+            if (cercaZona(l, destino)) {
+                term = true;
+            }
+            polyop.add(l);
+        }
 
-       polyop.geodesic(true);
-       polyop.color(Color.rgb(255, 147, 23));
-       polyop.width(20);
-       map.addPolyline(polyop);
+        polyop.geodesic(true);
+        polyop.color(Color.rgb(255, 147, 23));
+        polyop.width(20);
+        map.addPolyline(polyop);
 
     }
 
 
-    public boolean cercaZona(LatLng pos,LatLng zona){
+    public boolean cercaZona(LatLng pos, LatLng zona) {
 
-        double d=0;
-        double x=Math.pow((zona.latitude-pos.latitude),2);
-        double y=Math.pow(zona.longitude-pos.longitude,2);
-        d=Math.sqrt(x+y)*100;
-        d=d*1000;
-           Log.e("calculo dist","La distancia es de:"+d);
-        if(d<200){
+        double d = 0;
+        double x = Math.pow((zona.latitude - pos.latitude), 2);
+        double y = Math.pow(zona.longitude - pos.longitude, 2);
+        d = Math.sqrt(x + y) * 100;
+        d = d * 1000;
+        Log.e("calculo dist", "La distancia es de:" + d);
+        if (d < 200) {
             return true;
         }
 

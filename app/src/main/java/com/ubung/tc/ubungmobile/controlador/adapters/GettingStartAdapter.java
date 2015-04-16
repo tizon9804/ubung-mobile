@@ -4,9 +4,11 @@ import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.MainUbungActivity;
 
@@ -52,7 +54,11 @@ public class GettingStartAdapter extends PagerAdapter {
         ((ViewPager) collection).addView(view, 0);
 
         if (position == 4) {
-            main.initView();
+            try {
+                main.initView();
+            } catch (ParseException e) {
+                Log.e("GettingStar",e.getMessage());
+            }
         } else if (position == 3) {
             main.initUser_registation();
 

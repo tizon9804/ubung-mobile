@@ -12,13 +12,13 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ListaInscritosAdapter;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Evento;
-
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,10 +36,10 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_descripcion_programacion);
-        setTitle( getIntent().getStringExtra(ListaZonasActivity.ZONA));
-        int position=Integer.parseInt(getIntent().getStringExtra(MainUbungActivity.POSITION));
-        eventos=Singleton.getInstance().darEventos();
-        if(eventos!=null) {
+        setTitle(getIntent().getStringExtra(ListaZonasActivity.ZONA));
+        int position = Integer.parseInt(getIntent().getStringExtra(MainUbungActivity.POSITION));
+        eventos = Singleton.getInstance().darEventos();
+        if (eventos != null) {
             evento = eventos.get(position);
             //llamado a todos los elementos graficos
             TextView organiza = (TextView) findViewById(R.id.txt_organiza);
@@ -48,19 +48,24 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
             TextView inscritosTitulo = (TextView) findViewById(R.id.title_inscritos_descripcion_programacion);
             //carga de informacion a los elementos graficos
             initListInscritos();
-            organiza.setText(evento.getOrganizador().getNombreUsuario());
-            img.setImageResource(getResources().getIdentifier(evento.getDeporte().getNombreArchivoImagen(), "drawable", getPackageName()));
-            Date d = evento.getFechaHora();
+            try {
+                organiza.setText(evento.getUsuarioOrganizador().getNombreUsuario());
+                img.setImageResource(getResources().getIdentifier(evento.getDeporte().getNombreArchivoImagen(), "drawable", getPackageName()));
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date d = evento.getFechaHoraEvento();
             String horap = d.getHours() + ":" + d.getMinutes();
             hora.setText(horap);
-            inscritosTitulo.setText(INSCRITOS_TITULO + evento.getInscritos().size());
+            //     inscritosTitulo.setText(INSCRITOS_TITULO + evento.getInscritos().size());
         }
         initButtons();
     }
 
     private void initListInscritos() {
-        inscritos=(ListView) findViewById(R.id.listView_inscritos);
-        l= new ListaInscritosAdapter(this,evento);
+        inscritos = (ListView) findViewById(R.id.listView_inscritos);
+        l = new ListaInscritosAdapter(this, evento);
         inscritos.setAdapter(l);
         inscritos.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -95,7 +100,7 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
                         nextActivity();
                     } catch (ExcepcionPersistencia excepcionPersistencia) {
                         excepcionPersistencia.printStackTrace();
-                        Toast.makeText(getBaseContext(), "Hubo un problema de inscripción: "+ excepcionPersistencia.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Hubo un problema de inscripción: " + excepcionPersistencia.getMessage(), Toast.LENGTH_LONG).show();
                         nextActivity();
                     } catch (ExcepcionComunicacion excepcionComunicacion) {
                         excepcionComunicacion.printStackTrace();

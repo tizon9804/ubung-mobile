@@ -10,9 +10,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Deporte;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 
 import java.util.ArrayList;
 
@@ -42,13 +43,17 @@ public class ChooseSportActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_sport);
-        initView();
+        try {
+            initView();
+        } catch (ParseException e) {
+            Log.e("ChooseSport",e.getMessage());
+        }
     }
 
     // -----------------------------------------------------
 // carga informacion
 // -----------------------------------------------------
-    public void initView() {
+    public void initView() throws ParseException {
         //recorre la lista de deportes
         final ArrayList<Deporte> deportes = Singleton.getInstance().darDeportes();
         if (deportes != null) {
@@ -66,7 +71,7 @@ public class ChooseSportActivity extends FragmentActivity {
                             //todo boton seleccionado
                         }
                         if (event.getAction() == MotionEvent.ACTION_UP) {
-                            String usuario = Singleton.getInstance().darPropietario().getNombreUsuario();
+                            String usuario = Singleton.getInstance().darPropietario().getUsername();
                             intentDescription(deportes.get(finalI).getId(), v.getId(), usuario);
                         }
 
@@ -83,7 +88,7 @@ public class ChooseSportActivity extends FragmentActivity {
 
     }
 
-    public void intentDescription(long id_deporte, long id, String usuario) {
+    public void intentDescription(String id_deporte, long id, String usuario) {
         finish();
         Intent t = new Intent(this, DescriptionSportActivity.class);
         t.putExtra(POSITION, id_deporte + "");

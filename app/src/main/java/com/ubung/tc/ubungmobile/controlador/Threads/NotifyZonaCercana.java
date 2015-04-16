@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Zona;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
 import java.util.ArrayList;
 
@@ -14,14 +14,14 @@ import java.util.ArrayList;
  */
 public class NotifyZonaCercana extends Thread {
 
-    private  Location map;
+    private Location map;
     private ArrayList<Zona> zs;
-    private  Handler hand;
+    private Handler hand;
 
-    public NotifyZonaCercana(Location map, Handler h, ArrayList<Zona> zs){
-        this.hand=h;
-        this.map=map;
-        this.zs=zs;
+    public NotifyZonaCercana(Location map, Handler h, ArrayList<Zona> zs) {
+        this.hand = h;
+        this.map = map;
+        this.zs = zs;
     }
 
     public void run() {
@@ -42,15 +42,15 @@ public class NotifyZonaCercana extends Thread {
     }
 
 
-    public boolean cercaZona(LatLng pos,LatLng zona){
+    public boolean cercaZona(LatLng pos, LatLng zona) {
 
-        double d=0;
-        double x=Math.pow((zona.latitude-pos.latitude),2);
-        double y=Math.pow(zona.longitude-pos.longitude,2);
-        d=Math.sqrt(x+y)*100;
-        d=d*1000;
-       // Log.e("calculo entro en zona", "La distancia es de:" + d);
-        if(d<200){
+        double d = 0;
+        double x = Math.pow((zona.latitude - pos.latitude), 2);
+        double y = Math.pow(zona.longitude - pos.longitude, 2);
+        d = Math.sqrt(x + y) * 100;
+        d = d * 1000;
+        // Log.e("calculo entro en zona", "La distancia es de:" + d);
+        if (d < 200) {
             return true;
         }
 

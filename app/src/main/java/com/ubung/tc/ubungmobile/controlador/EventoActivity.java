@@ -3,9 +3,10 @@ package com.ubung.tc.ubungmobile.controlador;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,12 +16,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Deporte;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Usuario;
-import com.ubung.tc.ubungmobile.modelo.persistencia.local.Zona;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,19 +37,23 @@ public class EventoActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evento);
-        initFormat();
+        try {
+            initFormat();
+        } catch (ParseException e) {
+            Log.e("EventoActivity",e.getMessage());
+        }
     }
 
-    private void initFormat() {
-        zonas= Singleton.getInstance().darZonas();
-        deportes= Singleton.getInstance().darDeportes();
-        String[]sdeportes=new String[deportes.size()];
-        for(int i=0;i<deportes.size();i++){
-            sdeportes[i]=deportes.get(i).getNombre();
+    private void initFormat() throws ParseException {
+        zonas = Singleton.getInstance().darZonas();
+        deportes = Singleton.getInstance().darDeportes();
+        String[] sdeportes = new String[deportes.size()];
+        for (int i = 0; i < deportes.size(); i++) {
+            sdeportes[i] = deportes.get(i).getNombre();
         }
-        String[]szonas=new String[zonas.size()];
-        for(int j=0;j<zonas.size();j++){
-            szonas[j]=zonas.get(j).getNombre();
+        String[] szonas = new String[zonas.size()];
+        for (int j = 0; j < zonas.size(); j++) {
+            szonas[j] = zonas.get(j).getNombre();
         }
 
         final Spinner spinnerDeportes = (Spinner) findViewById(R.id.deportes_spinner);
@@ -60,14 +66,14 @@ public class EventoActivity extends ActionBarActivity {
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerZonas.setAdapter(spinnerArrayAdapter2);
 
-        final EditText date=(EditText)findViewById(R.id.date_picker);
-        final EditText hora=(EditText)findViewById(R.id.hour_picker);
+        final EditText date = (EditText) findViewById(R.id.date_picker);
+        final EditText hora = (EditText) findViewById(R.id.hour_picker);
         date.setFreezesText(true);
         date.setFocusableInTouchMode(true);
         hora.setFocusableInTouchMode(true);
-        Date c= new Date();
-        date.setText(c.getDate()+"/"+c.getMonth()+"/"+c.getYear());
-        hora.setText(c.getHours()+":"+c.getMinutes());
+        Date c = new Date();
+        date.setText(c.getDate() + "/" + c.getMonth() + "/" + c.getYear());
+        hora.setText(c.getHours() + ":" + c.getMinutes());
 
         date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -83,18 +89,18 @@ public class EventoActivity extends ActionBarActivity {
         hora.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
+                if (hasFocus) {
                     DialogFragment newFragment = new TimePickerFragment();
                     newFragment.show(getSupportFragmentManager(), "Fecha del evento");
                 }
             }
         });
 
-        Usuario u= Singleton.getInstance().darPropietario();
-        TextView usuario=(TextView)findViewById(R.id.organiza_evento);
+        Usuario u = Singleton.getInstance().darPropietario();
+        TextView usuario = (TextView) findViewById(R.id.organiza_evento);
         usuario.setText(u.getNombreUsuario());
 
-        final Button crear= (Button)findViewById(R.id.button_crear_evento);
+        final Button crear = (Button) findViewById(R.id.button_crear_evento);
         crear.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -115,18 +121,17 @@ public class EventoActivity extends ActionBarActivity {
                         d.set(año, mes, dia, hora, min);
                         Date horafecha = new Date();
                         horafecha.setTime(d.getTimeInMillis());
-                        long z = zonas.get(spinnerZonas.getSelectedItemPosition()).getId();
-                        long dep = deportes.get(spinnerDeportes.getSelectedItemPosition()).getId();
+                        String z = zonas.get(spinnerZonas.getSelectedItemPosition()).getId();
+                        String dep = deportes.get(spinnerDeportes.getSelectedItemPosition()).getId();
                         Zona zonap = Singleton.getInstance().darZona(z);
                         Deporte sport = Singleton.getInstance().darDeporte(dep);
                         crearEvento(horafecha, zonap, sport);
-                    }
-                    catch (Exception e){
+                    } catch (Exception e) {
 
-                        Toast.makeText(getBaseContext(),"Error en el formato",Toast.LENGTH_LONG).show();
-                        Date c= new Date();
-                        date.setText(c.getDate()+"/"+c.getMonth()+"/"+c.getYear());
-                        hora.setText(c.getHours()+":"+c.getMinutes());
+                        Toast.makeText(getBaseContext(), "Error en el formato", Toast.LENGTH_LONG).show();
+                        Date c = new Date();
+                        date.setText(c.getDate() + "/" + c.getMonth() + "/" + c.getYear());
+                        hora.setText(c.getHours() + ":" + c.getMinutes());
                     }
 
                 }
@@ -138,9 +143,9 @@ public class EventoActivity extends ActionBarActivity {
 
     }
 
-    private void crearEvento(Date fechaHora,Zona zona,Deporte deporte){
+    private void crearEvento(Date fechaHora, Zona zona, Deporte deporte) {
         try {
-            Singleton.getInstance().crearEvento(fechaHora,zona,deporte);
+            Singleton.getInstance().crearEvento(fechaHora, zona, deporte);
             Toast.makeText(getBaseContext(), "Se ha creado el evento.", Toast.LENGTH_LONG).show();
             //ParsePush.sendMessageInBackground("Se ha crado un evento de " + deporte.getNombre(), ParseInstallation.getQuery());
 
@@ -166,8 +171,8 @@ public class EventoActivity extends ActionBarActivity {
         calendar.set(Calendar.MINUTE, 30);
 
         /* Repeating on every 20 minutes interval */
-    //    manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-         //       1000 * 60 * 20, pendingIntent);
+        //    manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+        //       1000 * 60 * 20, pendingIntent);
     }
 
     private void nextActivity() {

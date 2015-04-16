@@ -19,8 +19,6 @@ import org.w3c.dom.NodeList;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -36,22 +34,21 @@ public class DirectionsAdapter extends Thread {
     private double lon;
 
 
+    private Handler h;
 
-    private  Handler h;
 
-
-    public DirectionsAdapter(double lat1, double lon1, double lat2, double lon2,Handler h){
-        this.lat1=lat1;
-        this.lat2=lat2;
-        this.lon=lon1;
-        this.lon2=lon2;
-        this.h=h;
+    public DirectionsAdapter(double lat1, double lon1, double lat2, double lon2, Handler h) {
+        this.lat1 = lat1;
+        this.lat2 = lat2;
+        this.lon = lon1;
+        this.lon2 = lon2;
+        this.h = h;
 
     }
 
-    public void run(){
-        Message m= new Message();
-        m.obj=getDirections(lat1, lon, lat2, lon2);
+    public void run() {
+        Message m = new Message();
+        m.obj = getDirections(lat1, lon, lat2, lon2);
         h.sendMessage(m);
     }
 
@@ -60,10 +57,10 @@ public class DirectionsAdapter extends Thread {
     }
 
     public static ArrayList getDirections(double lat1, double lon1, double lat2, double lon2) {
-        Log.e("direcciones","entrando.."+lat1+"#"+lon1+"#"+lat2+"#"+lon2);
-        String url = "http://maps.googleapis.com/maps/api/directions/xml?origin=" +lat1 + "," + lon1  + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric";
-        Log.e("direcciones",url);
-        String tag[] = { "lat", "lng" };
+        Log.e("direcciones", "entrando.." + lat1 + "#" + lon1 + "#" + lat2 + "#" + lon2);
+        String url = "http://maps.googleapis.com/maps/api/directions/xml?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric";
+        Log.e("direcciones", url);
+        String tag[] = {"lat", "lng"};
         ArrayList list_of_geopoints = new ArrayList();
         HttpResponse response = null;
         try {
@@ -85,8 +82,8 @@ public class DirectionsAdapter extends Thread {
                         Node node2 = nl2.item(i);
                         double lat = Double.parseDouble(node1.getTextContent());
                         double lng = Double.parseDouble(node2.getTextContent());
-                        list_of_geopoints.add(new LatLng(lat,lng));
-                        Log.e("direcciones","nodo: "+lat+"#"+lng);
+                        list_of_geopoints.add(new LatLng(lat, lng));
+                        Log.e("direcciones", "nodo: " + lat + "#" + lng);
                     }
                 } else {
                     // No points found
