@@ -45,7 +45,7 @@ public class Evento extends ParseObject {
     public void inscribirUsuarioAEvento(Usuario usuario) {
         ParseRelation<Usuario> inscritosEvento = getRelation(USUARIOS_INSCRITOS);
         inscritosEvento.add(usuario);
-        saveInBackground();//
+        saveInBackground();
     }
 
 // -----------------------------------------------------
@@ -74,4 +74,5 @@ public class Evento extends ParseObject {
     public long getCelNotificacion() throws ParseException {
         return getUsuarioOrganizador().getNumCelular();
     }
+
 }

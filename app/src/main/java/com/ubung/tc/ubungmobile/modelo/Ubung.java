@@ -19,7 +19,7 @@ public interface Ubung extends Persistencia {
      * Devuelve el usuario propietario del dispositivo
      * @return el objeto Usuario que corresponde al dispositivo
      */
-    public ParseUser darPropietario();
+    public Usuario darPropietario();
 
     /**
      * Modifica la información del propietario del dispositivo

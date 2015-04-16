@@ -112,7 +112,7 @@ public class Singleton implements Ubung {
 // MÉTODOS INTERFAZ UBUNG
 // -----------------------------------------------------
     @Override
-    public ParseUser darPropietario() {
+    public Usuario darPropietario() {
         return propietario;
     }
 

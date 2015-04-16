@@ -1,6 +1,7 @@
 package com.ubung.tc.ubungmobile.modelo.persistencia;
 
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.ubung.tc.ubungmobile.modelo.Persistencia;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
@@ -33,6 +34,8 @@ public class ManejadorPersistencia implements Persistencia {
 
     @Override
     public ArrayList<Deporte> darDeportes() {
+        ParseQuery<Deporte> query = ParseQuery.getQuery(ManejadorPersistencia.DEPORTE);
+
         return null;
     }
 
