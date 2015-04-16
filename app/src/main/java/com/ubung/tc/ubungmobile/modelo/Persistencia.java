@@ -1,5 +1,6 @@
 package com.ubung.tc.ubungmobile.modelo;
 
+import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
@@ -18,7 +19,7 @@ public interface Persistencia {
      * @return Arreglo con todos los deportes registrados, el arreglo estará vacío si no hay ningún
      * deporte registrado en la base de datos.
      */
-    public ArrayList<Deporte> darDeportes();
+    public Iterable<Deporte> darDeportes() throws ParseException;
 
     /**
      * Devuelve un deporte dado su id.

@@ -209,7 +209,7 @@ public class Singleton implements Ubung {
 // -----------------------------------------------------
 
     @Override
-    public ArrayList<Deporte> darDeportes() {
+    public Iterable<Deporte> darDeportes() throws ParseException {
         return manejadorPersistencia.darDeportes();
     }
 
