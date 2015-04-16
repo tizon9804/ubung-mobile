@@ -3,10 +3,12 @@ package com.ubung.tc.ubungmobile.modelo.persistencia.entidades;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.ubung.tc.ubungmobile.modelo.persistencia.ManejadorPersistencia;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -73,6 +75,12 @@ public class Evento extends ParseObject {
 
     public long getCelNotificacion() throws ParseException {
         return getUsuarioOrganizador().getNumCelular();
+    }
+
+    public ArrayList<Usuario> getUsuariosInscritos() throws ParseException {
+        ParseRelation<Usuario> inscritosEvento = getRelation(USUARIOS_INSCRITOS);
+        ParseQuery<Usuario> query = inscritosEvento.getQuery();
+        return new ArrayList<>(query.find());
     }
 
 }

@@ -40,15 +40,11 @@ public class ManejadorPersistencia implements Persistencia {
      */
     public void inicializar() {
         try {
-            //Log.i(LOG_NAME + ".inicializar", "Limpiando el cache local...");
-            //ParseObject.unpinAll();
             Log.i(LOG_NAME + ".inicializar", "Realizando cache local de los DEPORTES...");
             ParseQuery<Deporte> deportes = ParseQuery.getQuery(ManejadorPersistencia.DEPORTE);
-            deportes.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ONLY);
             ParseObject.pinAll(deportes.find());
             Log.i(LOG_NAME + ".inicializar", "Realizando cache local de las ZONAS...");
             ParseQuery<Zona> zonas = ParseQuery.getQuery(ManejadorPersistencia.ZONA);
-            zonas.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ONLY);
             ParseObject.pinAll(zonas.find());
         } catch (ParseException e) {
             Log.e(LOG_NAME + ".inicializar", "Error al actualizar el cache local :: "+e.getMessage());
@@ -58,8 +54,7 @@ public class ManejadorPersistencia implements Persistencia {
     @Override
     public ArrayList<Deporte> darDeportes() throws ParseException {
         ParseQuery<Deporte> query = ParseQuery.getQuery(ManejadorPersistencia.DEPORTE);
-        ArrayList<Deporte> respuesta = new ArrayList<>(query.find());
-        return respuesta;
+        return new ArrayList<>(query.find());
     }
 
     @Override
@@ -71,8 +66,7 @@ public class ManejadorPersistencia implements Persistencia {
     @Override
     public ArrayList<Usuario> darUsuarios() throws ParseException {
         ParseQuery<Usuario> query = ParseQuery.getQuery(ManejadorPersistencia.USUARIO);
-        ArrayList<Usuario> respuesta = new ArrayList<>(query.find());
-        return respuesta;
+        return new ArrayList<>(query.find());
     }
 
     @Override
@@ -91,8 +85,7 @@ public class ManejadorPersistencia implements Persistencia {
     @Override
     public ArrayList<Zona> darZonas() throws ParseException {
         ParseQuery<Zona> query = ParseQuery.getQuery(ManejadorPersistencia.ZONA);
-        ArrayList<Zona> respuesta = new ArrayList<>(query.find());
-        return respuesta;
+        return new ArrayList<>(query.find());
     }
 
     @Override
@@ -101,7 +94,7 @@ public class ManejadorPersistencia implements Persistencia {
         return query.get(id);
     }
 
-    @Override
+    //@Override
     public void actualizarEvento(Evento evento) throws ExcepcionPersistencia {
         //ToDo
     }
@@ -109,16 +102,14 @@ public class ManejadorPersistencia implements Persistencia {
     @Override
     public ArrayList<Evento> darEventos() throws ParseException {
         ParseQuery<Evento> query = ParseQuery.getQuery(ManejadorPersistencia.EVENTO);
-        ArrayList<Evento> respuesta = new ArrayList<>(query.find());
-        return respuesta;
+        return new ArrayList<>(query.find());
     }
 
     @Override
     public ArrayList<Evento> buscarEventos(String idZona) throws ParseException {
         ParseQuery<Evento> query = ParseQuery.getQuery(ManejadorPersistencia.EVENTO);
         query.whereEqualTo(Evento.ZONA, darZona(idZona));
-        ArrayList<Evento> respuesta = new ArrayList<>(query.find());
-        return respuesta;
+        return new ArrayList<>(query.find());
     }
 
     @Override

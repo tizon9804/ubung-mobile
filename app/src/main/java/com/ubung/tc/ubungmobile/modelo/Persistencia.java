@@ -73,7 +73,7 @@ public interface Persistencia {
      * @param evento objeto con la información del evento a actualizar
      * @throws ExcepcionPersistencia en caso que no se actualice ningún evento
      */
-    public void actualizarEvento(Evento evento) throws ExcepcionPersistencia;
+    //public void actualizarEvento(Evento evento) throws ExcepcionPersistencia;
 
     /**
      * Devuelve todos los eventos

@@ -7,6 +7,9 @@ Implementacion de los metodos de Ubung
 
 import android.content.Context;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -33,9 +36,6 @@ public class Singleton implements Ubung {
 // CONSTANTES
 // -----------------------------------------------------
     public static final String LOG_NAME = "Singleton";
-
-    // El protocolo para el mensaje SMS es ubung:idInscripcion:idEvento:idUsuario
-    public static final String SMS_INSCR_EVENTO = "ubung";
 
     // Constantes para la inicializar Parse SDK
     public static final String APPLICATION_ID = "kCmuY1ucbCPH9pRRZKQUcdTlEibuqzsVMsHrZVhJ";
@@ -174,33 +174,25 @@ public class Singleton implements Ubung {
 
     @Override
     public void crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws ParseException {
-        new Evento(fechaHora,  zona, deporte);
-//        long idEvento = manejadorPersistencia.crearEvento(fechaHora, zona, deporte, propietario, numCelular);
-//        manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
-//        Log.i(LOG_NAME+"crearEven", "Creado evento "+idEvento+" e inscrito propietario como participante");
-//        return idEvento;
+        Evento evento = new Evento(fechaHora,  zona, deporte);
+        evento.inscribirUsuarioAEvento(propietario);
+        notificarUsuario("Se ha creado el evento");
+        Log.i(LOG_NAME+"crearEven", "Creado evento "+evento.getId()+" e inscrito propietario como participante");
     }
 
     @Override
-    public void inscribirseEvento(String idEvento) throws ExcepcionPersistencia, ExcepcionComunicacion {
-
-//        long idInscripcion = manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
-//        Log.i(LOG_NAME+"inscrEve","Inscrito el propietario al evento "+idEvento);
-//        // Voy a notificar al creador del evento
-//        try {
-//            Evento evento = manejadorPersistencia.darEvento(idEvento);
-//            String mensaje = SMS_INSCR_EVENTO + ":" + idInscripcion+":"+evento.getId() + ":" + propietario.getId();
-//            Log.i(LOG_NAME+"inscrEve", "Enviando SMS '"+mensaje+"' a "+evento.getCelNotificacion());
-//            SmsManager smsManager = SmsManager.getDefault();
-//            smsManager.sendTextMessage("" + evento.getCelNotificacion(),
-//                    null,
-//                    mensaje,
-//                    null,
-//                    null);
-//        } catch (Exception e) {
-//            throw new ExcepcionComunicacion("No fue posible enviar SMS "+e.getMessage());
-//        }
-//        return idInscripcion;
+    public void inscribirseEvento(String idEvento) throws ParseException, ExcepcionComunicacion {
+        Evento evento = manejadorPersistencia.darEvento(idEvento);
+        evento.inscribirUsuarioAEvento(propietario);
+        // Verificando si hay conectividad para determinar si se debe o no enviar el mensaje de texto
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean estoyConectado = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if (!estoyConectado) {
+            manejadorSMS.notificarUsuarioRemoto(evento);
+            //ToDo Manejar estos textos en la forma adecuada con el XML
+            notificarUsuario("Se ha notificado al organizador del evento por medio de SMS");
+        }
     }
 
     public void notificarUsuario(String mensaje) {
@@ -247,7 +239,7 @@ public class Singleton implements Ubung {
         return manejadorPersistencia.darZona(id);
     }
 
-    @Override
+    //@Override
     public void actualizarEvento(Evento evento) throws ExcepcionPersistencia {
         manejadorPersistencia.actualizarEvento(evento);
     }

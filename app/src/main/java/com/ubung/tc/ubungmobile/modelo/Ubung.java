@@ -51,7 +51,7 @@ public interface Ubung extends Persistencia {
      * @throws ExcepcionComunicacion en caso que no sea posible enviar el SMS al usuario organizador
      * del evento notificando la inscripción.
      */
-    public void inscribirseEvento(String idEvento) throws ExcepcionPersistencia, ExcepcionComunicacion;
+    public void inscribirseEvento(String idEvento) throws ParseException, ExcepcionComunicacion;
 
     /**
      * Crea un nuevo evento e inscribe al propietario a ese evento
