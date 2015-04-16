@@ -34,9 +34,10 @@ public class ManejadorPersistencia implements Persistencia {
     }
 
     @Override
-    public Iterable<Deporte> darDeportes() throws ParseException {
+    public ArrayList<Deporte> darDeportes() throws ParseException {
         ParseQuery<Deporte> query = ParseQuery.getQuery(ManejadorPersistencia.DEPORTE);
-        return query.find();
+        ArrayList<Deporte> respuesta = new ArrayList<Deporte>(query.find());
+        return respuesta;
     }
 
     @Override
@@ -45,8 +46,10 @@ public class ManejadorPersistencia implements Persistencia {
     }
 
     @Override
-    public ArrayList<Usuario> darUsuarios() {
-        return null;
+    public ArrayList<Usuario> darUsuarios() throws ParseException {
+        ParseQuery<Usuario> query = ParseQuery.getQuery(ManejadorPersistencia.USUARIO);
+        ArrayList<Usuario> respuesta = new ArrayList<Usuario>(query.find());
+        return respuesta;
     }
 
     @Override
@@ -60,8 +63,10 @@ public class ManejadorPersistencia implements Persistencia {
     }
 
     @Override
-    public ArrayList<Zona> darZonas() {
-        return null;
+    public ArrayList<Zona> darZonas() throws ParseException {
+        ParseQuery<Zona> query = ParseQuery.getQuery(ManejadorPersistencia.ZONA);
+        ArrayList<Zona> respuesta = new ArrayList<Zona>(query.find());
+        return respuesta;
     }
 
     @Override

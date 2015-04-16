@@ -19,7 +19,7 @@ public interface Persistencia {
      * @return Arreglo con todos los deportes registrados, el arreglo estará vacío si no hay ningún
      * deporte registrado en la base de datos.
      */
-    public Iterable<Deporte> darDeportes() throws ParseException;
+    public ArrayList<Deporte> darDeportes() throws ParseException;
 
     /**
      * Devuelve un deporte dado su id.
@@ -34,7 +34,7 @@ public interface Persistencia {
      * @return Arreglo con todos los usuarios registrados, el arreglo estará vacío si no hay ningún
      * usuario registrado en la base de datos.
      */
-    public ArrayList<Usuario> darUsuarios();
+    public ArrayList<Usuario> darUsuarios() throws ParseException;
 
     /**
      * Devuelve un usuario dado su id.
@@ -57,7 +57,7 @@ public interface Persistencia {
      * @return Arreglo con todas las zonas registradas, el arreglo estará vacío si no hay ninguna
      * zona en la base de datos.
      */
-    public ArrayList<Zona> darZonas();
+    public ArrayList<Zona> darZonas() throws ParseException;
 
     /**
      * Devuelve la zona dado su id.
