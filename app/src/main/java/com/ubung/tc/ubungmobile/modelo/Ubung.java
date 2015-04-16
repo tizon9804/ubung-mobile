@@ -61,6 +61,6 @@ public interface Ubung extends Persistencia {
      * @return el identificador del evento recién creado
      * @throws ExcepcionPersistencia en caso que se presente algún error al persistir los cambios
      */
-    public void crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws  ExcepcionPersistencia;
+    public void crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws ParseException;
 
 }

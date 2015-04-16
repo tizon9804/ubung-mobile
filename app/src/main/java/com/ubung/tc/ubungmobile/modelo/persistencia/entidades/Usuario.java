@@ -15,6 +15,7 @@ public class Usuario extends ParseUser {
 // -----------------------------------------------------
 // CONSTANTES PARA LAS LLAVES DE LOS ATRIBUTOS
 // -----------------------------------------------------
+    public static final String NOMBRE_USUARIO = "username";
     private static final String DEPORTE = "deporte";
     private static final String NUM_CELULAR = "numCelular";
     private static final String INSCRITO_A_LOS_EVENTOS = "inscritoALosEventos";

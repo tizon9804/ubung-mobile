@@ -8,7 +8,6 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.ManejadorPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
@@ -29,8 +28,14 @@ public class ManejadorSMS extends BroadcastReceiver {
     }
 
     private void notificarUsuario(String idRegistro, String idEvento, String idInscrito) {
-        Evento evento = manejadorPersistencia.darEvento(idEvento);
-        Usuario inscrito = manejadorPersistencia.darUsuario(idInscrito);
+        try {Evento evento = manejadorPersistencia.darEvento(idEvento);
+        } catch (com.parse.ParseException e) {
+            e.printStackTrace();
+        }
+        try {Usuario inscrito = manejadorPersistencia.darUsuario(idInscrito);
+        } catch (com.parse.ParseException e) {
+            e.printStackTrace();
+        }
 
         String nombreUsuario = inscrito == null ? ""+idInscrito : inscrito.getNombreUsuario();
         String nombreZona = "ZONeventNull";

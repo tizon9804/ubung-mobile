@@ -42,7 +42,7 @@ public interface Persistencia {
      * @return El usuario asociado con el id especificado. Null si no existe ningún usuario
      * con ese id.
      */
-    public Usuario darUsuario(String id);
+    public Usuario darUsuario(String id) throws ParseException;
 
     /**
      * Devuelve un usuario dado su nombre de usuario
@@ -50,7 +50,7 @@ public interface Persistencia {
      * @return El usuario con el nombre especificado. Null si no existe ningún usuario con el
      * nombre de usuario especificado.
      */
-    public Usuario buscarUsuario(String nombreUsuario);
+    public Usuario buscarUsuario(String nombreUsuario) throws ParseException;
 
     /**
      * Devuelve todas las zonas
@@ -64,7 +64,7 @@ public interface Persistencia {
      * @param id El identificado de la zona en la base de datos.
      * @return La zona con el id especificado. Null si no existe ninguna zona con ese id
      */
-    public Zona darZona(String id);
+    public Zona darZona(String id) throws ParseException;
 
     /**
      * Actualiza un evento existente en la aplicación. El objeto evento debe tener su identificador
@@ -80,7 +80,7 @@ public interface Persistencia {
      * @return Arreglo con todos los eventos registrados, el arreglo estará vacío si no hay ningún
      * evento registrado en la base de datos.
      */
-    public ArrayList<Evento> darEventos();
+    public ArrayList<Evento> darEventos() throws ParseException;
 
     /**
      * Devuelve todos los eventos asociados a la zona pasada como parámetro
@@ -88,12 +88,12 @@ public interface Persistencia {
      * @return Arreglo con todos los eventos registrados para la zona especificada, el arreglo
      * estará vacío si no hay ningún evento registrado para esa zona en la base de datos.
      */
-    public ArrayList<Evento> buscarEventos(String idZona);
+    public ArrayList<Evento> buscarEventos(String idZona) throws ParseException;
 
     /**
      * Devuelve el evento dado su id
      * @param id El identificador del evento en la base de datos.
      * @return El evento con el id especificado. Null si no existe ningún evento con ese id.
      */
-    public Evento darEvento(String id);
+    public Evento darEvento(String id) throws ParseException;
 }

@@ -233,7 +233,10 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         HashMap deportes = new HashMap();
         for (Zona z : zonas) {
             if (z.getNombre().equals(marker.getTitle())) {
-                ArrayList<Evento> eventos = Singleton.getInstance().buscarEventos(z.getId());
+                try {ArrayList<Evento> eventos = Singleton.getInstance().buscarEventos(z.getId());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 nombre = z.getNombre();
                 pos = i;
                 for (Evento e : eventos) {

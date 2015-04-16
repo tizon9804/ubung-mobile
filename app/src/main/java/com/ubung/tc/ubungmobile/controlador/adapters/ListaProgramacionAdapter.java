@@ -88,7 +88,11 @@ public class ListaProgramacionAdapter extends BaseAdapter {
 
     // obtener las imagenes de los deportes
     private void geteventos() {
-        eventos = Singleton.getInstance().darEventos();
+        try {
+            eventos = Singleton.getInstance().darEventos();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         if (eventos == null) {
             Log.e("Carga eventos", " eventos[]:" + null);
             Toast.makeText(cnt, "Hubo un problema al Cargar eventos ", Toast.LENGTH_LONG).show();

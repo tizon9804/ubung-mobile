@@ -38,7 +38,11 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
         setContentView(R.layout.activity_descripcion_programacion);
         setTitle(getIntent().getStringExtra(ListaZonasActivity.ZONA));
         int position = Integer.parseInt(getIntent().getStringExtra(MainUbungActivity.POSITION));
-        eventos = Singleton.getInstance().darEventos();
+        try {
+            eventos = Singleton.getInstance().darEventos();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         if (eventos != null) {
             evento = eventos.get(position);
             //llamado a todos los elementos graficos

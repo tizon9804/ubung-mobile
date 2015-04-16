@@ -21,7 +21,7 @@ public class Evento extends ParseObject {
     private static final String USUARIO_ORGANIZADOR =  "usuarioOrganizador";
     private static final String USUARIOS_INSCRITOS = "usuariosInscritos";
     private static final String FECHA_HORA_EVENTO = "fechaHoraEvento";
-    private static final String ZONA = "zona";
+    public static final String ZONA = "zona";
     private static final String DEPORTE = "deporte";
 
 // -----------------------------------------------------
@@ -31,12 +31,12 @@ public class Evento extends ParseObject {
         super();
     }
 
-    public Evento(Date fechaHora, Zona zona, Deporte deporte) {
+    public Evento(Date fechaHora, Zona zona, Deporte deporte) throws ParseException {
         put(USUARIO_ORGANIZADOR, ParseUser.getCurrentUser());
         put(FECHA_HORA_EVENTO, fechaHora);
         put(ZONA,zona);
         put(DEPORTE,deporte);
-        saveInBackground();
+        save();
     }
 
 // -----------------------------------------------------

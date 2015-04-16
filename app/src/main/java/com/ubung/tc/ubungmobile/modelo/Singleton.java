@@ -78,7 +78,7 @@ public class Singleton implements Ubung {
             inicializarModuloSMS();
 
             Log.i(LOG_NAME+".inicializar()", "Inicializando manejadorPersistencia...");
-            //manejadorPersistencia.inicializar();
+            manejadorPersistencia.inicializar();
 
             Log.i(LOG_NAME+".inicializar()", "Recuperando la información del usuario...");
             propietario = (Usuario)ParseUser.getCurrentUser();
@@ -173,7 +173,9 @@ public class Singleton implements Ubung {
     }
 
     @Override
-    public void crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws  ExcepcionPersistencia {
+    public void crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws ParseException {
+        Evento evento = new Evento(fechaHora,  zona, deporte);
+
 //        long idEvento = manejadorPersistencia.crearEvento(fechaHora, zona, deporte, propietario, numCelular);
 //        manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
 //        Log.i(LOG_NAME+"crearEven", "Creado evento "+idEvento+" e inscrito propietario como participante");
@@ -182,6 +184,7 @@ public class Singleton implements Ubung {
 
     @Override
     public void inscribirseEvento(String idEvento) throws ExcepcionPersistencia, ExcepcionComunicacion {
+
 //        long idInscripcion = manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
 //        Log.i(LOG_NAME+"inscrEve","Inscrito el propietario al evento "+idEvento);
 //        // Voy a notificar al creador del evento
@@ -226,12 +229,12 @@ public class Singleton implements Ubung {
     }
 
     @Override
-    public Usuario darUsuario(String id) {
+    public Usuario darUsuario(String id) throws ParseException {
         return manejadorPersistencia.darUsuario(id);
     }
 
     @Override
-    public Usuario buscarUsuario(String nombreUsuario) {
+    public Usuario buscarUsuario(String nombreUsuario) throws ParseException {
         return manejadorPersistencia.darUsuario(nombreUsuario);
     }
 
@@ -241,7 +244,7 @@ public class Singleton implements Ubung {
     }
 
     @Override
-    public Zona darZona(String id) {
+    public Zona darZona(String id) throws ParseException {
         return manejadorPersistencia.darZona(id);
     }
 
@@ -251,17 +254,17 @@ public class Singleton implements Ubung {
     }
 
     @Override
-    public ArrayList<Evento> darEventos() {
+    public ArrayList<Evento> darEventos() throws ParseException {
         return manejadorPersistencia.darEventos();
     }
 
     @Override
-    public ArrayList<Evento> buscarEventos(String idZona) {
+    public ArrayList<Evento> buscarEventos(String idZona) throws ParseException {
         return manejadorPersistencia.buscarEventos(idZona);
     }
 
     @Override
-    public Evento darEvento(String id) {
+    public Evento darEvento(String id) throws ParseException {
         return manejadorPersistencia.darEvento(id);
     }
 }

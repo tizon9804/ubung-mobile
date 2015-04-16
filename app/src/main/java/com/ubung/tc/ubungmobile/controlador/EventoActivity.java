@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
-import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
@@ -150,9 +149,8 @@ public class EventoActivity extends ActionBarActivity {
             //ParsePush.sendMessageInBackground("Se ha crado un evento de " + deporte.getNombre(), ParseInstallation.getQuery());
 
             nextActivity();
-        } catch (ExcepcionPersistencia excepcionPersistencia) {
-            excepcionPersistencia.printStackTrace();
-            Toast.makeText(getBaseContext(), "Hubo un problema al Crear el evento ", Toast.LENGTH_LONG).show();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
     }
