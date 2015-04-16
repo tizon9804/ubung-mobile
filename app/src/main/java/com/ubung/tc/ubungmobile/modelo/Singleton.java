@@ -137,6 +137,7 @@ public class Singleton implements Ubung {
 
     @Override
     public void logIn(final String nombreUsuario, String contrasena) {
+        Log.w(LOG_NAME+".logIn","Intentando logear al usuario "+nombreUsuario+"...");
         ParseUser.logInInBackground(nombreUsuario,contrasena,new LogInCallback() {
             @Override
             public void done(ParseUser parseUser, ParseException e) {
@@ -144,9 +145,11 @@ public class Singleton implements Ubung {
                     propietario = (Usuario) parseUser;
                     //ToDo Manejar estos textos en la forma adecuada con el XML
                     notificarUsuario("Usuario "+propietario.getNombreUsuario()+" ha iniciado sesión correctamente");
+                    Log.i(LOG_NAME+".logIn","Usuario "+propietario.getNombreUsuario()+" logueado exitosamente...");
                 } else {
                     //ToDo Manejar estos textos en la forma adecuada con el XML
                     notificarUsuario("Falló el intento de inicio de sesión para "+nombreUsuario);
+                    Log.e(LOG_NAME+".logIn","Error al procesar el login de "+nombreUsuario+" :: "+e.getMessage());
                 }
             }
         });
@@ -154,36 +157,46 @@ public class Singleton implements Ubung {
 
     @Override
     public void registrarNuevoUsuario(String nombreUsuario, String contrasena) {
-
-    }
-
-    @Override
-    public long crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws  ExcepcionPersistencia {
-        long idEvento = manejadorPersistencia.crearEvento(fechaHora, zona, deporte, propietario, numCelular);
-        manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
-        Log.i(LOG_NAME+"crearEven", "Creado evento "+idEvento+" e inscrito propietario como participante");
-        return idEvento;
-    }
-
-    @Override
-    public long inscribirseEvento(long idEvento) throws ExcepcionPersistencia, ExcepcionComunicacion {
-        long idInscripcion = manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
-        Log.i(LOG_NAME+"inscrEve","Inscrito el propietario al evento "+idEvento);
-        // Voy a notificar al creador del evento
+        Log.w(LOG_NAME+".registNuevUsu","Intentando registrar al usuario "+nombreUsuario+"...");
         try {
-            Evento evento = manejadorPersistencia.darEvento(idEvento);
-            String mensaje = SMS_INSCR_EVENTO + ":" + idInscripcion+":"+evento.getId() + ":" + propietario.getId();
-            Log.i(LOG_NAME+"inscrEve", "Enviando SMS '"+mensaje+"' a "+evento.getCelNotificacion());
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage("" + evento.getCelNotificacion(),
-                    null,
-                    mensaje,
-                    null,
-                    null);
-        } catch (Exception e) {
-            throw new ExcepcionComunicacion("No fue posible enviar SMS "+e.getMessage());
+            propietario = new Usuario(nombreUsuario,contrasena);
+            //ToDo Manejar estos textos en la forma adecuada con el XML
+            notificarUsuario("El usuario "+propietario.getNombreUsuario()+" se registró exitosamente!");
+            Log.i(LOG_NAME+".registNuevUsu","Usuario "+nombreUsuario+" registrado exitosamente...");
+        } catch (ParseException e) {
+            //ToDo Manejar estos textos en la forma adecuada con el XML
+            notificarUsuario("No fue posible crear la cuenta de usuario para "+nombreUsuario);
+            Log.e(LOG_NAME+".registNuevUsu","Error al registrar el usuario "+nombreUsuario+" :: "+e.getMessage());
         }
-        return idInscripcion;
+    }
+
+    @Override
+    public void crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws  ExcepcionPersistencia {
+//        long idEvento = manejadorPersistencia.crearEvento(fechaHora, zona, deporte, propietario, numCelular);
+//        manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
+//        Log.i(LOG_NAME+"crearEven", "Creado evento "+idEvento+" e inscrito propietario como participante");
+//        return idEvento;
+    }
+
+    @Override
+    public void inscribirseEvento(String idEvento) throws ExcepcionPersistencia, ExcepcionComunicacion {
+//        long idInscripcion = manejadorPersistencia.agregarInscritoEvento(idEvento, propietario.getId());
+//        Log.i(LOG_NAME+"inscrEve","Inscrito el propietario al evento "+idEvento);
+//        // Voy a notificar al creador del evento
+//        try {
+//            Evento evento = manejadorPersistencia.darEvento(idEvento);
+//            String mensaje = SMS_INSCR_EVENTO + ":" + idInscripcion+":"+evento.getId() + ":" + propietario.getId();
+//            Log.i(LOG_NAME+"inscrEve", "Enviando SMS '"+mensaje+"' a "+evento.getCelNotificacion());
+//            SmsManager smsManager = SmsManager.getDefault();
+//            smsManager.sendTextMessage("" + evento.getCelNotificacion(),
+//                    null,
+//                    mensaje,
+//                    null,
+//                    null);
+//        } catch (Exception e) {
+//            throw new ExcepcionComunicacion("No fue posible enviar SMS "+e.getMessage());
+//        }
+//        return idInscripcion;
     }
 
     public void notificarUsuario(String mensaje) {

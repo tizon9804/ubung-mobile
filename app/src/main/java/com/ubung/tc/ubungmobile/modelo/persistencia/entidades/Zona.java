@@ -10,12 +10,22 @@ import com.ubung.tc.ubungmobile.modelo.persistencia.ManejadorPersistencia;
 @ParseClassName(ManejadorPersistencia.ZONA)
 public class Zona extends ParseObject {
 
+// -----------------------------------------------------
+// CONSTANTES PARA LAS LLAVES DE LOS ATRIBUTOS
+// -----------------------------------------------------
     private static final String NOMBRE = "nombre";
     private static final String LATLONGZOOM = "latlongzoom";
     private static final String RADIO = "radio";
 
+// -----------------------------------------------------
+// ATRIBUTOS
+// -----------------------------------------------------
     private double[] LatLongZoom = null;
 
+
+// -----------------------------------------------------
+// GETTERS
+// -----------------------------------------------------
     public String getId() {
         return getObjectId();
     }

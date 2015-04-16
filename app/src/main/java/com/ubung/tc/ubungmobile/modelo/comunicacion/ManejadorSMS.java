@@ -35,10 +35,12 @@ public class ManejadorSMS extends BroadcastReceiver {
         String nombreUsuario = inscrito == null ? ""+idInscrito : inscrito.getNombreUsuario();
         String nombreZona = "ZONeventNull";
         String nombreDeporte = "DEPeventNull";
+
         if (evento != null) {
-            nombreZona = evento.getZona() == null ? "zonaNoEncr" : evento.getZona().getNombre();
-            nombreDeporte = evento.getDeporte() == null ? "deporNoEncr" : evento.getDeporte().getNombre();
+            //nombreZona = evento.getZona() == null ? "zonaNoEncr" : evento.getZona().getNombre();
+            //nombreDeporte = evento.getDeporte() == null ? "deporNoEncr" : evento.getDeporte().getNombre();
         }
+
         //ToDo Manejar estos textos en la forma adecuada con el XML
         String mensaje = "El usuario "+nombreUsuario+" se ha inscrito a tu evento "+nombreDeporte
                 +" en "+nombreZona;
@@ -56,15 +58,13 @@ public class ManejadorSMS extends BroadcastReceiver {
                 String mensaje = smsMessage.getDisplayMessageBody();
                 Log.i(LOG_NAME+"onRecei","Se ha recibido el SMS "+mensaje+" desde "+smsMessage.getDisplayOriginatingAddress());
                 String[] protocolo = mensaje.split(":");
-                try {
-                    String idEvento = protocolo[2];
-                    String idInscrito = protocolo[3];
-                    String idRegistro = manejadorPersistencia.agregarInscritoEvento(idEvento,idInscrito);
-                    Log.w(LOG_NAME+"onRecei","idEvento="+idEvento+" idInscrito="+idInscrito);
-                    notificarUsuario(idRegistro,idEvento,idInscrito);
-                } catch (ExcepcionPersistencia e) {
-                    Log.e(LOG_NAME+"onRecei","Error al persistir registro de usuario "+e.getMessage());
-                }
+                String idEvento = protocolo[2];
+                String idInscrito = protocolo[3];
+                //ToDo arreglar esto
+                //String idRegistro = manejadorPersistencia.agregarInscritoEvento(idEvento,idInscrito);
+                Log.w(LOG_NAME+"onRecei","idEvento="+idEvento+" idInscrito="+idInscrito);
+                // ToDo arreglar esto
+                // notificarUsuario(idRegistro,idEvento,idInscrito);
             }
         }
     }

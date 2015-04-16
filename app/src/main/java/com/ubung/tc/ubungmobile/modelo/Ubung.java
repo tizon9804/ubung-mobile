@@ -51,7 +51,7 @@ public interface Ubung extends Persistencia {
      * @throws ExcepcionComunicacion en caso que no sea posible enviar el SMS al usuario organizador
      * del evento notificando la inscripción.
      */
-    public long inscribirseEvento(long idEvento) throws ExcepcionPersistencia, ExcepcionComunicacion;
+    public void inscribirseEvento(String idEvento) throws ExcepcionPersistencia, ExcepcionComunicacion;
 
     /**
      * Crea un nuevo evento e inscribe al propietario a ese evento
@@ -61,6 +61,6 @@ public interface Ubung extends Persistencia {
      * @return el identificador del evento recién creado
      * @throws ExcepcionPersistencia en caso que se presente algún error al persistir los cambios
      */
-    public long crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws  ExcepcionPersistencia;
+    public void crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws  ExcepcionPersistencia;
 
 }

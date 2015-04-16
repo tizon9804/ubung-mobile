@@ -10,10 +10,16 @@ import com.ubung.tc.ubungmobile.modelo.persistencia.ManejadorPersistencia;
 @ParseClassName(ManejadorPersistencia.DEPORTE)
 public class Deporte extends ParseObject {
 
+// -----------------------------------------------------
+// CONSTANTES PARA LAS LLAVES DE LOS ATRIBUTOS
+// -----------------------------------------------------
     private static final String NOMBRE = "nombre";
     private static final String NOMBRE_ARCHIVO_IMAGEN = "nombreArchivoImagen";
     private static final String DESCRIPCION = "descripcion";
 
+// -----------------------------------------------------
+// GETTERS
+// -----------------------------------------------------
     public String getId() {
         return getObjectId();
     }
