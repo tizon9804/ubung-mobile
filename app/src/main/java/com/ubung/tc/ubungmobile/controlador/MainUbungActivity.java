@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -107,10 +109,10 @@ public class MainUbungActivity extends Activity {
                             //todo boton seleccionado
                         }
                         if (event.getAction() == MotionEvent.ACTION_UP) {
-                            String usuario = ((EditText) findViewById(R.id.user_name)).getText().toString();
-                            String phone = ((EditText) findViewById(R.id.phone)).getText().toString();
+                        //    String usuario = ((EditText) findViewById(R.id.user_name)).getText().toString();
+                       //     String phone = ((EditText) findViewById(R.id.phone)).getText().toString();
 
-                            intentDescription(deportes.get(finalI).getId(), v.getId(), usuario, phone);
+                        //    intentDescription(deportes.get(finalI).getId(), v.getId(), usuario, phone);
                         }
 
                         return true;
@@ -137,17 +139,57 @@ public class MainUbungActivity extends Activity {
 
 
     public void initUser_registation() {
-        final EditText user = (EditText) findViewById(R.id.user_name);
-        user.requestFocus();
-        user.setOnTouchListener(new View.OnTouchListener() {
+
+        final Button registrar=(Button)findViewById(R.id.button_registrar);
+        final Button iniciar=(Button)findViewById(R.id.button_iniciar_sesion);
+
+        registrar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                user.requestFocus();
-                InputMethodManager imgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    registrar.setTextColor(getResources().getColor(R.color.holo_red_dark));
+
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    registrar.setTextColor(getResources().getColor(R.color.white));
+
+                }
                 return true;
             }
+
         });
+
+        iniciar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    iniciar.setTextColor(getResources().getColor(R.color.holo_red_dark));
+
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                   iniciar.setTextColor(getResources().getColor(R.color.white));
+                    LoginActivity l= new LoginActivity();
+                    newActivity(LoginActivity.class);
+                }
+                return true;
+            }
+
+        });
+
+
+
+
+       // final EditText user = (EditText) findViewById(R.id.user_name);
+       // user.requestFocus();
+      //  user.setOnTouchListener(new View.OnTouchListener() {
+      //      @Override
+      //      public boolean onTouch(View v, MotionEvent event) {
+        //        user.requestFocus();
+        //        InputMethodManager imgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //        imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        //        return true;
+        //    }
+       //
 
     }
 
@@ -178,6 +220,11 @@ public class MainUbungActivity extends Activity {
         }
 
 
+    }
+
+    public void newActivity(Class activity){
+        Intent t= new Intent(this,LoginActivity.class);
+        startActivity(t);
     }
 
 }

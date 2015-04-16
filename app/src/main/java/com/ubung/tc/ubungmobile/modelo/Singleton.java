@@ -121,7 +121,7 @@ public class Singleton implements Ubung {
     @Override
     public void modificarPropietario(String nombreUsuario, Long numCelular, Deporte deporte) throws ParseException {
         if (nombreUsuario != null) {
-            Log.i(LOG_NAME+".modifProp","Actualizando nombre del propietario desde "+propietario.getUsername()
+                Log.i(LOG_NAME+".modifProp","Actualizando nombre del propietario desde "+propietario.getUsername()
                     +" a "+nombreUsuario);
             propietario.setUsername(nombreUsuario);
         }

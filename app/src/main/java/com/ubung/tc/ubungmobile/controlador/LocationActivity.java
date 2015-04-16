@@ -234,9 +234,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         for (Zona z : zonas) {
             if (z.getNombre().equals(marker.getTitle())) {
                 try {ArrayList<Evento> eventos = Singleton.getInstance().buscarEventos(z.getId());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+
                 nombre = z.getNombre();
                 pos = i;
                 for (Evento e : eventos) {
@@ -246,11 +244,14 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                             deportes.put(e.getDeporte().getNombre(), true);
                         }
                     } catch (ParseException e1) {
-                        e1.printStackTrace();
+                        Log.e("LocationActivity",e1.getMessage());
                     }
 
                 }
                 break;
+                } catch (ParseException e) {
+                    Log.e("LocationActivity",e.getMessage());
+                }
             }
             i++;
         }

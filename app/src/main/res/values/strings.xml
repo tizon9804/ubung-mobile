@@ -16,7 +16,7 @@
     <string name="btn_inscripcion">Inscribir</string>
     <string name="title_activity_programacion">ProgramacionActivity</string>
     <string name="flip">&lt; Deslice</string>
-    <string name="title_user">Danos Tu Nombre!</string>
+    <string name="title_user">Übung</string>
     <string name="nombre_usuario">Nombre de Usuario</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -39,5 +39,7 @@
     <string name="title_fecha">Fecha:</string>
     <string name="btn_programacion">Programación</string>
     <string name="Celular">Celular</string>
+    <string name="Registration">Registrarse</string>
+    <string name="InicioSesion">Iniciar Sesion</string>
 
 </resources>
