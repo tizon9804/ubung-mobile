@@ -35,6 +35,7 @@ import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class LocationActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener {
@@ -273,10 +274,12 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                 int radious = (int) m.obj;
                 if (radious == 0) {
                     map.clear();
-                    crearZonas();
+
 
                 } else if (radious == -1) {
-                   // map.clear();
+                    map.clear();
+                    crearZonas();
+                    getDirections(ultimaPosicion.latitude, ultimaPosicion.longitude, l, lonl);
                     Log.e("fail", "muchas zonas");
                     radious = 0;
                 }
@@ -295,7 +298,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         AnimationZona a = new AnimationZona(hand);
         a.start();
 
-        getDirections(ultimaPosicion.latitude, ultimaPosicion.longitude, l, lonl);
+
 
 
         return true;
@@ -306,12 +309,14 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
         final LatLng origen = new LatLng(lat1, lon1);
         final LatLng destino = new LatLng(lat2, lon2);
+
         if (!cercaZona(origen, destino)) {
             Handler h;
             h = new Handler() {
                 @Override
                 public void handleMessage(Message m) {
-                    drawPrimaryLinePath((ArrayList<LatLng>) m.obj, origen, destino);
+
+                    drawPrimaryLinePath((List<LatLng>) m.obj, origen, destino);
                     Log.e("direcciones", "tamaño de la lista de nodos: " + ((ArrayList<LatLng>) m.obj).size());
                 }
             };
@@ -322,10 +327,12 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         }
     }
 
-    public final synchronized void drawPrimaryLinePath(ArrayList<LatLng> listLocsToDraw, LatLng origen, LatLng destino) {
+    public final synchronized void drawPrimaryLinePath(List<LatLng> listLocsToDraw, LatLng origen, LatLng destino) {
         map.clear();
         crearZonas();
+
         PolylineOptions polyop = new PolylineOptions();
+
         boolean term = false;
         for (int i = 0; i < listLocsToDraw.size() && !term; i++) {
             LatLng l = listLocsToDraw.get(i);
@@ -336,7 +343,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         }
 
         polyop.geodesic(true);
-        polyop.color(Color.rgb(255, 147, 23));
+        polyop.color(Color.rgb(100, 147, 23));
         polyop.width(20);
         map.addPolyline(polyop);
 
@@ -350,8 +357,8 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         double y = Math.pow(zona.longitude - pos.longitude, 2);
         d = Math.sqrt(x + y) * 100;
         d = d * 1000;
-        Log.e("calculo dist", "La distancia es de:" + d);
-        if (d < 200) {
+        Log.e("calculo dist", "el punto es de :" + zona.latitude+"##"+zona.longitude);
+        if (d < 50) {
             return true;
         }
 

@@ -15,6 +15,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -27,8 +28,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * Created by Tizon on 14/04/2015.
@@ -57,20 +56,21 @@ public class DirectionsAdapter extends Thread {
 
     public void run() {
         Message m = new Message();
-        m.obj = getDirections(lat1, lon, lat2, lon2);
+        String poly= getDirections(lat1, lon, lat2, lon2);
+        m.obj=decodePoly(poly);
         h.sendMessage(m);
+
     }
 
     public Handler getH() {
         return h;
     }
 
-    public static ArrayList getDirections(double lat1, double lon1, double lat2, double lon2) {
+    public static String getDirections(double lat1, double lon1, double lat2, double lon2) {
         Log.e("direcciones", "entrando.." + lat1 + "#" + lon1 + "#" + lat2 + "#" + lon2);
         String url = "http://maps.googleapis.com/maps/api/directions/json?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=true&units=metric";
         Log.e("direcciones", url);
-        String tag[] = {"lat", "lng"};
-        ArrayList list_of_geopoints = new ArrayList();
+
         HttpResponse response = null;
         try {
             HttpClient httpClient = new DefaultHttpClient();
@@ -87,55 +87,53 @@ public class DirectionsAdapter extends Thread {
             while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
+            Log.e("ro",sb.toString());
             JSONObject jsonO = new JSONObject(sb.toString());
-            String r=jsonO.getString("points");
-            Log.e("ro",r);
+            JSONArray routes= jsonO.getJSONArray("routes");
+            JSONObject array=routes.getJSONObject(0);
+            JSONObject overpolylines=array.getJSONObject("overview_polyline");
+            String points=overpolylines.getString("points");
 
-//            json.beginObject();
-//            while (json.hasNext()) {
-//                //get the element name
-//                String name = json.nextName();
-//                Log.e("ro",name);
-//                if (name.equals("routes")) {
-//                    json.beginArray();
-//                    while (json.hasNext()) {
-//                        Log.e("ro",json.nextString());
-//                    }
-//
-//
-//
-//                }
-            //if the element name is the list of countries then start the array
+            return points;
 
-
-
-            //end reader and close the stream
-
-
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = builder.parse(in);
-            if (doc != null) {
-                NodeList nl1, nl2;
-                nl1 = doc.getElementsByTagName(tag[0]);
-                nl2 = doc.getElementsByTagName(tag[1]);
-                if (nl1.getLength() > 0) {
-                    list_of_geopoints = new ArrayList();
-                    for (int i = 0; i < nl1.getLength(); i++) {
-                        Node node1 = nl1.item(i);
-                        Node node2 = nl2.item(i);
-                        double lat = Double.parseDouble(node1.getTextContent());
-                        double lng = Double.parseDouble(node2.getTextContent());
-                        list_of_geopoints.add(new LatLng(lat, lng));
-
-                    }
-                } else {
-                    // No points found
-                }
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return list_of_geopoints;
+        return "";
+    }
+
+    public List<LatLng> decodePoly(String encoded) {
+
+        List<LatLng> poly = new ArrayList<LatLng>();
+        int index = 0, len = encoded.length();
+        int lat = 0, lng = 0;
+
+        while (index < len) {
+            int b, shift = 0, result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lat += dlat;
+
+            shift = 0;
+            result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lng += dlng;
+
+            LatLng p = new LatLng((((double) lat / 1E5)),
+                    (((double) lng / 1E5)));
+            poly.add(p);
+        }
+
+        return poly;
     }
 
 
