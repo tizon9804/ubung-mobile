@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
 import android.content.CursorLoader;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ubung.tc.ubungmobile.R;
+import com.ubung.tc.ubungmobile.modelo.Singleton;
 
 /**
  * A login screen that offers login via email/password and via Google+ sign in.
@@ -139,16 +141,15 @@ public class LoginActivity extends Activity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(email, password,this);
             mAuthTask.execute((Void) null);
-            Intent t= new Intent(this,LocationActivity.class);
-            startActivity(t);
+
         }
     }
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return email.contains("");
     }
 
     private boolean isPasswordValid(String password) {
@@ -208,33 +209,23 @@ public class LoginActivity extends Activity {
 
         private final String mEmail;
         private final String mPassword;
+        private final LoginActivity loginActivity;
 
-        UserLoginTask(String email, String password) {
+        UserLoginTask(String email, String password, LoginActivity loginActivity) {
             mEmail = email;
             mPassword = password;
+            this.loginActivity=loginActivity;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
+            Singleton.getInstance().logIn(mEmail,mPassword);
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
 
             // TODO: register the new account here.
-            return true;
+            return false;
         }
 
         @Override
@@ -244,6 +235,8 @@ public class LoginActivity extends Activity {
 
             if (success) {
                 finish();
+                Intent t= new Intent(loginActivity,LocationActivity.class);
+                startActivity(t);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

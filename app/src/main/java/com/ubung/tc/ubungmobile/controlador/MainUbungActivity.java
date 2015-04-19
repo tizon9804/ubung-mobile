@@ -171,7 +171,7 @@ public class MainUbungActivity extends Activity {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                    iniciar.setTextColor(getResources().getColor(R.color.white));
                     LoginActivity l= new LoginActivity();
-                    newActivity(LocationActivity.class);
+                    newActivity(LoginActivity.class);
 
                 }
                 return true;

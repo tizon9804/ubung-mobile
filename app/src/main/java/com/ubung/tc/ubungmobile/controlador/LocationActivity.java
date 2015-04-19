@@ -189,6 +189,27 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
     }
 
+    private void crearZonasTemp(Marker marker){
+
+
+        markers = new ArrayList<Marker>();
+        for (Zona z : zonas) {
+            LatLng latlng = new LatLng(z.getLatLongZoom()[0], z.getLatLongZoom()[1] - 0.0002);
+            if(!marker.getPosition().equals(latlng)) {
+                Marker m = map.addMarker(new MarkerOptions()
+                        .position(latlng)
+                        .title(z.getNombre())
+                        .snippet(z.getNombre())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.zona_imagen)));
+
+                markers.add(m);
+            }
+
+        }
+
+
+    }
+
 
     public void darUbicacion(View v) {
 
@@ -267,30 +288,27 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         t.replace(R.id.activity_location, zona);
         t.addToBackStack(null);
         t.commit();
-
+        getDirections(ultimaPosicion.latitude, ultimaPosicion.longitude, l, lonl);
+        final LatLng mar = marker.getPosition();
         final Handler hand = new Handler() {
             @Override
             public void handleMessage(Message m) {
                 int radious = (int) m.obj;
-                if (radious == 0) {
+                if (radious == -1) {
                     map.clear();
-
-
-                } else if (radious == -1) {
-                    map.clear();
-                    crearZonas();
-                    getDirections(ultimaPosicion.latitude, ultimaPosicion.longitude, l, lonl);
-                    Log.e("fail", "muchas zonas");
-                    radious = 0;
+                    crearZonasTemp(marker);
                 }
-                LatLng l = marker.getPosition();
-                CircleOptions circle = new CircleOptions();
-                circle.center(l);
-                circle.radius(radious);
-                int opacidad = (150 - radious) * radious;
-                circle.fillColor(Color.argb(opacidad % 10, 255, 147, 23));
-                circle.strokeWidth(0);
-                map.addCircle(circle);
+                else {
+                    map.clear();
+                    crearZonasTemp(marker);
+                    CircleOptions circle = new CircleOptions();
+                    circle.center(mar);
+                    circle.radius(radious);
+                    int opacidad = (150 - radious);
+                    circle.strokeColor(Color.argb(opacidad, 100, 147, 23));
+                    circle.strokeWidth(10);
+                    map.addCircle(circle);
+                }
 
             }
         };
@@ -315,8 +333,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
             h = new Handler() {
                 @Override
                 public void handleMessage(Message m) {
-
-                    drawPrimaryLinePath((List<LatLng>) m.obj, origen, destino);
+                    drawPrimaryLinePath( (List<LatLng>) m.obj, origen, destino);
                     Log.e("direcciones", "tamaño de la lista de nodos: " + ((ArrayList<LatLng>) m.obj).size());
                 }
             };
@@ -357,7 +374,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         double y = Math.pow(zona.longitude - pos.longitude, 2);
         d = Math.sqrt(x + y) * 100;
         d = d * 1000;
-        Log.e("calculo dist", "el punto es de :" + zona.latitude+"##"+zona.longitude);
+       // Log.e("calculo dist", "el punto es de :" + zona.latitude+"##"+zona.longitude);
         if (d < 50) {
             return true;
         }

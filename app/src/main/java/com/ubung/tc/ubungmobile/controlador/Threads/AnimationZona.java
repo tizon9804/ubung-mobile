@@ -30,7 +30,7 @@ public class AnimationZona extends Thread {
             radio++;
             i++;
             try {
-                Thread.sleep(20);
+                Thread.sleep(15);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
