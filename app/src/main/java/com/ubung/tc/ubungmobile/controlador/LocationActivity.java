@@ -358,7 +358,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         d = Math.sqrt(x + y) * 100;
         d = d * 1000;
         Log.e("calculo dist", "el punto es de :" + zona.latitude+"##"+zona.longitude);
-        if (d < 20) {
+        if (d < 50) {
             return true;
         }
 
