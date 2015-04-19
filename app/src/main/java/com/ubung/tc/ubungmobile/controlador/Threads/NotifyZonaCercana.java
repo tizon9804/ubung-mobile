@@ -50,7 +50,7 @@ public class NotifyZonaCercana extends Thread {
         d = Math.sqrt(x + y) * 100;
         d = d * 1000;
         // Log.e("calculo entro en zona", "La distancia es de:" + d);
-        if (d < 200) {
+        if (d < 100) {
             return true;
         }
 

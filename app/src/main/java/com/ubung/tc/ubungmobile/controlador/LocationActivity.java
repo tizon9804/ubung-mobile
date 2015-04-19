@@ -52,19 +52,20 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
     protected int ubungTime = 10000;
     private Thread mapzoneThread;
     private ArrayList<Zona> zonas;
+    private boolean start;
+    private FragmentDescriptionZona zona;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // carga la capa de botones
-        PanelMapFragment panel = new PanelMapFragment();
+        final PanelMapFragment[] panel = {new PanelMapFragment()};
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-        t.replace(R.id.activity_location, panel);
+        t.replace(R.id.activity_location, panel[0]);
         t.addToBackStack(null);
         t.commit();
         setContentView(R.layout.activity_location);
-
-
+        start=true;
         if (map == null) {
             map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
         }
@@ -72,45 +73,40 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
             map.animateCamera(CameraUpdateFactory.zoomTo(17), 500, null);
             map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+          //  map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             map.getUiSettings().setZoomGesturesEnabled(true);
             map.setMyLocationEnabled(true);
             map.getUiSettings().setMyLocationButtonEnabled(false);
+            //map.setTrafficEnabled(true);
             crearZonas();
             //properties con las coordenadas
-            double l;
-            double lonl;
-            CameraPosition p;
-            LatLng latlng;
-            if (map.getMyLocation() != null && map.isMyLocationEnabled()) {
-                l = map.getMyLocation().getLatitude();
-                lonl = map.getMyLocation().getLongitude();
-                latlng = new LatLng(l - CENTRAR, lonl);
-                p = new CameraPosition(latlng, 17, 0, 0);
-            } else if (ultimaPosicion != null) {
-                p = new CameraPosition(ultimaPosicion, 17, 0, 0);
-            } else {
-                l = 4.660708;
-                lonl = -74.132137;
-                ultimaPosicion = new LatLng(l - CENTRAR, lonl);
-                p = new CameraPosition(ultimaPosicion, 12, 0, 0);
-                // Intent gpsOptionsIntent = new Intent(
-                // android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                // startActivity(gpsOptionsIntent);
-            }
 
-            map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
 
-            map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+
+
+
+                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
-                    PanelMapFragment panel = new PanelMapFragment();
+                    panel[0] = new PanelMapFragment();
                     FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-                    t.replace(R.id.activity_location, panel);
+                    t.replace(R.id.activity_location, panel[0]);
                     t.addToBackStack(null);
                     t.commit();
 
                 }
             });
+
+
+            map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(LatLng latLng) {
+                    animation(latLng, latLng.latitude,latLng.longitude);
+                }
+            });
+
+
 
 
         }
@@ -122,12 +118,28 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
         try {
             map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+
                 final String[] anteriorZona = {""};
                 final String[] id = {""};
                 ArrayList<Zona> zs = Singleton.getInstance().darZonas();
 
                 @Override
                 public void onMyLocationChange(Location location) {
+
+                    double l;
+                    double lonl;
+                    CameraPosition p;
+                    LatLng latlng;
+
+                    if (map.getMyLocation() != null && start) {
+                        start=false;
+                        l = map.getMyLocation().getLatitude();
+                        lonl = map.getMyLocation().getLongitude();
+                        latlng = new LatLng(l - CENTRAR, lonl);
+                        ultimaPosicion=latlng;
+                        p = new CameraPosition(latlng, 17, 0, 0);
+                        map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
+                    }
                     // Log.e("Change","Cambio mi posicion");
 
                     Handler h = new Handler() {
@@ -149,9 +161,11 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
                         }
                     };
-
-                    NotifyZonaCercana n = new NotifyZonaCercana(location, h, zs);
+                    Location loc=map.getMyLocation();
+                    if(loc!=null) {
+                    NotifyZonaCercana n = new NotifyZonaCercana(loc, h, zs);
                     n.start();
+                    }
                 }
             });
         } catch (ParseException e) {
@@ -189,13 +203,12 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
     }
 
-    private void crearZonasTemp(Marker marker){
+    private void crearZonasTemp(){
 
 
         markers = new ArrayList<Marker>();
         for (Zona z : zonas) {
-            LatLng latlng = new LatLng(z.getLatLongZoom()[0], z.getLatLongZoom()[1] - 0.0002);
-            if(!marker.getPosition().equals(latlng)) {
+            LatLng latlng = new LatLng(z.getLatLongZoom()[0], z.getLatLongZoom()[1]);
                 Marker m = map.addMarker(new MarkerOptions()
                         .position(latlng)
                         .title(z.getNombre())
@@ -205,7 +218,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                 markers.add(m);
             }
 
-        }
+
 
 
     }
@@ -216,8 +229,6 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
         if (map.getMyLocation() == null || !map.isMyLocationEnabled()) {
             Toast.makeText(this, "No se encontró su ubicación, por favor verifique su GPS.", Toast.LENGTH_LONG).show();
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(4.660708, -74.132137), 12));
-            map.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
         } else {
             ultimaPosicion = new LatLng(map.getMyLocation().getLatitude(), map.getMyLocation().getLongitude());
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(ultimaPosicion, 17));
@@ -259,6 +270,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
                 nombre = z.getNombre();
                 pos = i;
+                    if(eventos.size()==0)detalles="\n\nNo hay registro de deportes para esta zona.";
                 for (Evento e : eventos) {
                     try {
                         if (!deportes.containsKey(e.getDeporte().getNombre())) {
@@ -278,7 +290,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
             i++;
         }
 
-        FragmentDescriptionZona zona = new FragmentDescriptionZona();
+        zona = new FragmentDescriptionZona();
         Bundle bundle = new Bundle();
         bundle.putString(NOMBRE, nombre);
         bundle.putString(DETALLES, detalles);
@@ -288,26 +300,35 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         t.replace(R.id.activity_location, zona);
         t.addToBackStack(null);
         t.commit();
-        getDirections(ultimaPosicion.latitude, ultimaPosicion.longitude, l, lonl);
-        final LatLng mar = marker.getPosition();
+        animation(marker.getPosition(),l,lonl);
+
+
+
+
+        return true;
+    }
+
+    public void animation(LatLng marker, final double l, final double lonl){
+        final LatLng mar = marker;
         final Handler hand = new Handler() {
             @Override
             public void handleMessage(Message m) {
                 int radious = (int) m.obj;
                 if (radious == -1) {
                     map.clear();
-                    crearZonasTemp(marker);
+                    crearZonasTemp();
+                    getDirections(ultimaPosicion.latitude, ultimaPosicion.longitude, l, lonl);
                 }
                 else {
-                    map.clear();
-                    crearZonasTemp(marker);
-                    CircleOptions circle = new CircleOptions();
-                    circle.center(mar);
-                    circle.radius(radious);
-                    int opacidad = (150 - radious);
-                    circle.strokeColor(Color.argb(opacidad, 100, 147, 23));
-                    circle.strokeWidth(10);
-                    map.addCircle(circle);
+                        map.clear();
+                        CircleOptions circle = new CircleOptions();
+                        circle.center(mar);
+                        circle.radius(radious);
+                        int opacidad = (100 - radious);
+                        circle.strokeColor(Color.argb(opacidad, 255, 147, 23));
+                        circle.strokeWidth(opacidad);
+                        map.addCircle(circle);
+
                 }
 
             }
@@ -317,11 +338,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         a.start();
 
 
-
-
-        return true;
     }
-
 
     public void getDirections(double lat1, double lon1, double lat2, double lon2) {
 
@@ -334,7 +351,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                 @Override
                 public void handleMessage(Message m) {
                     drawPrimaryLinePath( (List<LatLng>) m.obj, origen, destino);
-                    Log.e("direcciones", "tamaño de la lista de nodos: " + ((ArrayList<LatLng>) m.obj).size());
+                   // Log.e("direcciones", "tamaño de la lista de nodos: " + ((ArrayList<LatLng>) m.obj).size());
                 }
             };
             DirectionsAdapter d = new DirectionsAdapter(lat1, lon1, lat2, lon2, h);

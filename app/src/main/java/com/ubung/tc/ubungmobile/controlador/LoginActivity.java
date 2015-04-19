@@ -225,7 +225,7 @@ public class LoginActivity extends Activity {
 
 
             // TODO: register the new account here.
-            return false;
+            return true;
         }
 
         @Override

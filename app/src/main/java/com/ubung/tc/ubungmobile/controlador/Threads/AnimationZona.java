@@ -13,14 +13,14 @@ public class AnimationZona extends Thread {
 
     public AnimationZona(Handler m) {
         this.h = m;
-        duration = 1000;
+        duration = 100;
     }
 
     public void run() {
         int i = 0;
         int radio = 0;
         while (i < duration) {
-            if (radio > 150) {
+            if (radio > 100) {
                 radio = 0;
             }
             Message m = new Message();
@@ -30,7 +30,14 @@ public class AnimationZona extends Thread {
             radio++;
             i++;
             try {
-                Thread.sleep(15);
+                int effect=radio;
+                if(radio<5){
+                    effect=5;
+                }
+                else if(radio>20){
+                    effect=20;
+                }
+                Thread.sleep(effect);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

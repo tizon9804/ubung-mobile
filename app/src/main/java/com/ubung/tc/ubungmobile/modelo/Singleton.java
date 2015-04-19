@@ -163,7 +163,7 @@ public class Singleton implements Ubung {
         try {
             propietario = new Usuario(nombreUsuario,contrasena);
             //ToDo Manejar estos textos en la forma adecuada con el XML
-            notificarUsuario("El usuario "+propietario.getNombreUsuario()+" se registró exitosamente!");
+            notificarUsuario("El usuario " + propietario.getNombreUsuario() + " se registró exitosamente!");
             Log.i(LOG_NAME+".registNuevUsu","Usuario "+nombreUsuario+" registrado exitosamente...");
         } catch (ParseException e) {
             //ToDo Manejar estos textos en la forma adecuada con el XML

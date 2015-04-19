@@ -87,7 +87,7 @@ public class DirectionsAdapter extends Thread {
             while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
-            Log.e("ro",sb.toString());
+         //   Log.e("ro",sb.toString());
             JSONObject jsonO = new JSONObject(sb.toString());
             JSONArray routes= jsonO.getJSONArray("routes");
             JSONObject array=routes.getJSONObject(0);
