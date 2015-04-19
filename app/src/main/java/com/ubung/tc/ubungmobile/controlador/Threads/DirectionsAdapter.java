@@ -2,22 +2,30 @@ package com.ubung.tc.ubungmobile.controlador.Threads;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.JsonReader;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,6 +36,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class DirectionsAdapter extends Thread {
 
 
+    private static BufferedReader br;
     private double lon2;
     private double lat2;
     private double lat1;
@@ -58,7 +67,7 @@ public class DirectionsAdapter extends Thread {
 
     public static ArrayList getDirections(double lat1, double lon1, double lat2, double lon2) {
         Log.e("direcciones", "entrando.." + lat1 + "#" + lon1 + "#" + lat2 + "#" + lon2);
-        String url = "http://maps.googleapis.com/maps/api/directions/xml?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric";
+        String url = "http://maps.googleapis.com/maps/api/directions/json?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=true&units=metric";
         Log.e("direcciones", url);
         String tag[] = {"lat", "lng"};
         ArrayList list_of_geopoints = new ArrayList();
@@ -68,7 +77,41 @@ public class DirectionsAdapter extends Thread {
             HttpContext localContext = new BasicHttpContext();
             HttpPost httpPost = new HttpPost(url);
             response = httpClient.execute(httpPost, localContext);
+
             InputStream in = response.getEntity().getContent();
+
+            StringBuilder sb = new StringBuilder();
+
+            String line;
+            br = new BufferedReader(new InputStreamReader(in));
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            JSONObject jsonO = new JSONObject(sb.toString());
+            String r=jsonO.getString("points");
+            Log.e("ro",r);
+
+//            json.beginObject();
+//            while (json.hasNext()) {
+//                //get the element name
+//                String name = json.nextName();
+//                Log.e("ro",name);
+//                if (name.equals("routes")) {
+//                    json.beginArray();
+//                    while (json.hasNext()) {
+//                        Log.e("ro",json.nextString());
+//                    }
+//
+//
+//
+//                }
+            //if the element name is the list of countries then start the array
+
+
+
+            //end reader and close the stream
+
+
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document doc = builder.parse(in);
             if (doc != null) {
@@ -83,7 +126,7 @@ public class DirectionsAdapter extends Thread {
                         double lat = Double.parseDouble(node1.getTextContent());
                         double lng = Double.parseDouble(node2.getTextContent());
                         list_of_geopoints.add(new LatLng(lat, lng));
-                        Log.e("direcciones", "nodo: " + lat + "#" + lng);
+
                     }
                 } else {
                     // No points found

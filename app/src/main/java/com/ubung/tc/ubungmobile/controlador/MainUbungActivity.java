@@ -152,6 +152,8 @@ public class MainUbungActivity extends Activity {
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     registrar.setTextColor(getResources().getColor(R.color.white));
+                    LoginActivity l= new LoginActivity();
+                    newActivity(RegisterActivity.class);
 
                 }
                 return true;
@@ -169,7 +171,8 @@ public class MainUbungActivity extends Activity {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                    iniciar.setTextColor(getResources().getColor(R.color.white));
                     LoginActivity l= new LoginActivity();
-                    newActivity(LoginActivity.class);
+                    newActivity(LocationActivity.class);
+
                 }
                 return true;
             }
@@ -223,7 +226,7 @@ public class MainUbungActivity extends Activity {
     }
 
     public void newActivity(Class activity){
-        Intent t= new Intent(this,LoginActivity.class);
+        Intent t= new Intent(this,activity);
         startActivity(t);
     }
 

@@ -60,9 +60,6 @@ public class LoginActivity extends Activity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
-    private View mEmailLoginFormView;
-    private SignInButton mPlusSignInButton;
-    private View mSignOutButtons;
     private View mLoginFormView;
 
     @Override
@@ -90,8 +87,7 @@ public class LoginActivity extends Activity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        mEmailLoginFormView = findViewById(R.id.email_login_form);
-        mSignOutButtons = findViewById(R.id.plus_sign_out_buttons);
+
     }
 
 
@@ -203,26 +199,6 @@ public class LoginActivity extends Activity {
 
 
 
-    /**
-     * Check if the device supports Google Play Services.  It's best
-     * practice to check first rather than handling this as an error case.
-     *
-     * @return whether the device supports Google Play Services
-     */
-    private boolean supportsGooglePlayServices() {
-        return GooglePlayServicesUtil.isGooglePlayServicesAvailable(this) ==
-                ConnectionResult.SUCCESS;
-    }
-
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
 
     /**
      * Represents an asynchronous login/registration task used to authenticate

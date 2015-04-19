@@ -22,7 +22,7 @@ public class GettingStartAdapter extends PagerAdapter {
     }
 
     public int getCount() {
-        return 5;
+        return 4;
     }
 
 
@@ -45,21 +45,19 @@ public class GettingStartAdapter extends PagerAdapter {
             case 3:
                 resId = R.layout.user_registation;
                 break;
-            case 4:
-                resId = R.layout.activity_choose_sport;
-                break;
         }
 
         View view = inflater.inflate(resId, null);
         ((ViewPager) collection).addView(view, 0);
 
-        if (position == 4) {
-            try {
-                main.initView();
-            } catch (ParseException e) {
-                Log.e("GettingStar",e.getMessage());
-            }
-        } else if (position == 3) {
+//        if (position == 4) {
+//            try {
+//                main.initView();
+//            } catch (ParseException e) {
+//                Log.e("GettingStar",e.getMessage());
+//            }
+    //    }
+    if (position == 3) {
             main.initUser_registation();
 
 

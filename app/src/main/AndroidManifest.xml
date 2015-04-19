@@ -138,6 +138,10 @@
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
+        <activity
+            android:name=".controlador.RegisterActivity"
+            android:label="@string/title_activity_register" >
+        </activity>
     </application>
 
 </manifest>

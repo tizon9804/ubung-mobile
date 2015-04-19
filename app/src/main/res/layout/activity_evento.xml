@@ -10,8 +10,21 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true" >
 
+    <ScrollView android:id="@+id/event_form" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_alignTop="@+id/event_form"
+        android:weightSum="2">
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/tittle_crear_evento"
@@ -19,7 +32,8 @@
         android:textColor="#ffffffff"
         android:textSize="30dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:gravity="center"/>
 
     <TextView
         android:layout_width="300dp"
@@ -40,9 +54,7 @@
         android:text="@string/organiza"
         android:id="@+id/organiza_evento"
         android:textColor="@android:color/black"
-        android:textSize="25dp"
-        android:layout_alignBottom="@+id/title_organiza_evento"
-        android:layout_alignEnd="@+id/date_picker" />
+        android:textSize="25dp"   />
 
     <TextView
         android:layout_width="wrap_content"
@@ -51,12 +63,16 @@
         android:text="@string/title_deporte_evento"
         android:id="@+id/title_deporte_evento"
         android:textColor="#ffffffff"
-        android:textSize="20dp"
-        android:layout_below="@+id/zonas_spinner"
-        android:layout_toStartOf="@+id/zonas_spinner"
-        android:layout_marginTop="31dp" />
+        android:textSize="20dp"    />
 
-    <TextView
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/deportes_spinner"
+            android:gravity="center"
+            android:background="@drawable/border_button"          />
+
+        <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -64,44 +80,17 @@
         android:id="@+id/title_zona_evento"
         android:textColor="#ffffffff"
         android:textSize="20dp"
-        android:layout_below="@+id/title_organiza_evento"
-        android:layout_toStartOf="@+id/zonas_spinner"
-        android:layout_marginTop="38dp" />
+        />
 
 
-
-    <Spinner
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:id="@+id/deportes_spinner"
-        android:gravity="center"
-        android:background="@drawable/border_button"
-        android:layout_below="@+id/title_deporte_evento"
-        android:layout_toEndOf="@+id/title_deporte_evento" />
-
-    <Spinner
-        android:layout_width="200dp"
-        android:layout_height="40dp"
+        <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/zonas_spinner"
         android:gravity="center"
-        android:background="@drawable/border_button"
-        android:layout_below="@+id/title_zona_evento"
-        android:layout_alignStart="@+id/tittle_crear_evento" />
+        android:background="@drawable/border_button"    />
 
-    <Button
-        android:id="@+id/button_crear_evento"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/border_button"
-        android:text="@string/btn_crear"
-        android:textColor="#ffffffff"
-        android:textSize="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
+        <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -109,29 +98,35 @@
         android:id="@+id/title_fecha"
         android:textColor="#ffffffff"
         android:textSize="20dp"
-        android:layout_marginTop="32dp"
-        android:layout_below="@+id/deportes_spinner"
-        android:layout_alignEnd="@+id/title_zona_evento" />
+        android:layout_marginTop="32dp"    />
 
+        <EditText
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/hour_picker"  />
 
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/date_picker"    />
 
-    <EditText
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/hour_picker"
-        android:layout_below="@+id/title_fecha"
-        android:layout_toEndOf="@+id/date_picker" />
+        <Button
+            android:id="@+id/button_crear_evento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/border_button"
+            android:text="@string/btn_crear"
+            android:textColor="#ffffffff"
+            android:textSize="30dp"
+           />
 
-    <EditText
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/date_picker"
-        android:layout_alignTop="@+id/hour_picker"
-        android:layout_centerHorizontal="true" />
-
-
+    </LinearLayout>
 </RelativeLayout>

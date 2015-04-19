@@ -273,12 +273,11 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                 int radious = (int) m.obj;
                 if (radious == 0) {
                     map.clear();
+                    crearZonas();
 
                 } else if (radious == -1) {
-                    map.clear();
+                   // map.clear();
                     Log.e("fail", "muchas zonas");
-                    crearZonas();
-                    getDirections(ultimaPosicion.latitude, ultimaPosicion.longitude, l, lonl);
                     radious = 0;
                 }
                 LatLng l = marker.getPosition();
@@ -295,6 +294,8 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
         AnimationZona a = new AnimationZona(hand);
         a.start();
+
+        getDirections(ultimaPosicion.latitude, ultimaPosicion.longitude, l, lonl);
 
 
         return true;
