@@ -17,6 +17,7 @@ import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.parse.ParseUser;
 import com.ubung.tc.ubungmobile.modelo.comunicacion.ManejadorSMS;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
@@ -69,7 +70,7 @@ public class Singleton implements Ubung {
             this.context = context;
 
             Log.i(LOG_NAME+".inicializar()", "Instanciando manejadorPersistencia...");
-            manejadorPersistencia = new ManejadorPersistencia();
+            manejadorPersistencia = new ManejadorPersistencia(this);
 
             Log.i(LOG_NAME+".inicializar()", "Inicializando com.parse SDK...");
             inicializarParseSDK();
@@ -77,8 +78,10 @@ public class Singleton implements Ubung {
             Log.i(LOG_NAME+"inicializar()", "Instanciando y registrando ManejadorSMS (BroadcastReceiver)...");
             inicializarModuloSMS();
 
-            Log.i(LOG_NAME+".inicializar()", "Inicializando manejadorPersistencia...");
-            manejadorPersistencia.inicializar();
+            if (hayConexion()) {
+                Log.i(LOG_NAME+".inicializar()", "Inicializando manejadorPersistencia...");
+                manejadorPersistencia.inicializar();
+            }
 
             Log.i(LOG_NAME+".inicializar()", "Recuperando la información del usuario...");
             propietario = (Usuario)ParseUser.getCurrentUser();
@@ -185,14 +188,29 @@ public class Singleton implements Ubung {
         Evento evento = manejadorPersistencia.darEvento(idEvento);
         evento.inscribirUsuarioAEvento(propietario);
         // Verificando si hay conectividad para determinar si se debe o no enviar el mensaje de texto
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean estoyConectado = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        if (!estoyConectado) {
+        if (!hayConexion()) {
             manejadorSMS.notificarUsuarioRemoto(evento);
             //ToDo Manejar estos textos en la forma adecuada con el XML
             notificarUsuario("Se ha notificado al organizador del evento por medio de SMS");
+        } else {
+            ParsePush p = new ParsePush();
+            p.setChannel("");
+            p.setQuery(ParseInstallation.getQuery());
+            p.setMessage("El usuario "+propietario.getNombreUsuario()+" se ha inscrito al evento de "+evento.getUsuarioOrganizador().getNombreUsuario()
+            + " en "+evento.getZona().getNombre());
+            p.sendInBackground();
         }
+    }
+
+    public boolean hayConexion() {
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean hayConeccion = activeNetwork != null && activeNetwork.isConnected();
+        if(!hayConeccion) {
+            Log.e(LOG_NAME+"hoyConex","El dispositivo no cuenta con conectividad en este momento..");
+        }
+        return hayConeccion;
     }
 
     public void notificarUsuario(String mensaje) {

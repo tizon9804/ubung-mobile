@@ -36,6 +36,7 @@ public class EventoActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evento);
+        setTitle("Crear Evento");
         try {
             initFormat();
         } catch (ParseException e) {
@@ -64,6 +65,7 @@ public class EventoActivity extends ActionBarActivity {
         ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, szonas); //selected item will look like a spinner set from XML
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerZonas.setAdapter(spinnerArrayAdapter2);
+
 
         final EditText date = (EditText) findViewById(R.id.date_picker);
         final EditText hora = (EditText) findViewById(R.id.hour_picker);

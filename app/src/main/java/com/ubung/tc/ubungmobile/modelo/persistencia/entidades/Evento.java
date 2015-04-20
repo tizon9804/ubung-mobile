@@ -38,7 +38,7 @@ public class Evento extends ParseObject {
         put(FECHA_HORA_EVENTO, fechaHora);
         put(ZONA,zona);
         put(DEPORTE,deporte);
-        save();
+        saveEventually();
     }
 
 // -----------------------------------------------------
@@ -47,7 +47,7 @@ public class Evento extends ParseObject {
     public void inscribirUsuarioAEvento(Usuario usuario) {
         ParseRelation<Usuario> inscritosEvento = getRelation(USUARIOS_INSCRITOS);
         inscritosEvento.add(usuario);
-        saveInBackground();
+        saveEventually();
     }
 
 // -----------------------------------------------------

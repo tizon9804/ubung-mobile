@@ -1,8 +1,11 @@
 package com.ubung.tc.ubungmobile.controlador;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -80,12 +83,6 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
             //map.setTrafficEnabled(true);
             crearZonas();
             //properties con las coordenadas
-
-
-
-
-
-
                 map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
@@ -97,25 +94,17 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
                 }
             });
-
-
             map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                 @Override
                 public void onMapLongClick(LatLng latLng) {
                     animation(latLng, latLng.latitude,latLng.longitude);
                 }
             });
-
-
-
-
         }
         notifyZonasCercanas();
     }
 
     private void notifyZonasCercanas() {
-
-
         try {
             map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
 
@@ -145,9 +134,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                     Handler h = new Handler() {
                         @Override
                         public void handleMessage(Message m) {
-
                             Zona z = (Zona) m.obj;
-
                             if (!z.getNombre().equals(anteriorZona[0])) {
                                 Log.e("Nuevo push", "#### push");
                                 ParsePush p = new ParsePush();
@@ -158,7 +145,6 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                                 anteriorZona[0] = z.getNombre();
                                 id[0] = z.getId() + "";
                             }
-
                         }
                     };
                     Location loc=map.getMyLocation();
@@ -171,7 +157,6 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         } catch (ParseException e) {
             Log.e("NotifyZonas",e.getMessage());
         }
-
     }
 
     /*
@@ -204,8 +189,6 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
     }
 
     private void crearZonasTemp(){
-
-
         markers = new ArrayList<Marker>();
         for (Zona z : zonas) {
             LatLng latlng = new LatLng(z.getLatLongZoom()[0], z.getLatLongZoom()[1]);
@@ -214,13 +197,8 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                         .title(z.getNombre())
                         .snippet(z.getNombre())
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.zona_imagen)));
-
                 markers.add(m);
             }
-
-
-
-
     }
 
 
@@ -259,17 +237,16 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
         String detalles = "En esta zona se practica: ";
-        String nombre = "zona";
-        int pos = 0;
         int i = 0;
 
         HashMap deportes = new HashMap();
+        Zona zonaActual=new Zona();
         for (Zona z : zonas) {
             if (z.getNombre().equals(marker.getTitle())) {
                 try {ArrayList<Evento> eventos = Singleton.getInstance().buscarEventos(z.getId());
+                zonaActual=z;
 
-                nombre = z.getNombre();
-                pos = i;
+
                     if(eventos.size()==0)detalles="\n\nNo hay registro de deportes para esta zona.";
                 for (Evento e : eventos) {
                     try {
@@ -292,9 +269,9 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
         zona = new FragmentDescriptionZona();
         Bundle bundle = new Bundle();
-        bundle.putString(NOMBRE, nombre);
+        bundle.putString(NOMBRE,zonaActual.getNombre());
         bundle.putString(DETALLES, detalles);
-        bundle.putString(POS, pos + "");
+        bundle.putString(POS,zonaActual.getId());
         zona.setArguments(bundle);
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.replace(R.id.activity_location, zona);
@@ -317,7 +294,10 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                 if (radious == -1) {
                     map.clear();
                     crearZonasTemp();
-                    getDirections(ultimaPosicion.latitude, ultimaPosicion.longitude, l, lonl);
+                    if (Singleton.getInstance().hayConexion()) {
+                        getDirections(ultimaPosicion.latitude, ultimaPosicion.longitude, l, lonl);
+                    }
+
                 }
                 else {
                         map.clear();

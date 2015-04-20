@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.R;
@@ -25,10 +26,12 @@ public class ProgramacionActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_programacion);
+        //nombre de la zona
         nameZona = getIntent().getStringExtra(ListaZonasActivity.ZONA);
-        int pos = Integer.parseInt(getIntent().getStringExtra(MainUbungActivity.POSITION));
+        //id de la zona
+        String idZona= getIntent().getStringExtra(MainUbungActivity.POSITION);
         try {
-            z = (Zona) Singleton.getInstance().darZonas().get(pos);
+            z = (Zona) Singleton.getInstance().darZona(idZona);
         } catch (ParseException e) {
             Log.e("Programación",e.getMessage());
         }
@@ -47,18 +50,18 @@ public class ProgramacionActivity extends ActionBarActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                intentDescription(position);
+                TextView id_evento = (TextView) view.findViewById(R.id.evento_id);
+                intentDescription(id_evento.getText().toString());
             }
         });
 
     }
 
-    public void intentDescription(int position) {
+    public void intentDescription(String idEvento) {
         finish();
         Intent t = new Intent(this, DescripcionProgramacionActivity.class);
-        t.putExtra(ListaZonasActivity.ZONA, nameZona);
-        t.putExtra(MainUbungActivity.POSITION, position + "");
+        t.putExtra(ListaZonasActivity.ZONA, z.getId());
+        t.putExtra(MainUbungActivity.POSITION, idEvento);
         startActivity(t);
     }
 

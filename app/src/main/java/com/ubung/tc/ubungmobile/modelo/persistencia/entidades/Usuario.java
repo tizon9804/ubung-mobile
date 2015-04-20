@@ -1,5 +1,7 @@
 package com.ubung.tc.ubungmobile.modelo.persistencia.entidades;
 
+import android.util.Log;
+
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
  */
 @ParseClassName(ManejadorPersistencia.USUARIO)
 public class Usuario extends ParseUser {
-
+    public static final String LOG_NAME = "Usuario";
 // -----------------------------------------------------
 // CONSTANTES PARA LAS LLAVES DE LOS ATRIBUTOS
 // -----------------------------------------------------
@@ -31,6 +33,7 @@ public class Usuario extends ParseUser {
     }
 
     public Usuario(String nombreUsuario, String contrasena) throws ParseException {
+        super();
         setUsername(nombreUsuario);
         setPassword(contrasena);
         signUp();
@@ -74,7 +77,14 @@ public class Usuario extends ParseUser {
     }
 
     public Deporte getDeporte() throws ParseException {
-        return getParseObject(DEPORTE).fetch();
+        ParseQuery<Deporte> query = ParseQuery.getQuery(ManejadorPersistencia.DEPORTE);
+        Deporte deporte =  query.getFirst();
+        try {
+            deporte = getParseObject(DEPORTE).fetch();
+        } catch (NullPointerException e) {
+            Log.e(LOG_NAME+"getDeporte", "Para este usuario no se ha definido el deporte ::"+e.getMessage());
+        }
+        return deporte;
     }
 
     public long getNumCelular() throws ParseException {

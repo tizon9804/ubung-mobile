@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
 
-    </ScrollView>
+
 
     <LinearLayout
         android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
 
         <Spinner
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:id="@+id/deportes_spinner"
             android:gravity="center"
             android:background="@drawable/border_button"          />
@@ -85,7 +85,7 @@
 
         <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:id="@+id/zonas_spinner"
         android:gravity="center"
         android:background="@drawable/border_button"    />
@@ -101,17 +101,25 @@
         android:layout_marginTop="32dp"    />
 
         <EditText
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
             android:id="@+id/hour_picker"  />
 
-        <EditText
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/title_hora"
+            android:id="@+id/title_hora"
+            android:textColor="#ffffffff"
+            android:textSize="20dp"
+            android:layout_marginTop="32dp"    />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
             android:id="@+id/date_picker"    />
@@ -122,11 +130,16 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/border_button"
             android:text="@string/btn_crear"
             android:textColor="#ffffffff"
             android:textSize="30dp"
+            android:gravity="center"
            />
 
     </LinearLayout>
+
+    </ScrollView>
+
 </RelativeLayout>

@@ -19,6 +19,7 @@ import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,44 +28,48 @@ import java.util.Date;
 public class DescripcionProgramacionActivity extends ActionBarActivity {
 
     private static final String INSCRITOS_TITULO = "Inscritos: ";
-    private ArrayList<Evento> eventos;
     private Evento evento;
     private ListView inscritos;
     private ListaInscritosAdapter l;
+    private Zona zona;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_descripcion_programacion);
-        setTitle(getIntent().getStringExtra(ListaZonasActivity.ZONA));
-        int position = Integer.parseInt(getIntent().getStringExtra(MainUbungActivity.POSITION));
+        String id_zona = getIntent().getStringExtra(ListaZonasActivity.ZONA);
         try {
-            eventos = Singleton.getInstance().darEventos();
+            zona=Singleton.getInstance().darZona(id_zona);
+            setTitle(zona.getNombre());
+            String id_evento= getIntent().getStringExtra(MainUbungActivity.POSITION);
+            evento = Singleton.getInstance().darEvento(id_evento);
+            if (evento != null) {
+                //llamado a todos los elementos graficos
+                TextView organiza = (TextView) findViewById(R.id.txt_organiza);
+                ImageView img = (ImageView) findViewById(R.id.image_descripcion_programacion);
+                TextClock hora = (TextClock) findViewById(R.id.textClock_descripcion_programacion);
+                TextView inscritosTitulo = (TextView) findViewById(R.id.title_inscritos_descripcion_programacion);
+                //carga de informacion a los elementos graficos
+                initListInscritos();
+                try {
+                    organiza.setText(evento.getUsuarioOrganizador().getNombreUsuario());
+                    img.setImageResource(getResources().getIdentifier(evento.getDeporte().getNombreArchivoImagen(), "drawable", getPackageName()));
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Date d = evento.getFechaHoraEvento();
+                String horap = d.getHours() + ":" + d.getMinutes();
+                hora.setText(horap);
+                inscritosTitulo.setText(INSCRITOS_TITULO + evento.getUsuariosInscritos().size());
+            }
+            initButtons();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if (eventos != null) {
-            evento = eventos.get(position);
-            //llamado a todos los elementos graficos
-            TextView organiza = (TextView) findViewById(R.id.txt_organiza);
-            ImageView img = (ImageView) findViewById(R.id.image_descripcion_programacion);
-            TextClock hora = (TextClock) findViewById(R.id.textClock_descripcion_programacion);
-            TextView inscritosTitulo = (TextView) findViewById(R.id.title_inscritos_descripcion_programacion);
-            //carga de informacion a los elementos graficos
-            initListInscritos();
-            try {
-                organiza.setText(evento.getUsuarioOrganizador().getNombreUsuario());
-                img.setImageResource(getResources().getIdentifier(evento.getDeporte().getNombreArchivoImagen(), "drawable", getPackageName()));
 
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Date d = evento.getFechaHoraEvento();
-            String horap = d.getHours() + ":" + d.getMinutes();
-            hora.setText(horap);
-            //     inscritosTitulo.setText(INSCRITOS_TITULO + evento.getInscritos().size());
-        }
-        initButtons();
+
+
     }
 
     private void initListInscritos() {
@@ -132,8 +137,8 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
         super.onBackPressed();
         finish();
         Intent t = new Intent(this, ProgramacionActivity.class);
-        t.putExtra(ListaZonasActivity.ZONA, getIntent().getStringExtra(ListaZonasActivity.ZONA));
-        t.putExtra(MainUbungActivity.POSITION, getIntent().getStringExtra(MainUbungActivity.POSITION));
+        t.putExtra(ListaZonasActivity.ZONA,zona.getNombre());
+        t.putExtra(MainUbungActivity.POSITION, getIntent().getStringExtra(ListaZonasActivity.ZONA));
         startActivity(t);
 
     }

@@ -41,5 +41,6 @@
     <string name="InicioSesion">Iniciar Sesion</string>
     <string name="action_register">Registrarse</string>
     <string name="title_activity_register">Registrar</string>
+    <string name="title_hora">Hora:</string>
 
 </resources>

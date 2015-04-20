@@ -26,9 +26,9 @@ public class ListaProgramacionAdapter extends BaseAdapter {
     private Context cnt;
     private ArrayList<Evento> eventos;
 
-    public ListaProgramacionAdapter(Context c, String nameZona) {
+    public ListaProgramacionAdapter(Context c, String idZona) {
         cnt = c;
-        zona = nameZona;
+        zona = idZona;
         geteventos();
     }
 
@@ -69,15 +69,17 @@ public class ListaProgramacionAdapter extends BaseAdapter {
         TextView nombreDeporte = (TextView) rowView.findViewById(R.id.nombre_deporte_programacion);
         TextView inscritpsZona = (TextView) rowView.findViewById(R.id.inscritos_programacion);
         TextView horaZona = (TextView) rowView.findViewById(R.id.hora_programacion);
-        Evento z = eventos.get(position);
+        TextView id_evento = (TextView) rowView.findViewById(R.id.evento_id);
+        Evento event = eventos.get(position);
 
-        Date d = z.getFechaHoraEvento();
+        Date d = event.getFechaHoraEvento();
         String hora = d.getHours() + ":" + d.getMinutes();
         try {
-            Log.e("zona", z.getDeporte() + "");
-            nombreDeporte.setText(z.getDeporte().getNombre());
+            Log.e("zona", event.getDeporte() + "");
+            nombreDeporte.setText(event.getDeporte().getNombre());
             horaZona.setText(hora);
-         //   inscritpsZona.setText(": " + z.getInscritos().size());
+           inscritpsZona.setText(": " + event.getUsuariosInscritos().size());
+            id_evento.setText(event.getId());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -89,7 +91,7 @@ public class ListaProgramacionAdapter extends BaseAdapter {
     // obtener las imagenes de los deportes
     private void geteventos() {
         try {
-            eventos = Singleton.getInstance().darEventos();
+            eventos = Singleton.getInstance().buscarEventos(zona);
         } catch (ParseException e) {
             e.printStackTrace();
         }

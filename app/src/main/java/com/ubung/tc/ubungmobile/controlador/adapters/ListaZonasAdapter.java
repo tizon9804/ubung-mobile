@@ -57,8 +57,10 @@ public class ListaZonasAdapter extends BaseAdapter {
 
         // Set data into the view.
         TextView nombreZona = (TextView) rowView.findViewById(R.id.nombreZona);
+        TextView idZona = (TextView) rowView.findViewById(R.id.zona_id);
         Zona z = zonas.get(position);
         nombreZona.setText(z.getNombre());
+        idZona.setText(z.getId());
         return rowView;
     }
 
