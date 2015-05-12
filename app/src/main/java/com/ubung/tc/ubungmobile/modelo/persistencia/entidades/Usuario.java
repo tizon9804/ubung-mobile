@@ -24,6 +24,11 @@ public class Usuario extends ParseUser {
     private static final String DEPORTE = "deporte";
     private static final String NUM_CELULAR = "numCelular";
     private static final String INSCRITO_A_LOS_EVENTOS = "inscritoALosEventos";
+    private static final String ULTIMA_UBICACION = "ultimaUbicacion";
+// -----------------------------------------------------
+// ATRIBUTOS
+// -----------------------------------------------------
+    private double[] ultimaUbicacion = null;
 
 // -----------------------------------------------------
 // CONSTRUCTORES
@@ -56,12 +61,18 @@ public class Usuario extends ParseUser {
     }
 
     public void setDeporte(Deporte deporte) {
-        put(DEPORTE,deporte);
+        put(DEPORTE, deporte);
         saveEventually();
     }
 
     public void setNumCelular(long numCelular) {
         put(NUM_CELULAR,numCelular);
+        saveEventually();
+    }
+
+    public void setUltimaUbicacion(double[] LatLongZoom) {
+        String cadena = LatLongZoom[0]+":"+LatLongZoom[1]+":"+LatLongZoom[2];
+        put(ULTIMA_UBICACION,cadena);
         saveEventually();
     }
 
@@ -97,4 +108,15 @@ public class Usuario extends ParseUser {
         return new ArrayList<>(query.find());
     }
 
+    public double[] getUltimaUbicacion() {
+        if (ultimaUbicacion == null) {
+            String cadena = getString(ULTIMA_UBICACION);
+            String[] datos = cadena.split(":");
+            ultimaUbicacion = new double[3];
+            ultimaUbicacion[0] = Double.parseDouble(datos[0]);
+            ultimaUbicacion[1] = Double.parseDouble(datos[1]);
+            ultimaUbicacion[2] = Double.parseDouble(datos[2]);
+        }
+        return ultimaUbicacion;
+    }
 }

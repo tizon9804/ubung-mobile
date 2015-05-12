@@ -87,7 +87,6 @@ public class Singleton implements Ubung {
             propietario = (Usuario)ParseUser.getCurrentUser();
             if (propietario == null) Log.w(LOG_NAME+".inicializar()", "Usuario no encontrado...");
             else Log.i(LOG_NAME+".inicializar()", "Usuario encontrado, restableciendo la información de ("+propietario.getObjectId()+";"+propietario.getUsername()+";"+propietario.getDeporte().getNombre()+")");
-
         } else {
             Log.w(LOG_NAME + ".inicializar()", System.currentTimeMillis() + " Está tratanto de volver a inicializar un Singleton ya inicializado!");
         }
@@ -164,7 +163,9 @@ public class Singleton implements Ubung {
     public void registrarNuevoUsuario(String nombreUsuario, String contrasena) {
         Log.w(LOG_NAME+".registNuevUsu","Intentando registrar al usuario "+nombreUsuario+"...");
         try {
-            propietario = new Usuario(nombreUsuario,contrasena);
+            //propietario = new Usuario(nombreUsuario,contrasena);
+            new Usuario(nombreUsuario,contrasena);
+            logIn(nombreUsuario,contrasena);
             //ToDo Manejar estos textos en la forma adecuada con el XML
             notificarUsuario("El usuario " + propietario.getNombreUsuario() + " se registró exitosamente!");
             Log.i(LOG_NAME+".registNuevUsu","Usuario "+nombreUsuario+" registrado exitosamente...");
