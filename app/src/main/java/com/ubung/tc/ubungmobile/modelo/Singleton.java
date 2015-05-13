@@ -8,7 +8,6 @@ Implementacion de los metodos de Ubung
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,7 +16,6 @@ import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
-import com.parse.ParsePush;
 import com.parse.ParseUser;
 import com.ubung.tc.ubungmobile.modelo.comunicacion.ManejadorSMS;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
@@ -80,7 +78,7 @@ public class Singleton implements Ubung {
 
             if (hayConexion()) {
                 Log.i(LOG_NAME+".inicializar()", "Inicializando manejadorPersistencia...");
-                manejadorPersistencia.inicializar();
+                //manejadorPersistencia.actualizarCacheLocal();
             }
 
             Log.i(LOG_NAME+".inicializar()", "Recuperando la información del usuario...");
@@ -105,7 +103,7 @@ public class Singleton implements Ubung {
     private void inicializarModuloSMS() {
         manejadorSMS = new ManejadorSMS(this, manejadorPersistencia);
         IntentFilter intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-        this.context.registerReceiver(manejadorSMS,intentFilter);
+        this.context.registerReceiver(manejadorSMS, intentFilter);
     }
 
     public Context darContexto() {
@@ -161,7 +159,7 @@ public class Singleton implements Ubung {
 
     @Override
     public void registrarNuevoUsuario(String nombreUsuario, String contrasena) {
-        Log.w(LOG_NAME+".registNuevUsu","Intentando registrar al usuario "+nombreUsuario+"...");
+        Log.w(LOG_NAME + ".registNuevUsu", "Intentando registrar al usuario " + nombreUsuario + "...");
         try {
             //propietario = new Usuario(nombreUsuario,contrasena);
             new Usuario(nombreUsuario,contrasena);
@@ -178,10 +176,9 @@ public class Singleton implements Ubung {
 
     @Override
     public void crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws ParseException {
-        Evento evento = new Evento(fechaHora,  zona, deporte);
-        evento.inscribirUsuarioAEvento(propietario);
+        Evento evento = new Evento(propietario, fechaHora,  zona, deporte);
         notificarUsuario("Se ha creado el evento");
-        Log.i(LOG_NAME+"crearEven", "Creado evento "+evento.getId()+" e inscrito propietario como participante");
+        Log.i(LOG_NAME + "crearEven", "Creado evento " + evento.getId() + " e inscrito propietario como participante");
     }
 
     @Override
@@ -193,13 +190,6 @@ public class Singleton implements Ubung {
             manejadorSMS.notificarUsuarioRemoto(evento);
             //ToDo Manejar estos textos en la forma adecuada con el XML
             notificarUsuario("Se ha notificado al organizador del evento por medio de SMS");
-        } else {
-            ParsePush p = new ParsePush();
-            p.setChannel("");
-            p.setQuery(ParseInstallation.getQuery());
-            p.setMessage("El usuario "+propietario.getNombreUsuario()+" se ha inscrito al evento de "+evento.getUsuarioOrganizador().getNombreUsuario()
-            + " en "+evento.getZona().getNombre());
-            p.sendInBackground();
         }
     }
 
@@ -209,7 +199,7 @@ public class Singleton implements Ubung {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean hayConeccion = activeNetwork != null && activeNetwork.isConnected();
         if(!hayConeccion) {
-            Log.e(LOG_NAME+"hoyConex","El dispositivo no cuenta con conectividad en este momento..");
+            Log.e(LOG_NAME + "hayConex", "El dispositivo no cuenta con conectividad en este momento..");
         }
         return hayConeccion;
     }
