@@ -34,7 +34,7 @@ public class CameraPreviewAdapter extends SurfaceView implements SurfaceHolder.C
 
         try {
         // Install a SurfaceHolder.Callback so we get notified when the
-        // underlying surface is created and destroyed.
+        // underlying surface is created and destroyed.new
         mHolder = getHolder();
         mHolder.setSizeFromLayout();
         mHolder.addCallback(this);
