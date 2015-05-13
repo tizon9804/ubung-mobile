@@ -26,9 +26,10 @@ public class AugmentedReality_Activity extends Activity {
             try {
             FrameLayout prevt = (FrameLayout) findViewById(R.id.videoview);
             cam = new CameraAR(this.getApplicationContext(), prevt);
-            Thread.sleep(1000);
-            prevt.addView(cam.getmPreview());
-            } catch (InterruptedException e) {
+           while(cam.getmPreview()==null) {/*espera a que inicialice*/}
+               prevt.addView(cam.getmPreview());
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

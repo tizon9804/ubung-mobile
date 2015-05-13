@@ -1,8 +1,6 @@
 package com.ubung.tc.ubungmobile.controlador.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;

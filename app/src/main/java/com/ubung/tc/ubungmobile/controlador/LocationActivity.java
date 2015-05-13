@@ -107,7 +107,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
     }
 
     private void getParseLocalization(){
-        if (Singleton.getInstance().darPropietario().getUltimaUbicacion()!=null) {
+        if (Singleton.getInstance().darPropietario()!=null && Singleton.getInstance().darPropietario().getUltimaUbicacion()!=null) {
             double[] localizacion=Singleton.getInstance().darPropietario().getUltimaUbicacion();
             double lat = localizacion[0];
             double lonl = localizacion[1];
