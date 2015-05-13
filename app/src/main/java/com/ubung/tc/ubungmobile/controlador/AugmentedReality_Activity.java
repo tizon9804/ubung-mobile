@@ -62,7 +62,7 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
             public boolean handleMessage(Message msg) {
                 RelativeLayout.LayoutParams r=(RelativeLayout.LayoutParams)msg.obj;
                 zona.setLayoutParams(r);
-                r.topMargin=r.topMargin+200;
+                r.topMargin=r.topMargin+250;
                 txtzona.setLayoutParams(r);
                 txtzona.setText(r.leftMargin+" metros");
                 return true;
