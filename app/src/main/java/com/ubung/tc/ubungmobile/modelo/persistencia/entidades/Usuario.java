@@ -41,6 +41,8 @@ public class Usuario extends ParseUser {
         super();
         setUsername(nombreUsuario);
         setPassword(contrasena);
+        double[] ultimaUbicaion = {4.640178,-74.082677,13}; // Centrado en Bogotá con Zoom de 13
+        setUltimaUbicacion(ultimaUbicaion);
         signUp();
     }
 // -----------------------------------------------------
