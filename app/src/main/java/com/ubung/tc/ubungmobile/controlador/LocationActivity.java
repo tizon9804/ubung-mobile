@@ -97,11 +97,25 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
             map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                 @Override
                 public void onMapLongClick(LatLng latLng) {
-                    animation(latLng, latLng.latitude,latLng.longitude);
+                    animation(latLng, latLng.latitude, latLng.longitude);
                 }
             });
         }
+        start=false;
+        getParseLocalization();
         notifyZonasCercanas();
+    }
+
+    private void getParseLocalization(){
+        if (Singleton.getInstance().darPropietario().getUltimaUbicacion()!=null) {
+            double[] localizacion=Singleton.getInstance().darPropietario().getUltimaUbicacion();
+            double lat = localizacion[0];
+            double lonl = localizacion[1];
+            LatLng latlng = new LatLng(lat, lonl);
+            ultimaPosicion=latlng;
+            CameraPosition p = new CameraPosition(latlng, 17, 0, 0);
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
+        }
     }
 
     private void notifyZonasCercanas() {
@@ -128,6 +142,11 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                         ultimaPosicion=latlng;
                         p = new CameraPosition(latlng, 17, 0, 0);
                         map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
+                        double[] loc=new double[3];
+                        loc[0]=l;
+                        loc[1]=lonl;
+                        loc[2]=17;
+                        Singleton.getInstance().darPropietario().setUltimaUbicacion(loc);
                     }
                     // Log.e("Change","Cambio mi posicion");
 
@@ -207,10 +226,18 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
 
         if (map.getMyLocation() == null || !map.isMyLocationEnabled()) {
             Toast.makeText(this, "No se encontró su ubicación, por favor verifique su GPS.", Toast.LENGTH_LONG).show();
+            getParseLocalization();
         } else {
-            ultimaPosicion = new LatLng(map.getMyLocation().getLatitude(), map.getMyLocation().getLongitude());
+            double lat=map.getMyLocation().getLatitude();
+            double lon=map.getMyLocation().getLongitude();
+            ultimaPosicion = new LatLng(lat,lon);
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(ultimaPosicion, 17));
             map.animateCamera(CameraUpdateFactory.zoomTo(17), 2000, null);
+            double[] loc=new double[3];
+            loc[0]=lat;
+            loc[1]=lon;
+            loc[2]=17;
+            Singleton.getInstance().darPropietario().setUltimaUbicacion(loc);
 
         }
     }

@@ -62,6 +62,7 @@ public class ChooseSportActivity extends FragmentActivity {
                 //asigna la imagen del deporte a su respectivo boton
                 ImageButton button = (ImageButton) findViewById(getResources().getIdentifier(IMAGEBUTTON + i, "id", getPackageName()));
                 button.setImageResource(getResources().getIdentifier(deportes.get(i).getNombreArchivoImagen(), "drawable", getPackageName()));
+
                 final int finalI = i;
                 button.setOnTouchListener(new View.OnTouchListener() {
                     @Override

@@ -42,5 +42,6 @@
     <string name="action_register">Registrarse</string>
     <string name="title_activity_register">Registrar</string>
     <string name="title_hora">Hora:</string>
+    <string name="title_activity_augmented_reality_">Realidad Aumentada</string>
 
 </resources>

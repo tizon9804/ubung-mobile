@@ -85,7 +85,7 @@ public class PanelMapFragment extends Fragment {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                nextActivity(AugmentedReality_Activity.class);
             }
         });
 //deporte buscar
