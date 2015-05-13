@@ -56,7 +56,6 @@ public class MainUbungActivity extends Activity {
             ViewPager myPager = (ViewPager) findViewById(R.id.gettingstartpager);
             myPager.setAdapter(adapter);
             myPager.setCurrentItem(0);
-
         }
     }
 
@@ -75,14 +74,12 @@ public class MainUbungActivity extends Activity {
                         if (active) {
                             waited += 100;
                         }
-
                     }
                 } catch (InterruptedException e) {
 
                 } finally {
                     openMap();
                 }
-
             }
         };
         ubungThread.start();
@@ -207,10 +204,13 @@ public class MainUbungActivity extends Activity {
         Singleton singleton = Singleton.getInstance();
         try {
             singleton.inicializar(this.getApplicationContext());
+
+            // Capturar el Intent enviado por el OS cuando se comparte un evento vía NFC y pasarlo al Singleton
+            singleton.recibirEventoNFC(getIntent());
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {

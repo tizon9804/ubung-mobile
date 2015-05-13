@@ -6,9 +6,15 @@ Implementacion de los metodos de Ubung
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.tech.Ndef;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,6 +23,7 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.ubung.tc.ubungmobile.modelo.comunicacion.ManejadorNFC;
 import com.ubung.tc.ubungmobile.modelo.comunicacion.ManejadorSMS;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
@@ -50,6 +57,7 @@ public class Singleton implements Ubung {
 
     private ManejadorPersistencia manejadorPersistencia;
     private ManejadorSMS manejadorSMS;
+    private ManejadorNFC manejadorNFC;
 
 // -----------------------------------------------------
 // CONSTRUCTOR (patrón singleton)
@@ -73,12 +81,15 @@ public class Singleton implements Ubung {
             Log.i(LOG_NAME+".inicializar()", "Inicializando com.parse SDK...");
             inicializarParseSDK();
 
-            Log.i(LOG_NAME+"inicializar()", "Instanciando y registrando ManejadorSMS (BroadcastReceiver)...");
+            Log.i(LOG_NAME + "inicializar()", "Instanciando y registrando ManejadorSMS (BroadcastReceiver)...");
             inicializarModuloSMS();
 
+            Log.i(LOG_NAME + "inicializar()", "Instanciando ManejadorNFC...");
+            manejadorNFC = new ManejadorNFC(this);
+
             if (hayConexion()) {
-                Log.i(LOG_NAME+".inicializar()", "Inicializando manejadorPersistencia...");
-                //manejadorPersistencia.actualizarCacheLocal();
+                Log.i(LOG_NAME + ".inicializar()", "Inicializando manejadorPersistencia...");
+                manejadorPersistencia.actualizarCacheLocal();
             }
 
             Log.i(LOG_NAME+".inicializar()", "Recuperando la información del usuario...");
@@ -111,6 +122,25 @@ public class Singleton implements Ubung {
     }
 
 // -----------------------------------------------------
+// MÉTODOS APOYO
+// -----------------------------------------------------
+    public boolean hayConexion() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean hayConeccion = activeNetwork != null && activeNetwork.isConnected();
+        if(!hayConeccion) {
+            Log.e(LOG_NAME + "hayConex", "El dispositivo no cuenta con conectividad en este momento..");
+            notificarUsuario("El dispositivo no cuenta con conectividad en este momento...");
+        }
+        return hayConeccion;
+    }
+
+    public void notificarUsuario(String mensaje) {
+        Log.i(LOG_NAME+"notifUsuario","Se le ha mostrado al usuario el mensaje: "+mensaje);
+        Toast.makeText(context,mensaje,Toast.LENGTH_LONG).show();
+    }
+
+// -----------------------------------------------------
 // MÉTODOS INTERFAZ UBUNG
 // -----------------------------------------------------
     @Override
@@ -139,19 +169,19 @@ public class Singleton implements Ubung {
 
     @Override
     public void logIn(final String nombreUsuario, String contrasena) {
-        Log.w(LOG_NAME+".logIn","Intentando logear al usuario "+nombreUsuario+"...");
-        ParseUser.logInInBackground(nombreUsuario,contrasena,new LogInCallback() {
+        Log.w(LOG_NAME + ".logIn", "Intentando logear al usuario " + nombreUsuario + "...");
+        ParseUser.logInInBackground(nombreUsuario, contrasena, new LogInCallback() {
             @Override
             public void done(ParseUser parseUser, ParseException e) {
                 if (parseUser != null) {
                     propietario = (Usuario) parseUser;
                     //ToDo Manejar estos textos en la forma adecuada con el XML
-                    notificarUsuario("Usuario "+propietario.getNombreUsuario()+" ha iniciado sesión correctamente");
-                    Log.i(LOG_NAME+".logIn","Usuario "+propietario.getNombreUsuario()+" logueado exitosamente...");
+                    notificarUsuario("Usuario " + propietario.getNombreUsuario() + " ha iniciado sesión correctamente");
+                    Log.i(LOG_NAME + ".logIn", "Usuario " + propietario.getNombreUsuario() + " logueado exitosamente...");
                 } else {
                     //ToDo Manejar estos textos en la forma adecuada con el XML
-                    notificarUsuario("Falló el intento de inicio de sesión para "+nombreUsuario);
-                    Log.e(LOG_NAME+".logIn","Error al procesar el login de "+nombreUsuario+" :: "+e.getMessage());
+                    notificarUsuario("Falló el intento de inicio de sesión para " + nombreUsuario);
+                    Log.e(LOG_NAME + ".logIn", "Error al procesar el login de " + nombreUsuario + " :: " + e.getMessage());
                 }
             }
         });
@@ -193,22 +223,15 @@ public class Singleton implements Ubung {
         }
     }
 
-    public boolean hayConexion() {
-
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean hayConeccion = activeNetwork != null && activeNetwork.isConnected();
-        if(!hayConeccion) {
-            Log.e(LOG_NAME + "hayConex", "El dispositivo no cuenta con conectividad en este momento..");
-        }
-        return hayConeccion;
+    @Override
+    public void enviarEventoNFC(String idEvento) {
+        manejadorNFC.enviarIdEvento(idEvento);
     }
 
-    public void notificarUsuario(String mensaje) {
-        Log.i(LOG_NAME+"notifUsuario","Se le ha mostrado al usuario el mensaje: "+mensaje);
-        Toast.makeText(context,mensaje,Toast.LENGTH_LONG).show();
+    @Override
+    public Evento recibirEventoNFC(Intent intent) throws ParseException, ExcepcionComunicacion {
+        return manejadorPersistencia.darEvento(manejadorNFC.recibirIdEvento(intent));
     }
-
 // -----------------------------------------------------
 // MÉTODOS INTERFAZ PERSISTENCIA
 // -----------------------------------------------------

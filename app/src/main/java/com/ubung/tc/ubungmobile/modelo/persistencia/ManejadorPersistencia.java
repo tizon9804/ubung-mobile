@@ -70,28 +70,36 @@ public class ManejadorPersistencia implements Persistencia {
     @Override
     public Deporte darDeporte(String id) throws ParseException {
         ParseQuery<Deporte> query = ParseQuery.getQuery(ManejadorPersistencia.DEPORTE);
-//        query.fromLocalDatastore();
+        if (!singleton.hayConexion()) {
+            query.fromLocalDatastore();
+        }
         return query.get(id);
     }
 
     @Override
     public ArrayList<Usuario> darUsuarios() throws ParseException {
         ParseQuery<Usuario> query = ParseQuery.getQuery(ManejadorPersistencia.USUARIO);
-//        query.fromLocalDatastore();
+        if (!singleton.hayConexion()) {
+            query.fromLocalDatastore();
+        }
         return new ArrayList<>(query.find());
     }
 
     @Override
     public Usuario darUsuario(String id) throws ParseException {
         ParseQuery<Usuario> query = ParseQuery.getQuery(ManejadorPersistencia.USUARIO);
-//        query.fromLocalDatastore();
+        if (!singleton.hayConexion()) {
+            query.fromLocalDatastore();
+        }
         return query.get(id);
     }
 
     @Override
     public Usuario buscarUsuario(String nombreUsuario) throws ParseException {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-//        query.fromLocalDatastore();
+        if (!singleton.hayConexion()) {
+            query.fromLocalDatastore();
+        }
         query.whereEqualTo(Usuario.NOMBRE_USUARIO, nombreUsuario);
         return (Usuario) query.getFirst();
     }
@@ -99,14 +107,18 @@ public class ManejadorPersistencia implements Persistencia {
     @Override
     public ArrayList<Zona> darZonas() throws ParseException {
         ParseQuery<Zona> query = ParseQuery.getQuery(ManejadorPersistencia.ZONA);
-//        query.fromLocalDatastore();
+        if (!singleton.hayConexion()) {
+            query.fromLocalDatastore();
+        }
         return new ArrayList<>(query.find());
     }
 
     @Override
     public Zona darZona(String id) throws ParseException {
         ParseQuery<Zona> query = ParseQuery.getQuery(ManejadorPersistencia.ZONA);
-//        query.fromLocalDatastore();
+        if (!singleton.hayConexion()) {
+            query.fromLocalDatastore();
+        }
         return query.get(id);
     }
 
@@ -118,14 +130,18 @@ public class ManejadorPersistencia implements Persistencia {
     @Override
     public ArrayList<Evento> darEventos() throws ParseException {
         ParseQuery<Evento> query = ParseQuery.getQuery(ManejadorPersistencia.EVENTO);
-//        query.fromLocalDatastore();
+        if (!singleton.hayConexion()) {
+            query.fromLocalDatastore();
+        }
         return new ArrayList<>(query.find());
     }
 
     @Override
     public ArrayList<Evento> buscarEventos(String idZona) throws ParseException {
         ParseQuery<Evento> query = ParseQuery.getQuery(ManejadorPersistencia.EVENTO);
-//        query.fromLocalDatastore();
+        if (!singleton.hayConexion()) {
+            query.fromLocalDatastore();
+        }
         query.whereEqualTo(Evento.ZONA, darZona(idZona));
         return new ArrayList<>(query.find());
     }
@@ -133,7 +149,9 @@ public class ManejadorPersistencia implements Persistencia {
     @Override
     public Evento darEvento(String id) throws ParseException {
         ParseQuery<Evento> query = ParseQuery.getQuery(ManejadorPersistencia.EVENTO);
-//        query.fromLocalDatastore();
+        if (!singleton.hayConexion()) {
+            query.fromLocalDatastore();
+        }
         return query.get(id);
     }
 }
