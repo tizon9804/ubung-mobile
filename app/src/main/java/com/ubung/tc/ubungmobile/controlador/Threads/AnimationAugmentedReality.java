@@ -15,12 +15,16 @@ public class AnimationAugmentedReality extends Thread {
     private final ImageView zona;
     private final FrameLayout frameView;
     private Handler h;
+    private int positionx;
+    private int positiony;
 
     public AnimationAugmentedReality(Handler m, ImageView zona, FrameLayout prevt) {
         this.h = m;
         this.zona=zona;
         this.frameView=prevt;
         duration = 1000;
+        positionx = 0;
+        positiony = 0;
     }
 
     public void run() {
@@ -28,8 +32,8 @@ public class AnimationAugmentedReality extends Thread {
         while(i<duration) {
             try {
             RelativeLayout.LayoutParams par = (RelativeLayout.LayoutParams) zona.getLayoutParams();
-            par.leftMargin = i-100;
-            par.topMargin = i+i;
+            par.leftMargin = positionx;
+            par.topMargin = positiony;
             zona.setRotation(90);
             Message m = new Message();
             m.obj = par;
@@ -45,5 +49,10 @@ public class AnimationAugmentedReality extends Thread {
             }
         }
 
+    }
+
+    public void setPosition(int x,int y) {
+        this.positionx=x;
+        this.positiony=y;
     }
 }

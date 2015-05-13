@@ -205,6 +205,11 @@ public class MainUbungActivity extends Activity {
             singleton.inicializar(this.getApplicationContext());
             // Capturar el Intent enviado por el OS cuando se comparte un evento vía NFC y pasarlo al Singleton
             singleton.recibirEventoNFC(getIntent());
+            finish();
+            Intent t= new Intent(this,DescripcionProgramacionActivity.class);
+            t.putExtra(ListaZonasActivity.ZONA,"");
+            t.putExtra(POSITION,"");
+            startActivity(t);
         } catch (Exception e) {
             e.printStackTrace();
         }

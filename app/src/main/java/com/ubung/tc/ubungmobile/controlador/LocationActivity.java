@@ -73,12 +73,13 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
             map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
         }
         if (map != null) {
-
+            panel[0].setMap(map);
             map.animateCamera(CameraUpdateFactory.zoomTo(17), 500, null);
             map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
           //  map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             map.getUiSettings().setZoomGesturesEnabled(true);
             map.setMyLocationEnabled(true);
+
             map.getUiSettings().setMyLocationButtonEnabled(false);
             //map.setTrafficEnabled(true);
             crearZonas();

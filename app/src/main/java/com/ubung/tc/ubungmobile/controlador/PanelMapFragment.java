@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.parse.ParseException;
 import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
@@ -23,6 +24,7 @@ public class PanelMapFragment extends Fragment {
 
     public final static String NORMAL = "_normal";
     public final static String FOCUSED = "_focused";
+    public static GoogleMap map;
 
 
     @Override
@@ -112,4 +114,7 @@ public class PanelMapFragment extends Fragment {
 
     }
 
+    public void setMap(GoogleMap map) {
+        this.map=map;
+    }
 }
