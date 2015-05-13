@@ -6,18 +6,14 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.location.Location;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -29,8 +25,6 @@ import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
-import java.io.IOException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public class AugmentedReality_Activity extends Activity implements SensorEventListener {
@@ -45,6 +39,7 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
     private float ejex;
     private GoogleMap map;
     private AnimationAugmentedReality aR;
+    private Zona zonaCercana;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +56,15 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
     private void initZonaRendered() {
 
         final ImageView zona=(ImageView) findViewById(R.id.zonaViewRendered);
+        final TextView txtzona=(TextView) findViewById(R.id.distancia_zona_ar);
         Handler handposition=new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 RelativeLayout.LayoutParams r=(RelativeLayout.LayoutParams)msg.obj;
                 zona.setLayoutParams(r);
+                r.topMargin=r.topMargin+100;
+                txtzona.setLayoutParams(r);
+                txtzona.setText(r.leftMargin+" metros");
                 return true;
             }
         });
@@ -81,6 +80,7 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
         if(cam==null) {
             try {
             prevt = (FrameLayout) findViewById(R.id.videoview);
+
             cam = new CameraAR(this.getApplicationContext(), prevt);
                 while(cam.getmPreview()==null) {/*espera a que inicialice*/}
                prevt.addView(cam.getmPreview());
@@ -152,11 +152,67 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
                 ejez = orientation[1]; // giro en  eje z -1.5 a 1.5
                 ejex = orientation[2]; // giro en  eje x giro a la derecha 0 a 3 izquierda de 0 a -3
 
-                aR.setPosition(1, 1);
-                //Log.e("compass",compass+"###"+ orientation[1]+"##"+orientation[2]);
 
-                try {
-                    orientacionZonaCercana();
+
+
+               try {
+                   double angulo =orientacionZonaCercana();
+
+                   if(angulo>-4) {
+                       // angulo=3;
+                       double diferencia = Math.abs(compass - angulo);
+                       double tolerancia = 1;
+                       double toleranciaT = 0.3;
+                    if(diferencia<toleranciaT){
+                        aR.setPosition(350, 800);
+                    }
+                    else if (diferencia<tolerancia){
+
+                        if(compass<angulo){
+
+                            if(ejez>1||ejez<-1) {
+                                int pos=(int)(350-(diferencia*200));
+                                aR.setPosition(pos, 800);
+                            }
+                            else {
+                                int pos=(int)(800-(diferencia*200));
+                                aR.setPosition(350, pos);
+                            }
+                        }
+
+                        else if(compass>angulo){
+
+                            if(ejez>1||ejez<-1) {
+                                int pos=(int)(350+(diferencia*200));
+                                aR.setPosition(pos, 800);
+                            }
+                            else {
+                                int pos=(int)(800+(diferencia*200));
+                                aR.setPosition(350, pos);
+                            }
+                        }
+                        else{
+                                aR.setPosition(350, 800);
+                        }
+
+                    }
+                       else{
+                        if(ejez>1||ejez<-1) {
+
+                            aR.setPosition(3000, 800);
+                        }
+                        else {
+
+                            aR.setPosition(350, 5000);
+                        }
+                    }
+
+
+
+
+
+                   }
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -165,7 +221,7 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
         }
     }
 
-    private void orientacionZonaCercana() throws ParseException {
+    private double orientacionZonaCercana() throws ParseException {
        LatLng ubicacion= new LatLng(0,0);
         // se obtiene la ubicación ya sea directamente del gps o de la ultima posicion registrada
         if(map.getMyLocation()!=null) {
@@ -185,14 +241,43 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
             }
         }
         // recorrido para hallar la zona mas cercana
+        double minimo=10000;
+        if(zonaCercana == null) {
+            ArrayList<Zona> zonas = Singleton.getInstance().darZonas();
 
-            ArrayList<Zona> zonas= Singleton.getInstance().darZonas();
+            for (Zona z : zonas) {
+                double[]loczo=z.getLatLongZoom();
+                double lat=loczo[0];
+                double lon=loczo[1];
+                LatLng geoZona=new LatLng(lat,lon);
+                double actual=cercaZona(ubicacion,geoZona);
+                if (actual<minimo) {
+                    zonaCercana=z;
+                    minimo=actual;
+                }
+            }
+        }
+        // calculo de orientacion magnetica de mi ubicacion a la zona
+        if(zonaCercana!=null){
+            double[]loczo=zonaCercana.getLatLongZoom();
+            double lat=loczo[0];
+            double lon=loczo[1];
+            LatLng geoZona=new LatLng(lat,lon);
+           double angulo= anguloGeoZona(ubicacion,geoZona);
+           return  angulo;
+        }
 
-
+        return -4;
 
     }
 
-    public boolean cercaZona(LatLng pos, LatLng zona) {
+    private double anguloGeoZona(LatLng ubicacion, LatLng geoZona) {
+        double x = geoZona.latitude-ubicacion.latitude ;
+        double y = geoZona.longitude-ubicacion.longitude ;
+       return Math.atan2(x,y);
+    }
+
+    public double cercaZona(LatLng pos, LatLng zona) {
 
         double d = 0;
         double x = Math.pow((zona.latitude - pos.latitude), 2);
@@ -200,11 +285,10 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
         d = Math.sqrt(x + y) * 100;
         d = d * 1000;
         // Log.e("calculo entro en zona", "La distancia es de:" + d);
-        if (d < 100) {
-            return true;
-        }
 
-        return false;
+        return d;
+
+
     }
 
     @Override

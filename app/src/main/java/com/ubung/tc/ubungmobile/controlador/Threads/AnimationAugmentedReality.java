@@ -17,6 +17,7 @@ public class AnimationAugmentedReality extends Thread {
     private Handler h;
     private int positionx;
     private int positiony;
+    private int dist;
 
     public AnimationAugmentedReality(Handler m, ImageView zona, FrameLayout prevt) {
         this.h = m;
@@ -54,5 +55,6 @@ public class AnimationAugmentedReality extends Thread {
     public void setPosition(int x,int y) {
         this.positionx=x;
         this.positiony=y;
+        this.dist=0;
     }
 }
