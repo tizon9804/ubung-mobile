@@ -111,7 +111,6 @@ public class MainUbungActivity extends Activity {
 
                         //    intentDescription(deportes.get(finalI).getId(), v.getId(), usuario, phone);
                         }
-
                         return true;
                     }
                 });
@@ -204,11 +203,9 @@ public class MainUbungActivity extends Activity {
         Singleton singleton = Singleton.getInstance();
         try {
             singleton.inicializar(this.getApplicationContext());
-
             // Capturar el Intent enviado por el OS cuando se comparte un evento vía NFC y pasarlo al Singleton
             singleton.recibirEventoNFC(getIntent());
-
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -221,13 +218,10 @@ public class MainUbungActivity extends Activity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void newActivity(Class activity){
         Intent t= new Intent(this,activity);
         startActivity(t);
     }
-
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
 import android.os.Parcelable;
 import android.provider.Settings;
 
@@ -13,7 +14,7 @@ import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 /**
  * Created by cvargasc on 13/05/15.
  */
-public class ManejadorNFC {
+public class ManejadorNFC implements NfcAdapter.CreateNdefMessageCallback, NfcAdapter.OnNdefPushCompleteCallback {
 
     private Singleton singleton;
     private NfcAdapter nfcAdapter;
@@ -30,6 +31,7 @@ public class ManejadorNFC {
         if (!nfcAdapter.isNdefPushEnabled()) {
             singleton.darContexto().startActivity(new Intent(Settings.ACTION_NFCSHARING_SETTINGS));
         }
+
     }
 
     public String recibirIdEvento(Intent intent) throws ExcepcionComunicacion {
@@ -45,5 +47,15 @@ public class ManejadorNFC {
         } else {
             throw new ExcepcionComunicacion("La acción del Intent no corresponde al intercambio de un evento :: "+accion);
         }
+    }
+
+    @Override
+    public NdefMessage createNdefMessage(NfcEvent event) {
+        return null;
+    }
+
+    @Override
+    public void onNdefPushComplete(NfcEvent event) {
+
     }
 }

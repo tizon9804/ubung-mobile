@@ -136,12 +136,9 @@ public class EventoActivity extends ActionBarActivity {
                     }
 
                 }
-
                 return true;
             }
         });
-
-
     }
 
     private void crearEvento(Date fechaHora, Zona zona, Deporte deporte) {

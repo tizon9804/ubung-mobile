@@ -67,9 +67,6 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     private void initListInscritos() {
@@ -118,11 +115,9 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
                 return true;
             }
         });
-
     }
 
-
-    // -----------------------------------------------------
+// -----------------------------------------------------
 // CONEXION SIGUIENTE ACTIVIDAD
 // -----------------------------------------------------
 
