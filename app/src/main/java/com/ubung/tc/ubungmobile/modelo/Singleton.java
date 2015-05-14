@@ -23,6 +23,8 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.ubung.tc.ubungmobile.controlador.DescripcionProgramacionActivity;
+import com.ubung.tc.ubungmobile.controlador.MainUbungActivity;
 import com.ubung.tc.ubungmobile.modelo.comunicacion.ManejadorNFC;
 import com.ubung.tc.ubungmobile.modelo.comunicacion.ManejadorSMS;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
@@ -224,8 +226,13 @@ public class Singleton implements Ubung {
     }
 
     @Override
-    public void enviarEventoNFC(String idEvento) {
-        manejadorNFC.enviarIdEvento(idEvento);
+    public void setNfcActivity(DescripcionProgramacionActivity activity) {
+
+    }
+
+    @Override
+    public NdefMessage enviarEventoNFC(String idEvento) {
+        return manejadorNFC.enviarIdEvento(idEvento);
     }
 
     @Override

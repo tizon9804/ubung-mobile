@@ -1,9 +1,12 @@
 package com.ubung.tc.ubungmobile.modelo;
 
 import android.content.Intent;
+import android.nfc.NdefMessage;
 
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.ubung.tc.ubungmobile.controlador.DescripcionProgramacionActivity;
+import com.ubung.tc.ubungmobile.controlador.MainUbungActivity;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
@@ -67,10 +70,16 @@ public interface Ubung extends Persistencia {
     public void crearEvento(Date fechaHora, Zona zona, Deporte deporte) throws ParseException;
 
     /**
+     * Define la actividad que responderá las peticiones de NFC
+     * @param activity
+     */
+    public void setNfcActivity(DescripcionProgramacionActivity activity);
+
+    /**
      * Comparte vía NFC un evento
      * @param idEvento el identificador del evento que se compartirá
      */
-    public void enviarEventoNFC(String idEvento);
+    public NdefMessage enviarEventoNFC(String idEvento);
 
     /**
      * Recupera el id del evento a partir del Intent enviado por el OS y devuelve el evento asociado con ese Id

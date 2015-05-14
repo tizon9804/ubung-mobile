@@ -1,6 +1,9 @@
 package com.ubung.tc.ubungmobile.controlador;
 
 import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MotionEvent;
@@ -25,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-public class DescripcionProgramacionActivity extends ActionBarActivity {
+public class DescripcionProgramacionActivity extends ActionBarActivity implements NfcAdapter.CreateNdefMessageCallback, NfcAdapter.OnNdefPushCompleteCallback {
 
     private static final String INSCRITOS_TITULO = "Inscritos: ";
     private Evento evento;
@@ -38,6 +41,9 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_descripcion_programacion);
         String id_zona = getIntent().getStringExtra(ListaZonasActivity.ZONA);
+
+        Singleton.getInstance().setNfcActivity(this);
+
         try {
             zona=Singleton.getInstance().darZona(id_zona);
             setTitle(zona.getNombre());
@@ -137,5 +143,18 @@ public class DescripcionProgramacionActivity extends ActionBarActivity {
         startActivity(t);
 
     }
+// -----------------------------------------------------
+// Compartir actividad por NFC
+// -----------------------------------------------------
+    @Override
+    public NdefMessage createNdefMessage(NfcEvent event) {
+        NdefMessage ndefMessage = Singleton.getInstance().enviarEventoNFC(evento.getId());
+        return ndefMessage;
+    }
 
+    @Override
+    public void onNdefPushComplete(NfcEvent event) {
+        // ToDo manejar string en archivo XML
+        Singleton.getInstance().notificarUsuario("Se ha compartido el evento vía NFC");
+    }
 }

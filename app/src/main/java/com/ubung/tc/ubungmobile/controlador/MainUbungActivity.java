@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.nfc.NdefMessage;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -23,6 +26,7 @@ import com.ubung.tc.ubungmobile.controlador.adapters.GettingStartAdapter;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.Ubung;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
+import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
 
 import java.util.ArrayList;
 
@@ -174,10 +178,6 @@ public class MainUbungActivity extends Activity {
             }
 
         });
-
-
-
-
        // final EditText user = (EditText) findViewById(R.id.user_name);
        // user.requestFocus();
       //  user.setOnTouchListener(new View.OnTouchListener() {
@@ -189,9 +189,7 @@ public class MainUbungActivity extends Activity {
         //        return true;
         //    }
        //
-
     }
-
 
     private void openMap() {
         finish();
@@ -204,15 +202,23 @@ public class MainUbungActivity extends Activity {
         try {
             singleton.inicializar(this.getApplicationContext());
             // Capturar el Intent enviado por el OS cuando se comparte un evento vía NFC y pasarlo al Singleton
-            singleton.recibirEventoNFC(getIntent());
-            finish();
-            Intent t= new Intent(this,DescripcionProgramacionActivity.class);
-            t.putExtra(ListaZonasActivity.ZONA,"");
-            t.putExtra(POSITION,"");
-            startActivity(t);
+            Intent intent = getIntent();
+            if (intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
+                Evento evento = singleton.recibirEventoNFC(intent);
+                finish();
+                Intent t= new Intent(this,DescripcionProgramacionActivity.class);
+                t.putExtra(ListaZonasActivity.ZONA,evento.getZona().getId());
+                t.putExtra(POSITION,evento.getId());
+                startActivity(t);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {

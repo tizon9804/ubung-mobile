@@ -155,5 +155,6 @@
             android:label="@string/title_activity_augmented_reality_" >
         </activity>
     </application>
-
+    <uses-sdk android:minSdkVersion="17"
+        android:targetSdkVersion="19" />
 </manifest>
