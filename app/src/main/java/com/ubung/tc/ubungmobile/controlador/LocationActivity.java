@@ -104,6 +104,9 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                 }
             });
         }
+
+        getParseLocalization();
+        notifyZonasCercanas();
         if(nombreZona!=null){
             for (Marker m: markers){
                 if(m.getTitle().equals(nombreZona)){
@@ -113,8 +116,6 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
             }
             start=false;
         }
-        getParseLocalization();
-        notifyZonasCercanas();
 
 
     }
