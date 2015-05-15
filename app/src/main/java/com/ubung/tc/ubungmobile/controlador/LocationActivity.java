@@ -111,8 +111,10 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
             for (Marker m: markers){
                 if(m.getTitle().equals(nombreZona)){
                     onMarkerClick(m);
+                    break;
                 }
             }
+            start=false;
         }
 
     }
