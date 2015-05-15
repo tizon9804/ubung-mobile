@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.nfc.NdefMessage;
 
 import com.parse.ParseException;
-import com.parse.ParseUser;
 import com.ubung.tc.ubungmobile.controlador.DescripcionProgramacionActivity;
-import com.ubung.tc.ubungmobile.controlador.MainUbungActivity;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
@@ -86,6 +84,6 @@ public interface Ubung extends Persistencia {
      * @param intent enviado por el OS cuando se recibe un evento por NFC
      * @return
      */
-    public Evento recibirEventoNFC(Intent intent) throws ParseException, ExcepcionComunicacion;
+    public Evento recibirEventoNFC(Intent intent) throws ParseException;
 
 }

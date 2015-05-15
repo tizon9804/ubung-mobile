@@ -42,22 +42,27 @@ public class ManejadorPersistencia implements Persistencia {
      * Sincroniza todos los elementos en el almacenamiento local
      */
     public void actualizarCacheLocal() {
-        try {
-            Log.i(LOG_NAME + ".cacheLocal", "Realizando cache local de los DEPORTES...");
-            ParseQuery<Deporte> deportes = ParseQuery.getQuery(ManejadorPersistencia.DEPORTE);
-            ParseObject.pinAllInBackground(deportes.find());
-            Log.i(LOG_NAME + ".cacheLocal", "Realizando cache local de las ZONAS...");
-            ParseQuery<Zona> zonas = ParseQuery.getQuery(ManejadorPersistencia.ZONA);
-            ParseObject.pinAllInBackground(zonas.find());
-            Log.i(LOG_NAME + ".cacheLocal", "Realizando cache local de los EVENTOS...");
-            ParseQuery<Evento> eventos = ParseQuery.getQuery(ManejadorPersistencia.EVENTO);
-            ParseObject.pinAllInBackground(eventos.find());
-            Log.i(LOG_NAME + ".cacheLocal", "Realizando cache local de los USUARIOS...");
-            ParseQuery<Usuario> usuarios = ParseQuery.getQuery(ManejadorPersistencia.USUARIO);
-            ParseObject.pinAllInBackground(usuarios.find());
-        } catch (ParseException e) {
-            Log.e(LOG_NAME + ".cacheLocal", "Error al actualizar el cache local :: "+e.getMessage());
-        }
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Log.i(LOG_NAME + ".cacheLocal", "Realizando cache local de los DEPORTES...");
+                    ParseQuery<Deporte> deportes = ParseQuery.getQuery(ManejadorPersistencia.DEPORTE);
+                    ParseObject.pinAllInBackground(deportes.find());
+                    Log.i(LOG_NAME + ".cacheLocal", "Realizando cache local de las ZONAS...");
+                    ParseQuery<Zona> zonas = ParseQuery.getQuery(ManejadorPersistencia.ZONA);
+                    ParseObject.pinAllInBackground(zonas.find());
+                    Log.i(LOG_NAME + ".cacheLocal", "Realizando cache local de los EVENTOS...");
+                    ParseQuery<Evento> eventos = ParseQuery.getQuery(ManejadorPersistencia.EVENTO);
+                    ParseObject.pinAllInBackground(eventos.find());
+                    Log.i(LOG_NAME + ".cacheLocal", "Realizando cache local de los USUARIOS...");
+                    ParseQuery<Usuario> usuarios = ParseQuery.getQuery(ManejadorPersistencia.USUARIO);
+                    ParseObject.pinAllInBackground(usuarios.find());
+                } catch (ParseException e) {
+                    Log.e(LOG_NAME + ".cacheLocal", "Error al actualizar el cache local :: "+e.getMessage());
+                }
+            }
+        }.start();
     }
 
     @Override

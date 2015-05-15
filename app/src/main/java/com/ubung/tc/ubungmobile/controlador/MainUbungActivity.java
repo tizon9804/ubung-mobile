@@ -1,13 +1,9 @@
 package com.ubung.tc.ubungmobile.controlador;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
-import android.nfc.NfcEvent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,9 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -218,18 +212,22 @@ public class MainUbungActivity extends Activity {
 
     protected void onResume() {
         super.onResume();
-        Singleton singleton = Singleton.getInstance();
         try {
+            Singleton singleton = Singleton.getInstance();
             singleton.inicializar(this.getApplicationContext());
-            //singleton.start();
-            // Capturar el Intent enviado por el OS cuando se comparte un evento vía NFC y pasarlo al Singleton
+            this.singleton = singleton;
+            // Capturar el Intent enviado por el OS
             Intent intent = getIntent();
-            if (intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
+            // Si el Intent corresponde a NFC
+            if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+                Log.w("MainUbung.onResume()",intent.getAction()+" corresponde a un evento de NFC");
+                // Se lo paso al síngleton para que lo procese y recupere el evento correspondiente
                 Evento evento = singleton.recibirEventoNFC(intent);
-                finish();
+                // Creo el Intent para pasarle la información del evento a la actividad correspondiente
                 Intent t= new Intent(this,DescripcionProgramacionActivity.class);
                 t.putExtra(ListaZonasActivity.ZONA,evento.getZona().getId());
                 t.putExtra(POSITION,evento.getId());
+                // Inicio la actividad correspondiente
                 startActivity(t);
             }
         } catch (Exception e) {
@@ -239,6 +237,7 @@ public class MainUbungActivity extends Activity {
 
     @Override
     protected void onNewIntent(Intent intent) {
+        Log.w("MainUbung.onNewIntent()","Se ha recibido un nuevo Intent con acción "+intent.getAction());
         setIntent(intent);
     }
 

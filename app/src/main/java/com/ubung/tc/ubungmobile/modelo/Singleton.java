@@ -11,10 +11,6 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
-import android.nfc.NfcAdapter;
-import android.nfc.tech.Ndef;
-import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,14 +20,13 @@ import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.ubung.tc.ubungmobile.controlador.DescripcionProgramacionActivity;
-import com.ubung.tc.ubungmobile.controlador.MainUbungActivity;
 import com.ubung.tc.ubungmobile.modelo.comunicacion.ManejadorNFC;
 import com.ubung.tc.ubungmobile.modelo.comunicacion.ManejadorSMS;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
+import com.ubung.tc.ubungmobile.modelo.persistencia.ManejadorPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Deporte;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
-import com.ubung.tc.ubungmobile.modelo.persistencia.ManejadorPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Usuario;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
@@ -230,7 +225,7 @@ public class Singleton implements Ubung {
 
     @Override
     public void setNfcActivity(DescripcionProgramacionActivity activity) {
-
+        manejadorNFC.definirNfcActivity(activity);
     }
 
     @Override
@@ -239,7 +234,7 @@ public class Singleton implements Ubung {
     }
 
     @Override
-    public Evento recibirEventoNFC(Intent intent) throws ParseException, ExcepcionComunicacion {
+    public Evento recibirEventoNFC(Intent intent) throws ParseException {
         return manejadorPersistencia.darEvento(manejadorNFC.recibirIdEvento(intent));
     }
 // -----------------------------------------------------

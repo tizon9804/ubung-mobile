@@ -5,7 +5,10 @@ import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -20,15 +23,15 @@ import com.ubung.tc.ubungmobile.R;
 import com.ubung.tc.ubungmobile.controlador.adapters.ListaInscritosAdapter;
 import com.ubung.tc.ubungmobile.modelo.Singleton;
 import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionComunicacion;
-import com.ubung.tc.ubungmobile.modelo.excepciones.ExcepcionPersistencia;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Evento;
 import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 
 public class DescripcionProgramacionActivity extends ActionBarActivity implements NfcAdapter.CreateNdefMessageCallback, NfcAdapter.OnNdefPushCompleteCallback {
+
+    private static final int EVENTO_ENVIADO = 1;
 
     private static final String INSCRITOS_TITULO = "Inscritos: ";
     private Evento evento;
@@ -154,7 +157,43 @@ public class DescripcionProgramacionActivity extends ActionBarActivity implement
 
     @Override
     public void onNdefPushComplete(NfcEvent event) {
-        // ToDo manejar string en archivo XML
-        Singleton.getInstance().notificarUsuario("Se ha compartido el evento vía NFC");
+        handler.obtainMessage(EVENTO_ENVIADO).sendToTarget();
+    }
+
+    private final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message message) {
+            switch (message.what) {
+                case EVENTO_ENVIADO:
+                    // ToDo manejar string en archivo XML
+                    Singleton.getInstance().notificarUsuario("Se ha compartido el evento vía NFC");
+                    break;
+            }
+        }
+    };
+
+    protected void onResume() {
+        super.onResume();
+        try {
+            Singleton singleton = Singleton.getInstance();
+            singleton.inicializar(this.getApplicationContext());
+            // Capturar el Intent enviado por el OS
+            Intent intent = getIntent();
+            // Si el Intent corresponde a NFC
+            if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+                Log.w("DescrProgAct.onResume()", intent.getAction() + " corresponde a un evento de NFC");
+                // Se lo paso al síngleton para que lo procese y recupere el evento correspondiente
+                Evento evento = singleton.recibirEventoNFC(intent);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.w("DescrProgAct.onNewIntent()","Se ha recibido un nuevo Intent con acción "+intent.getAction());
+        setIntent(intent);
     }
 }
