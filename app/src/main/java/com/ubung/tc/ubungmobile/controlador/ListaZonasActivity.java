@@ -30,8 +30,18 @@ public class ListaZonasActivity extends ActionBarActivity {
 // -----------------------------------------------------
     public void initListView() {
         ListView g = (ListView) findViewById(R.id.listViewZonas);
-
+        final ListaZonasActivity context = this;
         g.setAdapter(new ListaZonasAdapter(this));
+        g.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView nombrezona = (TextView) view.findViewById(R.id.nombreZona);
+                Intent t= new Intent(context,LocationActivity.class);
+                t.putExtra(LocationActivity.NOMBRE,nombrezona.getText().toString());
+                startActivity(t);
+                return true;
+            }
+        });
         g.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

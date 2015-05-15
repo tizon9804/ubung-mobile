@@ -128,8 +128,8 @@ public class DescriptionSportActivity extends ActionBarActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-        Intent t = new Intent(this, MainUbungActivity.class);
-        t.putExtra("last", true);
+        Intent t = new Intent(this, ChooseSportActivity.class);
+        startActivity(t);
 
     }
 

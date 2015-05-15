@@ -61,6 +61,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String nombreZona=getIntent().getStringExtra(NOMBRE);
         // carga la capa de botones
         final PanelMapFragment[] panel = {new PanelMapFragment()};
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
@@ -73,6 +74,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
             map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
         }
         if (map != null) {
+
             panel[0].setMap(map);
             map.animateCamera(CameraUpdateFactory.zoomTo(17), 500, null);
             map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
@@ -105,6 +107,14 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         start=false;
         getParseLocalization();
         notifyZonasCercanas();
+        if(nombreZona!=null){
+            for (Marker m: markers){
+                if(m.getTitle().equals(nombreZona)){
+                    onMarkerClick(m);
+                }
+            }
+        }
+
     }
 
     private void getParseLocalization(){

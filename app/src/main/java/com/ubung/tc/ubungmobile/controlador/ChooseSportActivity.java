@@ -98,5 +98,11 @@ public class ChooseSportActivity extends FragmentActivity {
         startActivity(t);
     }
 
+    public void onBackPressed(){
+        super.onBackPressed();
+        Intent t= new Intent(this,LocationActivity.class);
+        startActivity(t);
+    }
+
 
 }

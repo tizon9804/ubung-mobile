@@ -117,7 +117,7 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
     public void onDestroy(){
         super.onDestroy();
         Log.e("destroy", "on");
-        onPause();
+        
 
     }
 
