@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
  */
 public class AnimationAugmentedReality extends Thread {
 
-    private final int duration;
+
     private final ImageView zona;
     private final FrameLayout frameView;
     private Handler h;
@@ -23,28 +23,21 @@ public class AnimationAugmentedReality extends Thread {
         this.h = m;
         this.zona=zona;
         this.frameView=prevt;
-        duration = 1000;
+
         positionx = 0;
         positiony = 0;
     }
 
     public void run() {
-        int i=0;
-        while(i<duration) {
+        while(true) {
             try {
             RelativeLayout.LayoutParams par = (RelativeLayout.LayoutParams) zona.getLayoutParams();
             par.leftMargin = positionx;
             par.topMargin = positiony;
-            zona.setRotation(90);
             Message m = new Message();
             m.obj = par;
             h.sendMessage(m);
-            i++;
-            Thread.sleep(10);
-
-            if(i==duration){
-                i=0;
-            }
+            Thread.sleep(0);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -71,7 +71,10 @@ public class Singleton implements Ubung {
 // -----------------------------------------------------
 // MÉTODOS
 // -----------------------------------------------------
-    public void inicializar(Context context) throws ParseException {
+
+
+
+      public void inicializar(Context context) throws ParseException {
         if (this.context == null) {
             Log.i(LOG_NAME+".inicializar()", System.currentTimeMillis()+" Inicializando Singleton...");
             Log.i(LOG_NAME+".inicializar()", "Definiendo contexto...");

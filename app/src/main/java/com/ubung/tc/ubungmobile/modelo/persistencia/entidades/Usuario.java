@@ -106,7 +106,7 @@ public class Usuario extends ParseUser {
     public ArrayList<Evento> getEventosSeHaInscrito() throws ParseException {
         ParseRelation<Evento> eventosSeHaInscrito = getRelation(INSCRITO_A_LOS_EVENTOS);
         ParseQuery<Evento> query = eventosSeHaInscrito.getQuery();
-        return new ArrayList<>(query.find());
+        return new ArrayList<>(query.fromLocalDatastore().find());
     }
 
     public double[] getUltimaUbicacion() {

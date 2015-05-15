@@ -147,7 +147,9 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                         loc[0]=l;
                         loc[1]=lonl;
                         loc[2]=17;
-                        Singleton.getInstance().darPropietario().setUltimaUbicacion(loc);
+                        if(Singleton.getInstance().darPropietario()!=null) {
+                            Singleton.getInstance().darPropietario().setUltimaUbicacion(loc);
+                        }
                     }
                     // Log.e("Change","Cambio mi posicion");
 
@@ -238,7 +240,9 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
             loc[0]=lat;
             loc[1]=lon;
             loc[2]=17;
-            Singleton.getInstance().darPropietario().setUltimaUbicacion(loc);
+            if(Singleton.getInstance().darPropietario()!=null) {
+                Singleton.getInstance().darPropietario().setUltimaUbicacion(loc);
+            }
 
         }
     }
@@ -419,6 +423,11 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         } else {
             getFragmentManager().popBackStack();
         }
+    }
+
+    public void onResume(){
+        super.onResume();
+        start=true;
     }
 
 }

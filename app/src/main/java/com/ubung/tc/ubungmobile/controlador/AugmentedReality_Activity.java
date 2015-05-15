@@ -1,6 +1,7 @@
 package com.ubung.tc.ubungmobile.controlador;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -10,6 +11,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -40,10 +43,12 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
     private GoogleMap map;
     private AnimationAugmentedReality aR;
     private Zona zonaCercana;
+    private double minimo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        minimo=10000;
         setContentView(R.layout.activity_augmented_reality_);
         mSensorManager= (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer=mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -51,20 +56,36 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
         this.map=PanelMapFragment.map;
         initCamera();
         initZonaRendered();
+
     }
 
     private void initZonaRendered() {
 
         final ImageView zona=(ImageView) findViewById(R.id.zonaViewRendered);
         final TextView txtzona=(TextView) findViewById(R.id.distancia_zona_ar);
+
         Handler handposition=new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 RelativeLayout.LayoutParams r=(RelativeLayout.LayoutParams)msg.obj;
                 zona.setLayoutParams(r);
-                r.topMargin=r.topMargin+250;
-                txtzona.setLayoutParams(r);
-                txtzona.setText(r.leftMargin+" metros");
+                RelativeLayout.LayoutParams s=(RelativeLayout.LayoutParams) txtzona.getLayoutParams();
+                s.topMargin=1100;
+                s.leftMargin=r.leftMargin-50;
+                txtzona.setLayoutParams(s);
+                if(zonaCercana!=null) {
+                    Usuario propietario= Singleton.getInstance().darPropietario();
+                    if(r.leftMargin==-500) {
+                        LatLng ubicacion = new LatLng(propietario.getUltimaUbicacion()[0], propietario.getUltimaUbicacion()[1]);
+                        LatLng zonaubicacion= new LatLng(zonaCercana.getLatLongZoom()[0],zonaCercana.getLatLongZoom()[1]);
+                        minimo=cercaZona(ubicacion,zonaubicacion);
+                        //Log.e("cambio","entro"+r.leftMargin);
+                    }
+                    txtzona.setText(zonaCercana.getNombre() + "\n    " + Math.round(minimo) + " metros");
+                }
+                else{
+                    txtzona.setText("");
+                }
                 return true;
             }
         });
@@ -79,6 +100,7 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
     private void initCamera() {
         if(cam==null) {
             try {
+                Log.e("resume","camera");
             prevt = (FrameLayout) findViewById(R.id.videoview);
 
             cam = new CameraAR(this.getApplicationContext(), prevt);
@@ -94,8 +116,8 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
 
     public void onDestroy(){
         super.onDestroy();
-
-
+        Log.e("destroy", "on");
+        onPause();
 
     }
 
@@ -103,10 +125,13 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
         super.onResume();
         mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
         mSensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI);
+        initCamera();
+        Log.e("resume","on");
     }
 
     public void onPause(){
         super.onPause();
+        Log.e("pause", "on");
         mSensorManager.unregisterListener(this);
         Camera mCamera=cam.getmCamera();
         try {
@@ -114,6 +139,9 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
             mCamera.setPreviewCallback(null);
             cam.getmPreview().getHolder().removeCallback(cam.getmPreview());
             mCamera.release();
+            cam.interrupt();
+            cam=null;
+            prevt.invalidate();
             //mCamera = null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -160,58 +188,28 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
 
                    if(angulo>-4) {
                        // angulo=3;
-                       double diferencia = Math.abs(compass - angulo);
-                       double tolerancia = 1;
-                       double toleranciaT = 0.3;
-                    if(diferencia<toleranciaT){
-                        aR.setPosition(350, 800);
-                    }
-                    else if (diferencia<tolerancia){
 
-                        if(compass<angulo){
+                       double diferencia = compass - angulo;
+                       double toleranciaT = 1;
+                       double tolerancia = 0.7;
 
-                            if(ejez>1||ejez<-1) {
-                                int pos=(int)(350-(diferencia*200));
-                                aR.setPosition(pos, 800);
-                            }
-                            else {
-                                int pos=(int)(800-(diferencia*200));
-                                aR.setPosition(350, pos);
-                            }
-                        }
-
-                        else if(compass>angulo){
-
-                            if(ejez>1||ejez<-1) {
-                                int pos=(int)(350+(diferencia*200));
-                                aR.setPosition(pos, 800);
-                            }
-                            else {
-                                int pos=(int)(800+(diferencia*200));
-                                aR.setPosition(350, pos);
-                            }
-                        }
-                        else{
-                                aR.setPosition(350, 800);
-                        }
-
-                    }
-                       else{
-                        if(ejez>1||ejez<-1) {
-
-                            aR.setPosition(3000, 800);
-                        }
-                        else {
-
-                            aR.setPosition(350, 5000);
-                        }
-                    }
-
-
-
-
-
+                       if (diferencia < tolerancia) {
+                           aR.setPosition(350, 800);
+                       }
+                       else if (diferencia < toleranciaT) {
+                           aR.setPosition((int)(350-(diferencia*200)), 800);
+                       }
+                       else if (Math.abs(diferencia)>1){
+                           aR.setPosition(-500, 800);
+                       }
+                      // Log.e("camara",diferencia+"##"+compass+"##"+angulo);
                    }
+
+
+
+
+
+
 
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -241,10 +239,10 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
             }
         }
         // recorrido para hallar la zona mas cercana
-        double minimo=10000;
+
         if(zonaCercana == null) {
             ArrayList<Zona> zonas = Singleton.getInstance().darZonas();
-
+            minimo=100000;
             for (Zona z : zonas) {
                 double[]loczo=z.getLatLongZoom();
                 double lat=loczo[0];
@@ -294,7 +292,11 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {  }
 
-
+public void onBackPressed(){
+    super.onBackPressed();
+    Intent t= new Intent(this,LocationActivity.class);
+    startActivity(t);
+}
 
 
 }

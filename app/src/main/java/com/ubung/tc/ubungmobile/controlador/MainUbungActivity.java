@@ -9,6 +9,9 @@ import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -49,18 +52,11 @@ public class MainUbungActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        animationUbung();
         Singleton singleton = Singleton.getInstance();
         this.singleton = singleton;
 
-        if (singleton.darPropietario() != null) {
-            animationUbung();
-        } else {
-            setContentView(R.layout.activity_main_ubung);
-            GettingStartAdapter adapter = new GettingStartAdapter(this);
-            ViewPager myPager = (ViewPager) findViewById(R.id.gettingstartpager);
-            myPager.setAdapter(adapter);
-            myPager.setCurrentItem(0);
-        }
+
     }
 
     private void animationUbung() {
@@ -68,21 +64,45 @@ public class MainUbungActivity extends Activity {
         setContentView(R.layout.inicio_ubung);
         TextView deslice = (TextView) findViewById(R.id.deslice_inicio);
         deslice.setText("");
+        final MainUbungActivity context = this;
+        final Handler h= new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                boolean b=(boolean)msg.obj;
+                if(b) {
+                    setContentView(R.layout.activity_main_ubung);
+                    GettingStartAdapter adapter = new GettingStartAdapter(context);
+                    ViewPager myPager = (ViewPager) findViewById(R.id.gettingstartpager);
+                    myPager.setAdapter(adapter);
+                    myPager.setCurrentItem(0);
+                }
+                else{
+                    openMap();
+                }
+                return true;
+            }
+        });
+
         ubungThread = new Thread() {
             @Override
             public void run() {
+                Looper.prepare();
                 try {
-                    int waited = 0;
-                    while (active && (waited < ubungTime)) {
+                    while (ApplicationUbung.active) {
                         sleep(100);
-                        if (active) {
-                            waited += 100;
-                        }
                     }
                 } catch (InterruptedException e) {
 
                 } finally {
-                    openMap();
+                    Message m=new Message();
+                    if (singleton.darPropietario() != null) {
+                        m.obj=false;
+                        h.sendMessage(m);
+                    } else {
+                        m.obj=true;
+                        h.sendMessage(m);
+                    }
+
                 }
             }
         };
@@ -201,6 +221,7 @@ public class MainUbungActivity extends Activity {
         Singleton singleton = Singleton.getInstance();
         try {
             singleton.inicializar(this.getApplicationContext());
+            //singleton.start();
             // Capturar el Intent enviado por el OS cuando se comparte un evento vía NFC y pasarlo al Singleton
             Intent intent = getIntent();
             if (intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {

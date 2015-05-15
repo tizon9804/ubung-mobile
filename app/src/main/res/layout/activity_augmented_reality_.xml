@@ -26,8 +26,8 @@
         android:layout_height="wrap_content"
         android:text="0 metros"
         android:id="@+id/distancia_zona_ar"
-        android:layout_gravity="left|top"
-        android:layout_below="@+id/zonaViewRendered"
-        android:layout_alignEnd="@+id/zonaViewRendered" />
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="20dp"
+        android:textAlignment="center"/>
 
 </RelativeLayout>
