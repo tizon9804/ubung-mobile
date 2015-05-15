@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -171,29 +170,4 @@ public class DescripcionProgramacionActivity extends ActionBarActivity implement
             }
         }
     };
-
-    protected void onResume() {
-        super.onResume();
-        try {
-            Singleton singleton = Singleton.getInstance();
-            singleton.inicializar(this.getApplicationContext());
-            // Capturar el Intent enviado por el OS
-            Intent intent = getIntent();
-            // Si el Intent corresponde a NFC
-            if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-                Log.w("DescrProgAct.onResume()", intent.getAction() + " corresponde a un evento de NFC");
-                // Se lo paso al síngleton para que lo procese y recupere el evento correspondiente
-                Evento evento = singleton.recibirEventoNFC(intent);
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        Log.w("DescrProgAct.onNewIntent()","Se ha recibido un nuevo Intent con acción "+intent.getAction());
-        setIntent(intent);
-    }
 }
