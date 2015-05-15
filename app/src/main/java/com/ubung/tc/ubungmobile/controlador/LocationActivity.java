@@ -120,7 +120,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
     }
 
     private void getParseLocalization(){
-        if (Singleton.getInstance().darPropietario()!=null && Singleton.getInstance().darPropietario().getUltimaUbicacion()!=null) {
+        if (Singleton.getInstance().darPropietario()!=null && Singleton.getInstance().darPropietario().getUltimaUbicacion()!=null && start) {
             double[] localizacion=Singleton.getInstance().darPropietario().getUltimaUbicacion();
             double lat = localizacion[0];
             double lonl = localizacion[1];
@@ -151,7 +151,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                         start=false;
                         l = map.getMyLocation().getLatitude();
                         lonl = map.getMyLocation().getLongitude();
-                        latlng = new LatLng(l - CENTRAR, lonl);
+                        latlng = new LatLng(l, lonl);
                         ultimaPosicion=latlng;
                         p = new CameraPosition(latlng, 17, 0, 0);
                         map.animateCamera(CameraUpdateFactory.newCameraPosition(p), 500, null);
