@@ -55,7 +55,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
     protected int ubungTime = 10000;
     private Thread mapzoneThread;
     private ArrayList<Zona> zonas;
-    private boolean start;
+    private static boolean start;
     private FragmentDescriptionZona zona;
 
     @Override
@@ -104,7 +104,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                 }
             });
         }
-        start=false;
+
         getParseLocalization();
         notifyZonasCercanas();
         if(nombreZona!=null){
