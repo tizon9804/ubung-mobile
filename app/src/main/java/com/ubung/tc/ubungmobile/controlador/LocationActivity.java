@@ -57,11 +57,12 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
     private ArrayList<Zona> zonas;
     private static boolean start;
     private FragmentDescriptionZona zona;
+    private String nombreZona;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String nombreZona=getIntent().getStringExtra(NOMBRE);
+        nombreZona=getIntent().getStringExtra(NOMBRE);
         // carga la capa de botones
         final PanelMapFragment[] panel = {new PanelMapFragment()};
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
@@ -115,13 +116,14 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                 }
             }
             start=false;
+
         }
 
 
     }
 
     private void getParseLocalization(){
-        if (Singleton.getInstance().darPropietario()!=null && Singleton.getInstance().darPropietario().getUltimaUbicacion()!=null) {
+        if (Singleton.getInstance().darPropietario()!=null && Singleton.getInstance().darPropietario().getUltimaUbicacion()!=null ) {
             double[] localizacion=Singleton.getInstance().darPropietario().getUltimaUbicacion();
             double lat = localizacion[0];
             double lonl = localizacion[1];
@@ -184,6 +186,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                     };
                     Location loc=map.getMyLocation();
                     if(loc!=null) {
+                    ultimaPosicion=new LatLng(loc.getLatitude(),loc.getLongitude());
                     NotifyZonaCercana n = new NotifyZonaCercana(loc, h, zs);
                     n.start();
                     }
