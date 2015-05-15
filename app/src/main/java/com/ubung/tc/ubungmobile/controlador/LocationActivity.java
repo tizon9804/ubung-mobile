@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -39,6 +40,7 @@ import com.ubung.tc.ubungmobile.modelo.persistencia.entidades.Zona;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 
 
 public class LocationActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener {
@@ -51,13 +53,11 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
     private GoogleMap map;
     private LatLng ultimaPosicion;
     private ArrayList<Marker> markers;
-    protected boolean active = true;
-    protected int ubungTime = 10000;
-    private Thread mapzoneThread;
     private ArrayList<Zona> zonas;
     private static boolean start;
     private FragmentDescriptionZona zona;
     private String nombreZona;
+    private NotifyZonaCercana n;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,7 +187,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
                     Location loc=map.getMyLocation();
                     if(loc!=null) {
                     ultimaPosicion=new LatLng(loc.getLatitude(),loc.getLongitude());
-                    NotifyZonaCercana n = new NotifyZonaCercana(loc, h, zs);
+                    n = new NotifyZonaCercana(loc, h, zs);
                     n.start();
                     }
                 }
@@ -432,6 +432,7 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
         super.onBackPressed();
         if (getFragmentManager().getBackStackEntryCount() == 0) {
             this.finish();
+            System.exit(0);
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -444,6 +445,12 @@ public class LocationActivity extends FragmentActivity implements GoogleMap.OnMa
     public void onResume(){
         super.onResume();
         start=true;
+    }
+
+    public void onDestroy(){
+        super.onDestroy();
+
+
     }
 
 }

@@ -105,7 +105,9 @@
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
-            android:id="@+id/hour_picker"  />
+            android:id="@+id/date_picker"    />
+
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -122,7 +124,7 @@
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
-            android:id="@+id/date_picker"    />
+            android:id="@+id/hour_picker"  />
 
         <Button
             android:id="@+id/button_crear_evento"

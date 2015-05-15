@@ -117,8 +117,22 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
     public void onDestroy(){
         super.onDestroy();
         Log.e("destroy", "on");
-        
+        mSensorManager.unregisterListener(this);
+        if(cam!=null) {
+            Camera mCamera = cam.getmCamera();
+            try {
+                mCamera.stopPreview();
+                mCamera.setPreviewCallback(null);
+                cam.getmPreview().getHolder().removeCallback(cam.getmPreview());
+                mCamera.release();
+                cam.interrupt();
+                cam = null;
 
+                //mCamera = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     protected void onResume() {
@@ -131,6 +145,7 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
 
     public void onPause(){
         super.onPause();
+        finish();
         Log.e("pause", "on");
         mSensorManager.unregisterListener(this);
         Camera mCamera=cam.getmCamera();
@@ -140,8 +155,9 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
             cam.getmPreview().getHolder().removeCallback(cam.getmPreview());
             mCamera.release();
             cam.interrupt();
+
             cam=null;
-            prevt.invalidate();
+            prevt.removeAllViews();
             //mCamera = null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,6 +168,7 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
     float[] mGeomagnetic;
     @Override
     public void onSensorChanged(SensorEvent event) {
+
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
             mGravity = event.values;
         if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
@@ -292,8 +309,10 @@ public class AugmentedReality_Activity extends Activity implements SensorEventLi
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {  }
 
-public void onBackPressed(){
+public void onBackPressed() {
     super.onBackPressed();
+    finish();
+    System.exit(0);
     Intent t= new Intent(this,LocationActivity.class);
     startActivity(t);
 }

@@ -161,7 +161,7 @@ public class CameraPreviewAdapter extends SurfaceView implements SurfaceHolder.C
     {
         @Override
         public void onPreviewFrame(byte[] data, Camera camera) {
-          //  Log.d("surface", " Preview callback...");
+           Log.d("surface", " Preview callback...");
           //  decodeYUV420SP(pixels, data, camera.getParameters().getPreviewSize().width, camera.getParameters().getPreviewSize().height);
 
 
